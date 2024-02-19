@@ -1,29 +1,32 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository_impl.dart';
-import 'package:image_search_app/domain/model/image_item.dart';
+import 'package:image_search_app/domain/image_repository/repository.dart';
+
+import '../domain/model/image_item.dart';
 
 class MainViewModel extends ChangeNotifier {
-  final repository = PixabayImageItemRepositoryImpl();
+  final ImageItemRepository _repository;
 
+  MainViewModel({
+    required ImageItemRepository repository,
+  }) : _repository = repository;
   List<ImageItem> _imageItems = [];
-  List<ImageItem> get imageItems => List.unmodifiable(_imageItems);
 
-  final _loadingController = StreamController<bool>();
-  Stream<bool> get isLoadingStream => _loadingController.stream;
-  bool isLoading = false;
+  List<ImageItem> get imageItem => List.unmodifiable(_imageItems);
 
-  Future<void> fetchImage(String query) async {
-    isLoading = true;
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  Future<void> searchImage(String query) async {
+    _isLoading = true;
     notifyListeners();
 
-  _imageItems = await repository.getImageResult(query);
-
+    _imageItems = await _repository.getImageResult(query);
     notifyListeners();
 
-    isLoading =false;
+    _isLoading = false;
     notifyListeners();
   }
-
 }

@@ -57,46 +57,34 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     onPressed: () {
                       // 강제로 화면 다시 그리기
-                      viewModel.fetchImage(searchTextEditingController.text);
+                      viewModel.searchImage(searchTextEditingController.text);
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              StreamBuilder<bool>(
-                initialData: false,
-                stream: viewModel.isLoadingStream,
-                builder: (context, snapshot) {
-                  if (snapshot.data! == true) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-
-                  return Expanded(
-                    child: GridView.builder(
-                      itemCount: viewModel.imageItems.length,
-                      itemBuilder: (context, index) {
-                        final imageItem = viewModel.imageItems[index];
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          // 코너의 둥근 정도 조절
-                          child: Image.network(
-                            imageItem.imageUrl,
-                            // 이미지 경로
-                            fit: BoxFit.cover,
-                          ),
-                        );
-                      },
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 32,
-                        mainAxisSpacing: 32,
+              viewModel.isLoading ? Center(child: CircularProgressIndicator())
+              : Expanded(
+                child: GridView.builder(
+                  itemCount: viewModel.imageItem.length,
+                  itemBuilder: (context, index) {
+                    final imageItem = viewModel.imageItem[index];
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      // 코너의 둥근 정도 조절
+                      child: Image.network(
+                        imageItem.imageUrl,
+                        // 이미지 경로
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 32,
+                    mainAxisSpacing: 32,
+                  ),
+                ),
               ),
             ],
           ),

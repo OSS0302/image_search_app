@@ -5,7 +5,7 @@ import 'package:image_search_app/domain/model/image_item.dart';
 import '../data_source/piabay_api.dart';
 
 // 실제 api 데이터
-class PixabayImageItemRepositoryImpl implements PixabayRepository {
+class PixabayImageItemRepositoryImpl implements ImageItemRepository {
   final _api = PixabayApi();
 
   @override
@@ -20,7 +20,7 @@ class PixabayImageItemRepositoryImpl implements PixabayRepository {
   }
 
 }
-  class MockImageItemRepository implements PixabayRepository {
+  class MockImageItemRepository implements ImageItemRepository {
   @override
   Future<List<ImageItem>> getImageResult(String query) async {
     await Future.delayed(const Duration(seconds: 2));
