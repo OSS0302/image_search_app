@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       home: ChangeNotifierProvider(
         create: (_) => MainViewModel(),
-        child: MainScreen(),
+        child: const MainScreen(),
       )
     );
   }

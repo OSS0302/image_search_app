@@ -63,14 +63,24 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-                viewModel.isLoading ? Center(child: CircularProgressIndicator())
-              : Expanded(
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: viewModel.isLoadingStream,
+                builder: (context, snapshot) {
+                  if (snapshot.data! == true) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  return Expanded(
                     child: GridView.builder(
                       itemCount: viewModel.imageItems.length,
                       itemBuilder: (context, index) {
                         final imageItem = viewModel.imageItems[index];
                         return ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0), // 코너의 둥근 정도 조절
+                          borderRadius: BorderRadius.circular(20.0),
+                          // 코너의 둥근 정도 조절
                           child: Image.network(
                             imageItem.imageUrl,
                             // 이미지 경로
@@ -79,13 +89,15 @@ class _MainScreenState extends State<MainScreen> {
                         );
                       },
                       gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 32,
                         mainAxisSpacing: 32,
                       ),
                     ),
-                  ),
+                  );
+                },
+              ),
             ],
           ),
         ),
