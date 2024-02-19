@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_repository_impl.dart';
+import 'package:image_search_app/ui/main_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../domain/model/image_item.dart';
 
@@ -21,6 +23,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<MainViewModel>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -54,26 +57,18 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     onPressed: () {
                       // 강제로 화면 다시 그리기
-                      setState(() {});
+                      viewModel.fetchImage(searchTextEditingController.text);
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              FutureBuilder<List<ImageItem>>(
-                future: PixabayImageItemRepositoryImpl()
-                    .getImageResult(searchTextEditingController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const CircularProgressIndicator();
-                  }
-
-                  final imageItems = snapshot.data!;
-                  return Expanded(
+                viewModel.isLoading ? Center(child: CircularProgressIndicator())
+              : Expanded(
                     child: GridView.builder(
-                      itemCount: imageItems.length,
+                      itemCount: viewModel.imageItems.length,
                       itemBuilder: (context, index) {
-                        final imageItem = imageItems[index];
+                        final imageItem = viewModel.imageItems[index];
                         return ClipRRect(
                           borderRadius: BorderRadius.circular(20.0), // 코너의 둥근 정도 조절
                           child: Image.network(
@@ -90,9 +85,7 @@ class _MainScreenState extends State<MainScreen> {
                         mainAxisSpacing: 32,
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
             ],
           ),
         ),
