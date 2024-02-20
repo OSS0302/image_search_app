@@ -8,12 +8,12 @@ part of 'image_item.dart';
 
 _$ImageItemImpl _$$ImageItemImplFromJson(Map<String, dynamic> json) =>
     _$ImageItemImpl(
-      tags: json['tags'] as String,
       imageUrl: json['imageUrl'] as String,
+      tags: json['tags'] as String,
     );
 
 Map<String, dynamic> _$$ImageItemImplToJson(_$ImageItemImpl instance) =>
     <String, dynamic>{
-      'tags': instance.tags,
       'imageUrl': instance.imageUrl,
+      'tags': instance.tags,
     };
