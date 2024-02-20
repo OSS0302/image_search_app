@@ -56,13 +56,8 @@ class _MainScreenState extends State<MainScreen> {
             const SizedBox(
               height: 24,
             ),
-            StreamBuilder(
-              stream: mainViewModel.isLoadingStream,
-              builder: (context, snapshot) {
-                if(snapshot.data == true) {
-                  return const Center(child: CircularProgressIndicator(),);
-                }
-                return Expanded(
+             mainViewModel.isLoading ? Center(child: CircularProgressIndicator(),)
+                 : Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: RefreshIndicator(
@@ -81,9 +76,9 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                )
+
+
           ],
         ),
       ),
