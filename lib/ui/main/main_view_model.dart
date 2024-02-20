@@ -2,29 +2,38 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../../data/repository/image_item_repository_impl.dart';
 import '../../domain/model/image_item.dart';
+import '../../domain/repository/image_item_repository.dart';
 
 class MainViewModel extends ChangeNotifier {
-  final repository = ImageItemRepositoryImpl();
+  final ImageItemRepository _repository;
+
+   MainViewModel({
+    required ImageItemRepository repository,
+  }) : _repository = repository;
+
+
 
   List<ImageItem> imageItems = [];
+
   List<ImageItem> get imageItem => List.unmodifiable(imageItems);
 
-  final _loadController = StreamController<bool>();
-  Stream<bool> get isLoadingStream =>_loadController.stream;
 
-  bool isLoading = false;
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
 
   Future<void> fetchImage(String query) async {
-    isLoading = true;
-    notifyListeners();
-    imageItems = await repository.getImageItems(query);
-    isLoading = false;
+    _isLoading = true;
+  notifyListeners();
+
+    imageItems = await _repository.getImageItems(query);
+    _isLoading = false;
     notifyListeners();
   }
 
   Future<void> refresh() async {
     return Future.delayed(const Duration(seconds: 2));
   }
+
 }
