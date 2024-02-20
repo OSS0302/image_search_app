@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../data/repository/image_item_repository_impl.dart';
@@ -7,6 +9,11 @@ class MainViewModel extends ChangeNotifier {
   final repository = ImageItemRepositoryImpl();
 
   List<ImageItem> imageItems = [];
+  List<ImageItem> get imageItem => List.unmodifiable(imageItems);
+
+  final _loadController = StreamController<bool>();
+  Stream<bool> get isLoadingStream =>_loadController.stream;
+
   bool isLoading = false;
 
   Future<void> fetchImage(String query) async {
