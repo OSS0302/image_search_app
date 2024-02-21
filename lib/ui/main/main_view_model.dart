@@ -12,8 +12,10 @@ class MainViewModel extends ChangeNotifier {
 
   List<ImageItem> _imageItems = [];
 
+
   List<ImageItem> get imageItems => List.unmodifiable(_imageItems);
   bool isLoading = false;
+  final favorites = <int> {};
 
   Future<void> fetchImage(String query) async {
     isLoading = true;

@@ -19,14 +19,14 @@ class ImageItemRepositoryImpl implements ImageItemRepository {
 class MockImageItemRepositoryImpl implements ImageItemRepository {
   @override
   Future<List<ImageItem>> getImageResult(String query) async {
-   await Future.delayed(Duration(seconds: 1));
+   await Future.delayed(const Duration(seconds: 1));
     if(query == 'apple') {
       return [
-        const ImageItem(imageUrl: "https://cdn.pixabay.com/photo/2017/09/26/13/21/apples-2788599_150.jpg", tags: ''),
+        const ImageItem(imageUrl: "https://cdn.pixabay.com/photo/2017/09/26/13/21/apples-2788599_150.jpg", tags: '', id: 0),
       ];
     }else {
       return [
-        const ImageItem(imageUrl: "https://cdn.pixabay.com/photo/2017/09/26/13/21/apples-2788599_150.jpg", tags: ''),
+        const ImageItem(imageUrl: "https://cdn.pixabay.com/photo/2017/09/26/13/21/apples-2788599_150.jpg", tags: '', id: 1),
       ];
     }
   }

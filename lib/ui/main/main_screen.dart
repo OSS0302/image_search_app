@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_search_app/ui/main/main_view_model.dart';
 import 'package:image_search_app/ui/widget/image_item_widget.dart';
 import 'package:provider/provider.dart';
@@ -57,20 +58,53 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(
                 height: 24,
               ),
-              mainViewModel.isLoading ? Center(child: CircularProgressIndicator(),)
-              : Expanded(
-                child: GridView.builder(
-                  itemCount: mainViewModel.imageItems.length,
-                  itemBuilder: (context, index) {
-                    final imageItem = mainViewModel.imageItems[index];
-                    return ImageItemWidget(imageItem: imageItem);
-                  },
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 22,
-                      mainAxisSpacing: 2),
-                ),
-              ),
+              mainViewModel.isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: mainViewModel.imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = mainViewModel.imageItems[index];
+                          return GestureDetector(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Stack(
+                                children: [
+                                  Image.network(
+                                    imageItem.imageUrl,
+                                    width: 500,
+                                    height: 500,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Checkbox(
+                                      value: mainViewModel.favorites
+                                          .contains(imageItem.id),
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          if (value! == true) {
+                                            mainViewModel.favorites
+                                                .add(imageItem.id);
+                                          } else {
+                                            mainViewModel.favorites.remove(imageItem.id);
+                                          }
+                                        });
+                                      })
+                                ],
+                              ),
+                            ),
+                            onTap: () {
+                              context.push('/detail', extra: imageItem);
+                            },
+                          );
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 22,
+                            mainAxisSpacing: 22),
+                      ),
+                    ),
             ],
           ),
         ),
