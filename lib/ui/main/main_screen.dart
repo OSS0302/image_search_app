@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_item_repository_impl.dart';
+import 'package:image_search_app/ui/main/main_view_model.dart';
 import 'package:image_search_app/ui/widget/image_item_widget.dart';
-import '../../domain/model/image_item.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -12,21 +12,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final searchController = TextEditingController();
-  final repository = ImageItemRepositoryImpl();
-  List<ImageItem> imageItems = [];
-  bool isLoading = false;
-
-  Future<void> fetchImage(String query) async {
-    setState(() {
-      isLoading = true;
-    });
-
-    imageItems = await repository.getImageResult(query);
-
-    setState(() {
-      isLoading = false;
-    });
-  }
 
   @override
   void dispose() {
@@ -36,10 +21,9 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainViewModel = context.watch<MainViewModel>();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-      ),
+
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
@@ -66,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () {
-                      fetchImage(searchController.text);
+                      mainViewModel.fetchImage(searchController.text);
                     },
                   ),
                 ),
@@ -76,9 +60,9 @@ class _MainScreenState extends State<MainScreen> {
               ),
               Expanded(
                 child: GridView.builder(
-                  itemCount: imageItems.length,
+                  itemCount: mainViewModel.imageItems.length,
                   itemBuilder: (context, index){
-                    final imageItem = imageItems[index];
+                    final imageItem = mainViewModel.imageItems[index];
                     return ImageItemWidget(imageItem: imageItem);
                   },
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
