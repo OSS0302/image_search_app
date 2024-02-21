@@ -23,7 +23,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainViewModel>();
     return Scaffold(
-
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
@@ -58,19 +57,28 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(
                 height: 24,
               ),
-              Expanded(
-                child: GridView.builder(
-                  itemCount: mainViewModel.imageItems.length,
-                  itemBuilder: (context, index){
-                    final imageItem = mainViewModel.imageItems[index];
-                    return ImageItemWidget(imageItem: imageItem);
-                  },
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 22,
-                      mainAxisSpacing: 2),
-                ),
-              )
+              StreamBuilder(
+                  stream: mainViewModel.isLoadingStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.data == true) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return Expanded(
+                      child: GridView.builder(
+                        itemCount: mainViewModel.imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = mainViewModel.imageItems[index];
+                          return ImageItemWidget(imageItem: imageItem);
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 22,
+                            mainAxisSpacing: 2),
+                      ),
+                    );
+                  })
             ],
           ),
         ),
