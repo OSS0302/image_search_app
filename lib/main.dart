@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository_impl.dart';
-import 'package:image_search_app/ui/main_screen.dart';
+import 'package:image_search_app/data/repository/image_item_repository_impl.dart';
+import 'package:image_search_app/ui/main/main_screen.dart';
 import 'package:provider/provider.dart';
-import 'ui/main_view_model.dart';
+
+import 'ui/main/main_view_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +12,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,10 +21,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: ChangeNotifierProvider(
-        create: (_) => MainViewModel(repository: PixabayImageItemRepositoryImpl()),
+        create: (_) => MainViewModel(repository: ImageItemRepositoryImpl()),
         child: const MainScreen(),
       )
     );
   }
 }
-

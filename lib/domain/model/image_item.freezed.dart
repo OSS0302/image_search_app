@@ -20,8 +20,8 @@ ImageItem _$ImageItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ImageItem {
-  String get tags => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  String get tags => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +34,7 @@ abstract class $ImageItemCopyWith<$Res> {
   factory $ImageItemCopyWith(ImageItem value, $Res Function(ImageItem) then) =
       _$ImageItemCopyWithImpl<$Res, ImageItem>;
   @useResult
-  $Res call({String tags, String imageUrl});
+  $Res call({String imageUrl, String tags});
 }
 
 /// @nodoc
@@ -50,17 +50,17 @@ class _$ImageItemCopyWithImpl<$Res, $Val extends ImageItem>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tags = null,
     Object? imageUrl = null,
+    Object? tags = null,
   }) {
     return _then(_value.copyWith(
-      tags: null == tags
-          ? _value.tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as String,
       imageUrl: null == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      tags: null == tags
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -74,7 +74,7 @@ abstract class _$$ImageItemImplCopyWith<$Res>
       __$$ImageItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String tags, String imageUrl});
+  $Res call({String imageUrl, String tags});
 }
 
 /// @nodoc
@@ -88,17 +88,17 @@ class __$$ImageItemImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tags = null,
     Object? imageUrl = null,
+    Object? tags = null,
   }) {
     return _then(_$ImageItemImpl(
-      tags: null == tags
-          ? _value.tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as String,
       imageUrl: null == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      tags: null == tags
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -107,19 +107,19 @@ class __$$ImageItemImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ImageItemImpl with DiagnosticableTreeMixin implements _ImageItem {
-  const _$ImageItemImpl({required this.tags, required this.imageUrl});
+  const _$ImageItemImpl({required this.imageUrl, required this.tags});
 
   factory _$ImageItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$ImageItemImplFromJson(json);
 
   @override
-  final String tags;
-  @override
   final String imageUrl;
+  @override
+  final String tags;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ImageItem(tags: $tags, imageUrl: $imageUrl)';
+    return 'ImageItem(imageUrl: $imageUrl, tags: $tags)';
   }
 
   @override
@@ -127,8 +127,8 @@ class _$ImageItemImpl with DiagnosticableTreeMixin implements _ImageItem {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ImageItem'))
-      ..add(DiagnosticsProperty('tags', tags))
-      ..add(DiagnosticsProperty('imageUrl', imageUrl));
+      ..add(DiagnosticsProperty('imageUrl', imageUrl))
+      ..add(DiagnosticsProperty('tags', tags));
   }
 
   @override
@@ -136,14 +136,14 @@ class _$ImageItemImpl with DiagnosticableTreeMixin implements _ImageItem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ImageItemImpl &&
-            (identical(other.tags, tags) || other.tags == tags) &&
             (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl));
+                other.imageUrl == imageUrl) &&
+            (identical(other.tags, tags) || other.tags == tags));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, tags, imageUrl);
+  int get hashCode => Object.hash(runtimeType, imageUrl, tags);
 
   @JsonKey(ignore: true)
   @override
@@ -161,16 +161,16 @@ class _$ImageItemImpl with DiagnosticableTreeMixin implements _ImageItem {
 
 abstract class _ImageItem implements ImageItem {
   const factory _ImageItem(
-      {required final String tags,
-      required final String imageUrl}) = _$ImageItemImpl;
+      {required final String imageUrl,
+      required final String tags}) = _$ImageItemImpl;
 
   factory _ImageItem.fromJson(Map<String, dynamic> json) =
       _$ImageItemImpl.fromJson;
 
   @override
-  String get tags;
-  @override
   String get imageUrl;
+  @override
+  String get tags;
   @override
   @JsonKey(ignore: true)
   _$$ImageItemImplCopyWith<_$ImageItemImpl> get copyWith =>
