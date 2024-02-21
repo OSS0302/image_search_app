@@ -33,14 +33,14 @@ class _MainScreenState extends State<MainScreen> {
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 2,
                       color: Colors.black,
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 2,
                       color: Colors.black,
                     ),
@@ -57,28 +57,20 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(
                 height: 24,
               ),
-              StreamBuilder(
-                  stream: mainViewModel.isLoadingStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.data == true) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    return Expanded(
-                      child: GridView.builder(
-                        itemCount: mainViewModel.imageItems.length,
-                        itemBuilder: (context, index) {
-                          final imageItem = mainViewModel.imageItems[index];
-                          return ImageItemWidget(imageItem: imageItem);
-                        },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 22,
-                            mainAxisSpacing: 2),
-                      ),
-                    );
-                  })
+              mainViewModel.isLoading ? Center(child: CircularProgressIndicator(),)
+              : Expanded(
+                child: GridView.builder(
+                  itemCount: mainViewModel.imageItems.length,
+                  itemBuilder: (context, index) {
+                    final imageItem = mainViewModel.imageItems[index];
+                    return ImageItemWidget(imageItem: imageItem);
+                  },
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 22,
+                      mainAxisSpacing: 2),
+                ),
+              ),
             ],
           ),
         ),
