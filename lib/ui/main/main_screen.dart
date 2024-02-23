@@ -22,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainViewModel>();
+    final state = mainViewModel.state;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -48,8 +49,8 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: '이미지검색 하세요',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
-                    onPressed: () {
-                      mainViewModel.fetchImage(searchController.text);
+                    onPressed: ()  async {
+                     await mainViewModel.fetchImage(searchController.text);
                     },
                   ),
                 ),
@@ -57,13 +58,13 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(
                 height: 24,
               ),
-              mainViewModel.isLoading ? Center(child: CircularProgressIndicator(),)
-              : Expanded(
+              state.isLoading ? Center(child: CircularProgressIndicator(),)
+                  : Expanded(
                 child: GridView.builder(
-                  itemCount: mainViewModel.imageItems.length,
+                  itemCount: state.imageItems.length,
                   itemBuilder: (context, index) {
-                    final imageItem = mainViewModel.imageItems[index];
-                    return ImageItemWidget(imageItem: imageItem);
+                    final imageItem = state.imageItems[index];
+                    return  ClipRRect(borderRadius: BorderRadius.circular(10),child: Image.network(imageItem.imageUrl,fit: BoxFit.cover,),);
                   },
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,

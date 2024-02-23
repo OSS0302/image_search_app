@@ -10,7 +10,7 @@ class ImageItem with _$ImageItem {
   const factory ImageItem({
     required String imageUrl,
     required String tags,
-
+    required int id,
   }) = _ImageItem;
 
   factory ImageItem.fromJson(Map<String, Object?> json) => _$ImageItemFromJson(json);

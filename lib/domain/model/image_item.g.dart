@@ -10,10 +10,12 @@ _$ImageItemImpl _$$ImageItemImplFromJson(Map<String, dynamic> json) =>
     _$ImageItemImpl(
       imageUrl: json['imageUrl'] as String,
       tags: json['tags'] as String,
+      id: json['id'] as int,
     );
 
 Map<String, dynamic> _$$ImageItemImplToJson(_$ImageItemImpl instance) =>
     <String, dynamic>{
       'imageUrl': instance.imageUrl,
       'tags': instance.tags,
+      'id': instance.id,
     };
