@@ -1,9 +1,8 @@
 class ImageDto {
   ImageDto({
-    this.total,
-    this.totalHits,
-    this.hits,
-  });
+      this.total,
+      this.totalHits,
+      this.hits,});
 
   ImageDto.fromJson(dynamic json) {
     total = json['total'];

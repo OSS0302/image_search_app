@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/ui/main/main_view_model.dart';
+import 'package:image_search_app/ui/widget/image_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
