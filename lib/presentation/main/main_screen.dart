@@ -69,9 +69,9 @@ class _MainScreenState extends State<MainScreen> {
                     )
                   : Expanded(
                       child: GridView.builder(
-                        itemCount: mainViewModel.imageItems.length,
+                        itemCount: mainViewModel.imageItem.length,
                         itemBuilder: (context, index) {
-                          final imageItems = mainViewModel.imageItems[index];
+                          final imageItems = mainViewModel.imageItem[index];
                           return ImageItemWidget(imageItem: imageItems);
                         },
                         gridDelegate:
