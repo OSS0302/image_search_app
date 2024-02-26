@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/presentation/main/main_screen.dart';
-import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -18,10 +17,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:ChangeNotifierProvider(
-        create: (_) => MainViewModel(),
-        child: MainScreen(),
-      )
+      home:MainScreen(),
+
 
     );
   }

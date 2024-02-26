@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository_impl.dart';
-import 'package:provider/provider.dart';
+import 'package:image_search_app/data/repository/image_item_repository_impl.dart';
+import 'package:image_search_app/domain/repository/image_item_repository.dart';
 
-import '../../domain/model/image_items.dart';
 import '../widget/image_item_widget.dart';
-import 'main_view_model.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -14,17 +12,16 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final searchTextEditingController = TextEditingController();
+  final imageSearchController = TextEditingController();
 
   @override
   void dispose() {
-    searchTextEditingController.dispose();
+    imageSearchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final mainViewModel = context.watch<MainViewModel>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -32,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
           child: Column(
             children: [
               TextField(
-                controller: searchTextEditingController,
+                controller: imageSearchController,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -57,46 +54,38 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     onPressed: () {
                       // 강제로 화면 다시 그리기
-                      setState(() {
-                        mainViewModel.fatchImage(searchTextEditingController.text);
-                      });
+                      setState(() {});
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-                   mainViewModel.isLoading ? isLoadingWidget()
-                  : Expanded(
+              FutureBuilder(
+                future: ImageItemRepositoryImpl().getImageResult(imageSearchController.text),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                  final imageItem = snapshot.data!;
+                  return Expanded(
                     child: GridView.builder(
-                      itemCount: mainViewModel.imageItems.length,
+                      itemCount: imageItem.length,
                       itemBuilder: (context, index) {
-                        final imageItem = mainViewModel.imageItems[index];
-                        return ImageItemWidget(imageItems: imageItem);
+                        final imageItems = imageItem[index];
+                        return ImageItemWidget(imageItem: imageItems);
                       },
-                      gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
-                        crossAxisSpacing: 32,
-                        mainAxisSpacing: 32,
+                        crossAxisSpacing: 22,
+                        mainAxisSpacing: 22,
                       ),
                     ),
-
-
-              ),
+                  );
+                },),
             ],
           ),
         ),
       ),
     );
   }
-}
-Widget isLoadingWidget() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Center(child: CircularProgressIndicator(),),
-      Text('로딩중입니다 '),
-    ],
-  );
-  
 }
