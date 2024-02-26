@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_repository_impl.dart';
+import 'package:provider/provider.dart';
 
 import '../../domain/model/image_items.dart';
 import '../widget/image_item_widget.dart';
+import 'main_view_model.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -22,6 +24,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainViewModel = context.watch<MainViewModel>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -54,37 +57,31 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     onPressed: () {
                       // 강제로 화면 다시 그리기
-                      setState(() {});
+                      setState(() {
+                        mainViewModel.fatchImage(searchTextEditingController.text);
+                      });
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              FutureBuilder<List<ImageItems>>(
-                future: ImageRepositoryImpl()
-                    .getImageItems(searchTextEditingController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const CircularProgressIndicator();
-                  }
-
-                  final imageItems = snapshot.data!;
-                  return Expanded(
+                   mainViewModel.isLoading ? isLoadingWidget()
+                  : Expanded(
                     child: GridView.builder(
-                      itemCount: imageItems.length,
+                      itemCount: mainViewModel.imageItems.length,
                       itemBuilder: (context, index) {
-                        final imageItem = imageItems[index];
+                        final imageItem = mainViewModel.imageItems[index];
                         return ImageItemWidget(imageItems: imageItem);
                       },
                       gridDelegate:
                       const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
+                        crossAxisCount: 3,
                         crossAxisSpacing: 32,
                         mainAxisSpacing: 32,
                       ),
                     ),
-                  );
-                },
+
+
               ),
             ],
           ),
@@ -92,4 +89,14 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
+}
+Widget isLoadingWidget() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Center(child: CircularProgressIndicator(),),
+      Text('로딩중입니다 '),
+    ],
+  );
+  
 }
