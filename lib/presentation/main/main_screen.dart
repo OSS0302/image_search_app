@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_item_repository_impl.dart';
-import 'package:image_search_app/domain/repository/image_item_repository.dart';
+import 'package:image_search_app/presentation/main/main_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../widget/image_item_widget.dart';
 
@@ -22,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainViewModel = context.watch<MainViewModel>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -54,34 +55,33 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     onPressed: () {
                       // 강제로 화면 다시 그리기
-                      setState(() {});
+                      setState(() {
+                        mainViewModel.fetchImage(imageSearchController.text);
+                      });
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              FutureBuilder(
-                future: ImageItemRepositoryImpl().getImageResult(imageSearchController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                  final imageItem = snapshot.data!;
-                  return Expanded(
-                    child: GridView.builder(
-                      itemCount: imageItem.length,
-                      itemBuilder: (context, index) {
-                        final imageItems = imageItem[index];
-                        return ImageItemWidget(imageItem: imageItems);
-                      },
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 22,
-                        mainAxisSpacing: 22,
+              mainViewModel.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: mainViewModel.imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItems = mainViewModel.imageItems[index];
+                          return ImageItemWidget(imageItem: imageItems);
+                        },
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 22,
+                          mainAxisSpacing: 22,
+                        ),
                       ),
                     ),
-                  );
-                },),
             ],
           ),
         ),
