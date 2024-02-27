@@ -23,6 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainViewModel>();
+    final state = mainViewModel.state;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -53,25 +54,35 @@ class _MainScreenState extends State<MainScreen> {
                       Icons.search,
                       color: Colors.blue,
                     ),
-                    onPressed: () {
+                    onPressed: () async{
                       // 강제로 화면 다시 그리기
-                      setState(() {
-                        mainViewModel.fetchImage(imageSearchController.text);
-                      });
+                        final result = await mainViewModel
+                            .fetchImage(imageSearchController.text);
+
+                        if (result == false) {
+                          const snackBar = SnackBar(
+                            content: Text('Yay! Bug!'),
+                          );
+
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
+                        }
+
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              mainViewModel.isLoading
+              state.isLoading
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
                   : Expanded(
                       child: GridView.builder(
-                        itemCount: mainViewModel.imageItem.length,
+                        itemCount: state.imageItems.length,
                         itemBuilder: (context, index) {
-                          final imageItems = mainViewModel.imageItem[index];
+                          final imageItems = state.imageItems[index];
                           return ImageItemWidget(imageItem: imageItems);
                         },
                         gridDelegate:

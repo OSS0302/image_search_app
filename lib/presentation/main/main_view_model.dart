@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_item_repository_impl.dart';
-import 'package:image_search_app/domain/model/image_item.dart';
 import 'package:image_search_app/domain/repository/image_item_repository.dart';
+import 'package:image_search_app/presentation/main/main_state.dart';
 
 class MainViewModel extends ChangeNotifier {
   final ImageItemRepository _repository;
@@ -11,22 +10,25 @@ class MainViewModel extends ChangeNotifier {
     required ImageItemRepository repository,
   }) : _repository = repository;
 
-  List<ImageItem> _imageItems = [];
-  bool _isLoading = false;
-  List<ImageItem> get  imageItem => List.unmodifiable(_imageItems);
-  bool get isLoading =>_isLoading;
+   MainState _state =  MainState(imageItems: [], isLoading: false);
 
-
-
-
-
-  Future<void> fetchImage(String query) async{
-    _isLoading =true;
+   MainState get state => _state;
+  Future<bool> fetchImage(String query) async {
+    _state = state.copyWith(isLoading: true);
     notifyListeners();
-   _imageItems = await _repository.getImageResult(query);
-    _isLoading =false;
-   notifyListeners();
+    try {
+      final results = (await _repository.getImageResult(query)).toList();
+
+      // 화면갱신
+      _state = state.copyWith(
+        isLoading: false,
+        imageItems: results,
+      );
+      notifyListeners();
+      return true;
+    } catch (e) {
+      // SnackBar or Dialog
+      return false;
+    }
+    }
   }
-
-
-}
