@@ -13,12 +13,22 @@ class MainViewModel extends ChangeNotifier {
    MainState _state =  MainState(imageItems: [], isLoading: false);
 
    MainState get state => _state;
-  Future<void> fetchImage(String query) async{
+  Future<bool> fetchImage(String query) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
-   _state = state.copyWith(isLoading: false,imageItems: await _repository.getImageResult(query));
-   notifyListeners();
+    try {
+      final results = (await _repository.getImageResult(query)).toList();
+
+      // 화면갱신
+      _state = state.copyWith(
+        isLoading: false,
+        imageItems: results,
+      );
+      notifyListeners();
+      return true;
+    } catch (e) {
+      // SnackBar or Dialog
+      return false;
+    }
+    }
   }
-
-
-}
