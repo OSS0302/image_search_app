@@ -54,11 +54,21 @@ class _MainScreenState extends State<MainScreen> {
                       Icons.search,
                       color: Colors.blue,
                     ),
-                    onPressed: () {
+                    onPressed: () async{
                       // 강제로 화면 다시 그리기
-                      setState(() {
-                        mainViewModel.fetchImage(imageSearchController.text);
-                      });
+                        final result = await mainViewModel
+                            .fetchImage(imageSearchController.text);
+
+                        if (result == false) {
+                          const snackBar = SnackBar(
+                            content: Text('Yay! Bug!'),
+                          );
+
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
+                        }
+
                     },
                   ),
                 ),
