@@ -5,7 +5,10 @@ import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/routes.dart';
 import 'package:provider/provider.dart';
 
+import 'di/di_setup.dart';
+
 void main() {
+  diSetup();
   runApp(const MyApp());
 }
 
