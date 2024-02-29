@@ -57,17 +57,9 @@ class _MainScreenState extends State<MainScreen> {
                     onPressed: () async{
                       // 강제로 화면 다시 그리기
                         final result = await mainViewModel
-                            .fetchImage(imageSearchController.text);
+                            .searchImage(imageSearchController.text);
 
-                        if (result == false) {
-                          const snackBar = SnackBar(
-                            content: Text('Yay! Bug!'),
-                          );
 
-                          if (mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          }
-                        }
 
                     },
                   ),
