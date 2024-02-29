@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_search_app/presentation/main/main_event.dart';
 import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,24 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final imageSearchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      context.read<MainViewModel>().eventStream.listen((event) {
+        switch(event){
+          case  ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.message));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+          case ShowDialog():
+            // TODO: Handle this case.
+        }
+      });
+    });
+  }
 
   @override
   void dispose() {
