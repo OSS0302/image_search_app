@@ -9,16 +9,16 @@ import '../../domain/model/image_item.dart';
 
 class MainViewModel extends ChangeNotifier {
   final ImageItemRepository _repository;
-
-  MainViewModel({
+   MainViewModel({
     required ImageItemRepository repository,
   }) : _repository = repository;
+   
+   MainState _state = const MainState();
+   
+   MainState get state => _state;
 
-  MainState _state = MainState(imageItems: [], isLoading: false);
-
-  MainState get state => _state;
-
-  Future<void> fetchImage(String query) async {
+  Future<void> searchImage(String query) async {
+    // 화면갱신
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
@@ -26,14 +26,18 @@ class MainViewModel extends ChangeNotifier {
 
     switch (result) {
       case Success<List<ImageItem>>():
+      // 화면갱신
         _state = state.copyWith(
           isLoading: false,
           imageItems: result.data.toList(),
         );
+        notifyListeners();
       case Error<List<ImageItem>>():
-          print('에러다');
+      // TODO: 스낵바
+        print('error!!!!!!!!!!!');
       case Loading<List<ImageItem>>():
-         print('로딩');
+      // TODO: 로딩
+        print('loading');
+    }
     }
   }
-}
