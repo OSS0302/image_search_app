@@ -73,10 +73,13 @@ class _MainScreenState extends State<MainScreen> {
                       Icons.search,
                       color: Colors.blue,
                     ),
-                    onPressed: () async {
+                    onPressed: () async{
                       // 강제로 화면 다시 그리기
-                       await mainViewModel
-                          .fetchImage(imageSearchController.text);
+                        final result = await mainViewModel
+                            .searchImage(imageSearchController.text);
+
+
+
                     },
                   ),
                 ),
