@@ -4,11 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:image_search_app/domain/repository/image_item_repository.dart';
 import 'package:image_search_app/presentation/main/main_state.dart';
 
+import '../../core/result.dart';
+import '../../domain/model/image_item.dart';
+
 class MainViewModel extends ChangeNotifier {
   final ImageItemRepository _repository;
    MainViewModel({
     required ImageItemRepository repository,
   }) : _repository = repository;
+   
+   MainState _state = const MainState();
+   
+   MainState get state => _state;
 
   Future<void> searchImage(String query) async {
     // 화면갱신
