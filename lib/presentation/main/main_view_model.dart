@@ -9,12 +9,23 @@ import '../../core/result.dart';
 import '../../domain/model/image_item.dart';
 
 class MainViewModel extends ChangeNotifier {
+
   final SearchImageUseCase _searchImageUseCase;
 
    MainViewModel({
     required SearchImageUseCase searchImageUseCase,
   }) : _searchImageUseCase = searchImageUseCase;
 
+
+
+  final ImageItemRepository _repository;
+   MainViewModel({
+    required ImageItemRepository repository,
+  }) : _repository = repository;
+   
+   MainState _state = const MainState();
+   
+   MainState get state => _state;
 
 
   final _eventController = StreamController<MainEvent>();
@@ -25,6 +36,9 @@ class MainViewModel extends ChangeNotifier {
   MainState get state => _state;
 
   Future<void> fetchImage(String query) async {
+  Future<void> searchImage(String query) async {
+    // 화면갱신
+
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
@@ -32,6 +46,7 @@ class MainViewModel extends ChangeNotifier {
 
     switch (result) {
       case Success<List<ImageItem>>():
+      // 화면갱신
         _state = state.copyWith(
           isLoading: false,
           imageItems: result.data.toList(),
@@ -43,9 +58,18 @@ class MainViewModel extends ChangeNotifier {
           notifyListeners();
 
         _eventController.add(MainEvent.showSnackBar(result.e.toString()));
+
+      case Error<List<ImageItem>>():
+      // TODO: 스낵바
+        print('error!!!!!!!!!!!');
+
       case Loading<List<ImageItem>>():
-         print('로딩');
+      // TODO: 로딩
+        print('loading');
+    }
     }
   }
 
 }
+
+  }
