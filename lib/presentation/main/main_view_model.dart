@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:image_search_app/domain/repository/image_item_repository.dart';
+import 'package:image_search_app/domain/use_case/search_image.dart';
 import 'package:image_search_app/presentation/main/main_event.dart';
 import 'package:image_search_app/presentation/main/main_state.dart';
 
@@ -9,11 +9,13 @@ import '../../core/result.dart';
 import '../../domain/model/image_item.dart';
 
 class MainViewModel extends ChangeNotifier {
-  final ImageItemRepository _repository;
+  final SearchImageUseCase _searchImageUseCase;
 
-  MainViewModel({
-    required ImageItemRepository repository,
-  }) : _repository = repository;
+   MainViewModel({
+    required SearchImageUseCase searchImageUseCase,
+  }) : _searchImageUseCase = searchImageUseCase;
+
+
 
   final _eventController = StreamController<MainEvent>();
   Stream<MainEvent> get eventStream => _eventController.stream;
@@ -26,7 +28,7 @@ class MainViewModel extends ChangeNotifier {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
-    final result = await _repository.getImageResult(query);
+    final result = await _searchImageUseCase.execute(query);
 
     switch (result) {
       case Success<List<ImageItem>>():
@@ -45,4 +47,5 @@ class MainViewModel extends ChangeNotifier {
          print('로딩');
     }
   }
+
 }

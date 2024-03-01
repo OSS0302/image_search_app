@@ -10,6 +10,7 @@ import 'di/di_setup.dart';
 void main() {
   diSetup();
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
