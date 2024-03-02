@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_repository_impl.dart';
+import 'package:image_search_app/presentation/ui/main/main_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../../domain/model/image_item.dart';
 
@@ -22,6 +24,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainViewModel = context.watch<MainViewModel>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -56,14 +59,14 @@ class _MainScreenState extends State<MainScreen> {
                     onPressed: () {
                       // 강제로 화면 다시 그리기
                       setState(() {
-                        searchTextEditingController.text;
+                        mainViewModel.fetchImage(searchTextEditingController.text);
                       });
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              isLoading ? Center(child: CircularProgressIndicator(),)
+              mainViewModel.isLoading ? Center(child: CircularProgressIndicator(),)
                   : FutureBuilder<List<ImageItem>>(
                 future: ImageRespositoryImpl()
                     .getImageItem(searchTextEditingController.text),
