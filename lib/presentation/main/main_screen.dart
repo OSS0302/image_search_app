@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/presentation/main/main_event.dart';
 import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:provider/provider.dart';
 
-import '../widget/image_item_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,23 +13,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final imageSearchController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
 
-    Future.microtask(() {
-      context.read<MainViewModel>().eventStream.listen((event) {
-        switch(event){
-          case  ShowSnackBar():
-            final snackBar = SnackBar(content: Text(event.message));
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-          case ShowDialog():
-            // TODO: Handle this case.
-        }
-      });
-    });
-  }
 
   @override
   void dispose() {
@@ -42,7 +24,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainViewModel>();
-    final state = mainViewModel.state;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -75,8 +56,8 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     onPressed: () async{
                       // 강제로 화면 다시 그리기
-                        final result = await mainViewModel
-                            .searchImage(imageSearchController.text);
+                          mainViewModel
+                            .fetchImage(imageSearchController.text);
 
 
 
@@ -85,16 +66,23 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              state.isLoading
+              mainViewModel.isLoading
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
                   : Expanded(
                       child: GridView.builder(
-                        itemCount: state.imageItems.length,
+                        itemCount: mainViewModel.imageItems.length,
                         itemBuilder: (context, index) {
-                          final imageItems = state.imageItems[index];
-                          return ImageItemWidget(imageItem: imageItems);
+                          final imageItems = mainViewModel.imageItems[index];
+                          return  ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0), // 코너의 둥근 정도 조절
+                            child: Image.network(
+                              imageItems.imageUrl,
+                              // 이미지 경로
+                              fit: BoxFit.cover,
+                            ),
+                          );
                         },
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
