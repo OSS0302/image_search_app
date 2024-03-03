@@ -7,7 +7,11 @@ import 'package:image_search_app/domain/repository/image_repository.dart';
 import '../../domain/model/image_item.dart';
 
 class MainViewModel extends ChangeNotifier {
- final repository = ImageRespositoryImpl();
+ final ImageRepository repository;
+  MainViewModel({
+   required this.repository,
+ });
+
   bool isLoading = false;
   List<ImageItem> imageItems = [];
 
@@ -19,4 +23,6 @@ class MainViewModel extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+
+
 }
