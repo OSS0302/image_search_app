@@ -63,15 +63,8 @@ class _MainScreenState extends State<MainScreen> {
             SizedBox(
               height: 24,
             ),
-            StreamBuilder(
-              stream: mainViewModel.isLoadingStream,
-              builder: (context, snapshot) {
-                if (snapshot.data == true) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return Expanded(
+            mainViewModel.isLoading  ? Center(child: CircularProgressIndicator(),)
+        : Expanded(
                   child: GridView.builder(
                     itemCount: mainViewModel.imageItems.length,
                     itemBuilder: (context, index) {
@@ -84,8 +77,8 @@ class _MainScreenState extends State<MainScreen> {
                       mainAxisSpacing: 22,
                     ),
                   ),
-                );
-              },
+
+              
             ),
           ],
         ),
