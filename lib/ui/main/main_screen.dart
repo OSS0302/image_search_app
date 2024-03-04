@@ -51,10 +51,9 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: '이미지검색 하세요',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
-                    onPressed: () {
-                      setState(() {
-                        mainViewModel.fatchImage(searchImageController.text);
-                      });
+                    onPressed: () async {
+                      await mainViewModel
+                          .fatchImage(searchImageController.text);
                     },
                   ),
                 ),
@@ -72,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
                       return ImageWidget(imageModel: imageItem);
                     },
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
+                      crossAxisCount: 3,
                       crossAxisSpacing: 22,
                       mainAxisSpacing: 22,
                     ),

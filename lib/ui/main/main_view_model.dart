@@ -20,9 +20,10 @@ class MainViewModel extends ChangeNotifier {
 
   Future<void> fatchImage(String query) async{
       isLoading = true;
+      notifyListeners();
     _imageItems = await repository.getFatchImage(query);
       isLoading = false;
-
+      notifyListeners();
   }
 
 
