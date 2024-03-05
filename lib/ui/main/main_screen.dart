@@ -53,8 +53,17 @@ class _MainScreenState extends State<MainScreen> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () async {
-                      await mainViewModel
+                    final result =  await mainViewModel
                           .fatchImage(searchImageController.text);
+                    if (result == false) {
+                      const snackBar = SnackBar(
+                        content: Text('Yay! Bug!'),
+                      );
+
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    }
                     },
                   ),
                 ),
@@ -63,7 +72,8 @@ class _MainScreenState extends State<MainScreen> {
             SizedBox(
               height: 24,
             ),
-            state.isLoading  ? Center(child: CircularProgressIndicator(),)
+            state.isLoading
+        ? Center(child: CircularProgressIndicator(),)
         : Expanded(
                   child: GridView.builder(
                     itemCount: state.imageItems.length,
