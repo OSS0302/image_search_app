@@ -27,6 +27,7 @@ class MainState{
     return 'MainState{' +
         ' imageItems: $imageItems,' +
         ' isLoading: $isLoading,' +
+
         '}';
   }
 
