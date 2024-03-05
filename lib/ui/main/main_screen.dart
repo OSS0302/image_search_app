@@ -55,15 +55,7 @@ class _MainScreenState extends State<MainScreen> {
                     onPressed: () async {
                     final result =  await mainViewModel
                           .fatchImage(searchImageController.text);
-                    if (result == false) {
-                      const snackBar = SnackBar(
-                        content: Text('Yay! Bug!'),
-                      );
 
-                      if (mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      }
-                    }
                     },
                   ),
                 ),

@@ -1,33 +1,10 @@
-sealed class Result<T> {
-  factory Result.success(T data) = Success;
-  factory Result.error(Exception e) = Error;
-  factory Result.loading() = Loading;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-}
-class Success<T> implements Result<T> {
-  final T data;
+part 'result.freezed.dart';
 
-  Success(this.data);
-}
-
-class Error<T> implements Result<T> {
-  final Exception e;
-
-  Error(this.e);
-}
-
-class Loading<T> implements Result<T> {
-  Loading();
-}
-
-Result<int> getResult(bool value) {
-  try {
-    if (value) {
-      return Result.success(1);
-    } else {
-      return Result.loading();
-    }
-  } catch (e) {
-    return Result.error(Exception('에러!!!'));
-  }
+@freezed
+sealed class Result<T> with _$Result<T> {
+  const factory Result.success(T data) = Success;
+  const factory Result.error(Exception e) = Error;
+  const factory Result.loading() = loading;
 }
