@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_item_repository.dart';
+import 'package:image_search_app/ui/main/main_event.dart';
 import 'package:image_search_app/ui/main/main_state.dart';
 
 import '../../core/result.dart';
@@ -23,6 +24,8 @@ class MainViewModel extends ChangeNotifier {
   List<ImageModel> _imageItems = [];
 
   List<ImageModel> get imageItems => List.unmodifiable(_imageItems);
+  final _eventController = StreamController<MainEvent>();
+  Stream<MainEvent> get eventStream => _eventController.stream;
 
   Future<void> fatchImage(String query) async {
     // 화면갱신
@@ -39,9 +42,13 @@ class MainViewModel extends ChangeNotifier {
           imageItems: result.data.toList(),
         );
         notifyListeners();
+        _eventController.add(const MainEvent.showSnackBar('성공'));
       case Error<List<ImageModel>>():
-      // TODO: 스낵바
-        print('error!!!!!!!!!!!');
+      _state = state.copyWith(
+        isLoading: false,
+      );
+      notifyListeners();
+      _eventController.add(MainEvent.showSnackBar(result.e.toString()));
       case loading<List<ImageModel>>():
       // TODO: 로딩
         print('loading');
