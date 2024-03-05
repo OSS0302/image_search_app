@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:image_search_app/ui/image_widget/image_widget.dart';
 import 'package:image_search_app/ui/main/main_event.dart';
@@ -13,6 +15,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final searchImageController = TextEditingController();
+  StreamSubscription<MainEvent>? subscription;
   
   @override
   void initState() {
@@ -32,6 +35,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void dispose() {
     searchImageController.dispose();
+    subscription?.cancel();
     super.dispose();
   }
 
