@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:image_search_app/ui/image_widget/image_widget.dart';
 import 'package:image_search_app/ui/main/main_event.dart';

@@ -1,7 +1,7 @@
 
 import 'package:image_search_app/data/data_source/pixabay_api.dart';
 import 'package:image_search_app/data/mapper/image_item_mapper.dart';
-import 'package:image_search_app/data/model/image_model.dart';
+import 'package:image_search_app/domain/model/image_model.dart';
 
 import '../../core/result.dart';
 import 'image_item_repository.dart';
