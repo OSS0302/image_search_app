@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/image_model.dart';
+import 'package:image_search_app/domain/model/image_model.dart';
 
 class ImageWidget extends StatelessWidget {
   final ImageModel imageModel;

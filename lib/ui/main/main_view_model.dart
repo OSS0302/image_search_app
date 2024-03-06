@@ -6,7 +6,7 @@ import 'package:image_search_app/ui/main/main_event.dart';
 import 'package:image_search_app/ui/main/main_state.dart';
 
 import '../../core/result.dart';
-import '../../data/model/image_model.dart';
+import '../../domain/model/image_model.dart';
 
 class MainViewModel extends ChangeNotifier {
   final ImageItemRepository repository;

@@ -1,5 +1,5 @@
 import 'package:image_search_app/data/dto/image_dto.dart';
-import 'package:image_search_app/data/model/image_model.dart';
+import 'package:image_search_app/domain/model/image_model.dart';
 
 extension DtoToModel on Hits {
   ImageModel toImageModel() {
