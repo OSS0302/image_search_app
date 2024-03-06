@@ -1,29 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_item_repository.dart';
 import 'package:image_search_app/ui/main/main_event.dart';
 import 'package:image_search_app/ui/main/main_state.dart';
 
 import '../../core/result.dart';
 import '../../domain/model/image_model.dart';
+import '../../domain/use_case/search_image_usecase.dart';
 
 class MainViewModel extends ChangeNotifier {
-  final ImageItemRepository repository;
+  final SearchImageUseCase _searchImageUseCase;
 
   MainViewModel({
-    required this.repository,
-  });
+    required SearchImageUseCase searchImageUseCase,
+  })  : _searchImageUseCase = searchImageUseCase;
 
-  MainState _state =
-      MainState(imageItems: List.unmodifiable([]), isLoading: false);
+  MainState _state = MainState();
 
   MainState get state => _state;
 
-  bool isLoading = false;
-  List<ImageModel> _imageItems = [];
-
-  List<ImageModel> get imageItems => List.unmodifiable(_imageItems);
   final _eventController = StreamController<MainEvent>();
   Stream<MainEvent> get eventStream => _eventController.stream;
 
@@ -32,7 +27,7 @@ class MainViewModel extends ChangeNotifier {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
-    final result = await repository.getFatchImage(query);
+    final result = await _searchImageUseCase.execute(query);
 
     switch(result) {
       case Success<List<ImageModel>>():
@@ -54,4 +49,6 @@ class MainViewModel extends ChangeNotifier {
         print('loading');
     }
   }
+
+
 }
