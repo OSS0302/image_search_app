@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_search_app/domain/model/image_model.dart';
 import 'package:image_search_app/ui/image_widget/image_widget.dart';
 import 'package:image_search_app/ui/main/main_event.dart';
 import 'package:image_search_app/ui/main/main_view_model.dart';
@@ -15,17 +17,17 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final searchImageController = TextEditingController();
   StreamSubscription<MainEvent>? subscription;
-  
+
   @override
   void initState() {
     Future.microtask(() {
       context.read<MainViewModel>().eventStream.listen((event) {
-      switch(event){
-        case ShowSnackBar():
-          final snackBar = SnackBar(content: Text(event.message));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        case ShowDialog():
-      }
+        switch (event) {
+          case ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.message));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          case ShowDialog():
+        }
       });
     });
     super.initState();
@@ -72,9 +74,8 @@ class _MainScreenState extends State<MainScreen> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () async {
-                    final result =  await mainViewModel
+                      final result = await mainViewModel
                           .fatchImage(searchImageController.text);
-
                     },
                   ),
                 ),
@@ -84,23 +85,29 @@ class _MainScreenState extends State<MainScreen> {
               height: 24,
             ),
             state.isLoading
-        ? Center(child: CircularProgressIndicator(),)
-        : Expanded(
-                  child: GridView.builder(
-                    itemCount: state.imageItems.length,
-                    itemBuilder: (context, index) {
-                      final imageItem = state.imageItems[index];
-                      return ImageWidget(imageModel: imageItem);
-                    },
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 22,
-                      mainAxisSpacing: 22,
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Expanded(
+                    child: GridView.builder(
+                      itemCount: state.imageItems.length,
+                      itemBuilder: (context, index) {
+                        final imageItem = state.imageItems[index];
+                        return GestureDetector(
+                          onTap: () {
+                            context.push('/detail', extra: imageItem);
+                          },
+                          child: Image.network(imageItem.imageUrl,width: 200, height: 200,fit: BoxFit.cover,),
+
+                        );
+                      },
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 22,
+                        mainAxisSpacing: 22,
+                      ),
                     ),
                   ),
-
-              
-            ),
           ],
         ),
       ),
