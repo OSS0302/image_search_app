@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'image_model.dart';
+part of 'image_item.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,35 +14,34 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-ImageModel _$ImageModelFromJson(Map<String, dynamic> json) {
-  return _ImageModel.fromJson(json);
+ImageItem _$ImageItemFromJson(Map<String, dynamic> json) {
+  return _ImageItem.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ImageModel {
+mixin _$ImageItem {
   String get imageUrl => throw _privateConstructorUsedError;
   String get tags => throw _privateConstructorUsedError;
   int get id => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ImageModelCopyWith<ImageModel> get copyWith =>
+  $ImageItemCopyWith<ImageItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ImageModelCopyWith<$Res> {
-  factory $ImageModelCopyWith(
-          ImageModel value, $Res Function(ImageModel) then) =
-      _$ImageModelCopyWithImpl<$Res, ImageModel>;
+abstract class $ImageItemCopyWith<$Res> {
+  factory $ImageItemCopyWith(ImageItem value, $Res Function(ImageItem) then) =
+      _$ImageItemCopyWithImpl<$Res, ImageItem>;
   @useResult
   $Res call({String imageUrl, String tags, int id});
 }
 
 /// @nodoc
-class _$ImageModelCopyWithImpl<$Res, $Val extends ImageModel>
-    implements $ImageModelCopyWith<$Res> {
-  _$ImageModelCopyWithImpl(this._value, this._then);
+class _$ImageItemCopyWithImpl<$Res, $Val extends ImageItem>
+    implements $ImageItemCopyWith<$Res> {
+  _$ImageItemCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -74,22 +73,22 @@ class _$ImageModelCopyWithImpl<$Res, $Val extends ImageModel>
 }
 
 /// @nodoc
-abstract class _$$ImageModelImplCopyWith<$Res>
-    implements $ImageModelCopyWith<$Res> {
-  factory _$$ImageModelImplCopyWith(
-          _$ImageModelImpl value, $Res Function(_$ImageModelImpl) then) =
-      __$$ImageModelImplCopyWithImpl<$Res>;
+abstract class _$$ImageItemImplCopyWith<$Res>
+    implements $ImageItemCopyWith<$Res> {
+  factory _$$ImageItemImplCopyWith(
+          _$ImageItemImpl value, $Res Function(_$ImageItemImpl) then) =
+      __$$ImageItemImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String imageUrl, String tags, int id});
 }
 
 /// @nodoc
-class __$$ImageModelImplCopyWithImpl<$Res>
-    extends _$ImageModelCopyWithImpl<$Res, _$ImageModelImpl>
-    implements _$$ImageModelImplCopyWith<$Res> {
-  __$$ImageModelImplCopyWithImpl(
-      _$ImageModelImpl _value, $Res Function(_$ImageModelImpl) _then)
+class __$$ImageItemImplCopyWithImpl<$Res>
+    extends _$ImageItemCopyWithImpl<$Res, _$ImageItemImpl>
+    implements _$$ImageItemImplCopyWith<$Res> {
+  __$$ImageItemImplCopyWithImpl(
+      _$ImageItemImpl _value, $Res Function(_$ImageItemImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -99,7 +98,7 @@ class __$$ImageModelImplCopyWithImpl<$Res>
     Object? tags = null,
     Object? id = null,
   }) {
-    return _then(_$ImageModelImpl(
+    return _then(_$ImageItemImpl(
       imageUrl: null == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -118,12 +117,12 @@ class __$$ImageModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ImageModelImpl with DiagnosticableTreeMixin implements _ImageModel {
-  const _$ImageModelImpl(
+class _$ImageItemImpl with DiagnosticableTreeMixin implements _ImageItem {
+  const _$ImageItemImpl(
       {required this.imageUrl, required this.tags, required this.id});
 
-  factory _$ImageModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ImageModelImplFromJson(json);
+  factory _$ImageItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ImageItemImplFromJson(json);
 
   @override
   final String imageUrl;
@@ -134,14 +133,14 @@ class _$ImageModelImpl with DiagnosticableTreeMixin implements _ImageModel {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ImageModel(imageUrl: $imageUrl, tags: $tags, id: $id)';
+    return 'ImageItem(imageUrl: $imageUrl, tags: $tags, id: $id)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'ImageModel'))
+      ..add(DiagnosticsProperty('type', 'ImageItem'))
       ..add(DiagnosticsProperty('imageUrl', imageUrl))
       ..add(DiagnosticsProperty('tags', tags))
       ..add(DiagnosticsProperty('id', id));
@@ -151,7 +150,7 @@ class _$ImageModelImpl with DiagnosticableTreeMixin implements _ImageModel {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ImageModelImpl &&
+            other is _$ImageItemImpl &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.tags, tags) || other.tags == tags) &&
@@ -165,25 +164,25 @@ class _$ImageModelImpl with DiagnosticableTreeMixin implements _ImageModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ImageModelImplCopyWith<_$ImageModelImpl> get copyWith =>
-      __$$ImageModelImplCopyWithImpl<_$ImageModelImpl>(this, _$identity);
+  _$$ImageItemImplCopyWith<_$ImageItemImpl> get copyWith =>
+      __$$ImageItemImplCopyWithImpl<_$ImageItemImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ImageModelImplToJson(
+    return _$$ImageItemImplToJson(
       this,
     );
   }
 }
 
-abstract class _ImageModel implements ImageModel {
-  const factory _ImageModel(
+abstract class _ImageItem implements ImageItem {
+  const factory _ImageItem(
       {required final String imageUrl,
       required final String tags,
-      required final int id}) = _$ImageModelImpl;
+      required final int id}) = _$ImageItemImpl;
 
-  factory _ImageModel.fromJson(Map<String, dynamic> json) =
-      _$ImageModelImpl.fromJson;
+  factory _ImageItem.fromJson(Map<String, dynamic> json) =
+      _$ImageItemImpl.fromJson;
 
   @override
   String get imageUrl;
@@ -193,6 +192,6 @@ abstract class _ImageModel implements ImageModel {
   int get id;
   @override
   @JsonKey(ignore: true)
-  _$$ImageModelImplCopyWith<_$ImageModelImpl> get copyWith =>
+  _$$ImageItemImplCopyWith<_$ImageItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
