@@ -1,7 +1,5 @@
-import 'package:image_search_app/domain/model/image_model.dart';
+import '../model/image_item.dart';
 
-import '../../core/result.dart';
-
-abstract interface class ImageItemRepository{
-  Future<Result<List<ImageModel>>> getFatchImage(String query);
+abstract interface class ImageItemRepository {
+  Future<List<ImageItem>> getImageData(String query);
 }

@@ -1,11 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:image_search_app/domain/model/image_model.dart';
-import 'package:image_search_app/ui/image_widget/image_widget.dart';
-import 'package:image_search_app/ui/main/main_event.dart';
-import 'package:image_search_app/ui/main/main_view_model.dart';
-import 'package:provider/provider.dart';
+import 'package:image_search_app/data/model/image_item.dart';
+import 'package:image_search_app/data/repository/image_item_repository_impl.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,38 +10,13 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final searchImageController = TextEditingController();
-  StreamSubscription<MainEvent>? subscription;
-
-  @override
-  void initState() {
-    Future.microtask(() {
-      context.read<MainViewModel>().eventStream.listen((event) {
-        switch (event) {
-          case ShowSnackBar():
-            final snackBar = SnackBar(content: Text(event.message));
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          case ShowDialog():
-        }
-      });
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    searchImageController.dispose();
-    subscription?.cancel();
-    super.dispose();
-  }
+  final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final mainViewModel = context.watch<MainViewModel>();
-    final state = mainViewModel.state;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('이미지검색앱 '),
+        title: const Text('이미지 검색앱 '),
       ),
       body: SafeArea(
         child: Column(
@@ -54,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: searchImageController,
+                controller: searchController,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -73,41 +43,36 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: '이미지검색 하세요',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
-                    onPressed: () async {
-                      final result = await mainViewModel
-                          .fatchImage(searchImageController.text);
-                    },
+                    onPressed: () {},
                   ),
                 ),
               ),
             ),
-            SizedBox(
-              height: 24,
-            ),
-            state.isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Expanded(
-                    child: GridView.builder(
-                      itemCount: state.imageItems.length,
-                      itemBuilder: (context, index) {
-                        final imageItem = state.imageItems[index];
-                        return GestureDetector(
-                          onTap: () {
-                            context.push('/detail', extra: imageItem);
-                          },
-                          child: Image.network(imageItem.imageUrl,width: 200, height: 200,fit: BoxFit.cover,),
+            Expanded(
+              child: FutureBuilder(future: ImageItemRepositoryImpl().getImageData(searchController.text),
+                  builder: (context, snapshot){
+                    if(!snapshot.hasData ){
+                      return Center(child: CircularProgressIndicator(),);
+                    }
+                    final itemItems = snapshot.data!;
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GridView.builder(
+                        itemCount: itemItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = itemItems[index];
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.network(imageItem.imageUrl,fit: BoxFit.cover,),
+                          );
 
-                        );
-                      },
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 22,
-                        mainAxisSpacing: 22,
+                        }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,crossAxisSpacing: 22,mainAxisSpacing: 22),
+
                       ),
-                    ),
-                  ),
+                    );
+                  }),
+            )
+            
           ],
         ),
       ),

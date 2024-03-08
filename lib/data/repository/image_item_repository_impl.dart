@@ -1,26 +1,31 @@
-
 import 'package:image_search_app/data/data_source/pixabay_api.dart';
-import 'package:image_search_app/data/mapper/image_item_mapper.dart';
-import 'package:image_search_app/domain/model/image_model.dart';
+import 'package:image_search_app/data/mapper/image_mapper.dart';
+import 'package:image_search_app/data/model/image_item.dart';
 
-import '../../core/result.dart';
 import 'image_item_repository.dart';
 
-class ImageItemRepositoryImpl implements ImageItemRepository{
+class ImageItemRepositoryImpl implements ImageItemRepository {
   final _api = PixabayApi();
   @override
-  Future<Result<List<ImageModel>>> getFatchImage(String query) async{
-    try {
-      final dto = await _api.getImageResult(query);
-      if(dto.hits == null){
-        return Result.success([]);
-      }
-      return Result.success(dto.hits!.map((e) => e.toImageModel()).toList());
-      
-    }catch (e) {
-      return Result.error(Exception(e.toString()));
+  Future<List<ImageItem>> getImageData(String query) async{
+    final dto = await _api.getImageResult(query);
+    if(dto.hits == null) {
+      return [];
     }
-
+    return dto.hits!.map((e) => e.toImageItem()).toList();
   }
+}
+class MockImageItemRepository implements ImageItemRepository {
+  @override
+  Future<List<ImageItem>> getImageData(String query) async{
+    Future.delayed(const Duration(seconds: 1));
+
+    return [
+      ImageItem(imageUrl:  "https://cdn.pixabay.com/photo/2017/09/26/13/21/apples-2788599_150.jpg", tags: '', id: 1),
+      ImageItem(imageUrl:  "https://cdn.pixabay.com/photo/2017/09/26/13/21/apples-2788599_150.jpg", tags: '', id: 2),
+      ImageItem(imageUrl:  "https://cdn.pixabay.com/photo/2017/09/26/13/21/apples-2788599_150.jpg", tags: '', id: 3),
+    ];
+  }
+
 
 }
