@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/image_item.dart';
-import 'package:image_search_app/data/repository/image_item_repository_impl.dart';
+import 'package:image_search_app/ui/main/main_view_model.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -14,6 +14,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainViewModel = context.watch<MainViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 검색앱 '),
@@ -43,36 +44,39 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: '이미지검색 하세요',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
-                    onPressed: () {},
+                    onPressed: () {
+                      mainViewModel.searchImage(searchController.text);
+                    },
                   ),
                 ),
               ),
             ),
-            Expanded(
-              child: FutureBuilder(future: ImageItemRepositoryImpl().getImageData(searchController.text),
-                  builder: (context, snapshot){
-                    if(!snapshot.hasData ){
-                      return Center(child: CircularProgressIndicator(),);
-                    }
-                    final itemItems = snapshot.data!;
-                    return Padding(
+            mainViewModel.isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Expanded(
+                  child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GridView.builder(
-                        itemCount: itemItems.length,
+                        itemCount: mainViewModel.imageItems.length,
                         itemBuilder: (context, index) {
-                          final imageItem = itemItems[index];
+                          final imageItem = mainViewModel.imageItems[index];
                           return ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: Image.network(imageItem.imageUrl,fit: BoxFit.cover,),
+                            child: Image.network(
+                              imageItem.imageUrl,
+                              fit: BoxFit.cover,
+                            ),
                           );
-
-                        }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,crossAxisSpacing: 22,mainAxisSpacing: 22),
-
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            crossAxisSpacing: 22,
+                            mainAxisSpacing: 22),
                       ),
-                    );
-                  }),
-            )
-            
+                    ),
+                ),
           ],
         ),
       ),
