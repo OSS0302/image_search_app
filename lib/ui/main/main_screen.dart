@@ -41,9 +41,9 @@ class _MainScreenState extends State<MainScreen> {
                       color: Colors.black,
                     ),
                   ),
-                  hintText: '이미지검색 하세요',
+                  hintText: '이미지 검색 하세요',
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                     onPressed: () {
                       mainViewModel.searchImage(searchController.text);
                     },
@@ -51,13 +51,8 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
-            StreamBuilder(
-                stream: mainViewModel.loadController.stream,
-                builder: (context, snapshot){
-                  if(snapshot.data == true){
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                  return Expanded(
+            mainViewModel.isLoading ? const Center(child: CircularProgressIndicator(),)
+              :  Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GridView.builder(
@@ -72,14 +67,14 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                           );
                         },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
                             crossAxisSpacing: 22,
                             mainAxisSpacing: 22),
                       ),
                     ),
-                  );
-                })
+                  )
+
 
           ],
         ),
