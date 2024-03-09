@@ -51,17 +51,19 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
-            mainViewModel.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Expanded(
-                  child: Padding(
+            StreamBuilder(
+                stream: mainViewModel.loadController.stream,
+                builder: (context, snapshot){
+                  if(snapshot.data == true){
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                  return Expanded(
+                    child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GridView.builder(
-                        itemCount: mainViewModel.imageItems.length,
+                        itemCount: mainViewModel.imageItem.length,
                         itemBuilder: (context, index) {
-                          final imageItem = mainViewModel.imageItems[index];
+                          final imageItem = mainViewModel.imageItem[index];
                           return ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Image.network(
@@ -76,7 +78,9 @@ class _MainScreenState extends State<MainScreen> {
                             mainAxisSpacing: 22),
                       ),
                     ),
-                ),
+                  );
+                })
+
           ],
         ),
       ),
