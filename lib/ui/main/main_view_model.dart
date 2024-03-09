@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_item_repository.dart';
-import 'package:image_search_app/data/repository/image_item_repository_impl.dart';
 
 import '../../data/model/image_item.dart';
 
