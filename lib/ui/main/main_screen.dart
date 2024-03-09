@@ -15,6 +15,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainViewModel>();
+    final state = mainViewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 검색앱 '),
@@ -51,14 +52,14 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
-            mainViewModel.isLoading ? const Center(child: CircularProgressIndicator(),)
+            state.isLoading ? const Center(child: CircularProgressIndicator(),)
               :  Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GridView.builder(
-                        itemCount: mainViewModel.imageItem.length,
+                        itemCount: state.imageItems.length,
                         itemBuilder: (context, index) {
-                          final imageItem = mainViewModel.imageItem[index];
+                          final imageItem = state.imageItems[index];
                           return ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Image.network(
