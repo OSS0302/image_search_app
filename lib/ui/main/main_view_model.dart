@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_item_repository.dart';
 import 'package:image_search_app/ui/main/main_state.dart';
 
+import '../../core/result.dart';
+import '../../data/model/image_item.dart';
+
 
 class MainViewModel extends ChangeNotifier {
   final ImageItemRepository  _repository;
@@ -21,18 +24,27 @@ class MainViewModel extends ChangeNotifier {
 
 
 
-  Future<void> searchImage(String query) async{
+  Future<void> searchImage(String query) async {
+    // 화면갱신
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
-    _state = state.copyWith(
-      isLoading: false,
-      imageItems: List.unmodifiable((await _repository.getImageData(query)).toList(),
+    final result = await _repository.getImageData(query);
 
-    ));
-
-   notifyListeners();
+    switch(result) {
+      case Success<List<ImageItem>>():
+      // 화면갱신
+        _state = state.copyWith(
+          isLoading: false,
+          imageItems: result.data.toList(),
+        );
+        notifyListeners();
+      case Error<List<ImageItem>>():
+      // TODO: 스낵바
+        print('error!!!!!!!!!!!');
+      case Loading<List<ImageItem>>():
+      // TODO: 로딩
+        print('loading');
+    }
   }
-
-
 }
