@@ -1,9 +1,8 @@
-class ImageItem{
+class ImageItem {
   final String imageUrl;
   final String tags;
   final int id;
 
-//<editor-fold desc="Data Methods">
   const ImageItem({
     required this.imageUrl,
     required this.tags,
@@ -59,5 +58,4 @@ class ImageItem{
     );
   }
 
-//</editor-fold>
 }
