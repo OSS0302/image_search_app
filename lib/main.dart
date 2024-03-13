@@ -24,10 +24,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-    home : ChangeNotifierProvider(
-       create: (_) => MainViewModel(repository: ImageItemRepositoryImpl()),
-       child: MainScreen(),
-    )
+      home: ChangeNotifierProvider(
+        create: (_) =>  getIt<MainViewModel>(),
+        child: const MainScreen(),
+        ),
     );
   }
 }
