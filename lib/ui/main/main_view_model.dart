@@ -3,7 +3,12 @@ import 'package:image_search_app/data/model/image_item.dart';
 import 'package:image_search_app/data/repository/image_item_repository.dart';
 
 class MainViewModel extends ChangeNotifier{
-  final _repository = ImageItemRepositoryImpl();
+  final ImageItemRepository _repository;
+
+   MainViewModel({
+    required ImageItemRepository repository,
+  }) : _repository = repository;
+
  bool isLoading = false;
  List<ImageItem> _imageItems = [];
  List<ImageItem> get  imageItems =>  List.unmodifiable(_imageItems);
@@ -16,5 +21,6 @@ class MainViewModel extends ChangeNotifier{
    isLoading = false;
    notifyListeners();
  }
+
 
 }

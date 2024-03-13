@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/ui/main/main_view_model.dart';
 import 'package:image_search_app/ui/widget/image_widget.dart';
-
-import '../../data/model/image_item.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -12,11 +11,11 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final mainViewModel = MainViewModel();
   final searchTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final mainViewModel = context.watch<MainViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 검색앱 '),
@@ -56,14 +55,14 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
           mainViewModel.isLoading
           ? Center(child: CircularProgressIndicator(),)
           :  Expanded(
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4,
                 mainAxisSpacing: 22,
                 crossAxisSpacing: 22,
@@ -74,7 +73,7 @@ class _MainScreenState extends State<MainScreen> {
                 return ImageWidget(imageItem: imageItem);
               },
             ),
-          )
+          ),
             ],
           ),
         ),
