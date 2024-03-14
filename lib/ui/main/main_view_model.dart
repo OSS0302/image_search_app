@@ -22,9 +22,11 @@ class MainViewModel extends ChangeNotifier{
    );
    notifyListeners();
 
+   final result = (await _repository.getSearchImage(query)).toList();
+
    _state = state.copyWith(
      isLoading: false,
-     imageItems: List.unmodifiable((await _repository.getSearchImage(query)).toList())
+     imageItems: result,
    );
    notifyListeners();
  }
