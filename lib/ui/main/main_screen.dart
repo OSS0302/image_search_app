@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:image_search_app/ui/main/main_view_model.dart';
 import 'package:image_search_app/ui/widget/image_widget.dart';
 import 'package:provider/provider.dart';
+
+import 'main_event.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -12,6 +16,33 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final searchTextController = TextEditingController();
+  StreamSubscription<MainEvent>? subscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      context.read<MainViewModel>().eventStream.listen((event) {
+        switch(event) {
+          case ShowSnackBar():
+            final snackBar = SnackBar(
+              content: Text(event.message),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          case ShowDialog():
+          // showDialog(context: context, builder: (context) {
+          // });
+        }
+      });
+    });
+  }
+  @override
+  void dispose() {
+    subscription?.cancel();
+    searchTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,18 +80,10 @@ class _MainScreenState extends State<MainScreen> {
                       Icons.search,
                       color: Colors.orange,
                     ),
-                    onPressed: () async{
-                   final result =   await mainViewModel.fetchImage(searchTextController.text);
-                   if (result == false) {
-                     const snackBar = SnackBar(
-                       content: Text('스낵바 '),
-                     );
-
-                     if (mounted) {
-                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                     }
-                   }
-                    },
+                    onPressed: () async {
+                      await mainViewModel.searchImage(
+                          searchTextController.text);
+                    }
                   ),
                 ),
               ),

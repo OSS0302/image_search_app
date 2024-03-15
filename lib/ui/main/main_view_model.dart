@@ -1,40 +1,54 @@
-import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/image_item.dart';
-import 'package:image_search_app/data/repository/image_item_repository.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:image_search_app/core/result.dart';
+import 'package:image_search_app/data/model/image_item.dart';
+
+import '../../data/repository/image_item_repository.dart';
+import 'main_event.dart';
 import 'main_state.dart';
 
-class MainViewModel extends ChangeNotifier{
+final class MainViewModel extends ChangeNotifier {
   final ImageItemRepository _repository;
 
-   MainViewModel({
-    required ImageItemRepository repository,
-  }) : _repository = repository;
-
-  MainState _state =  MainState( isLoading: false, imageItems: List.unmodifiable([]));
+  // 얘만 변수
+  MainState _state = const MainState();
 
   MainState get state => _state;
 
+  final _eventController = StreamController<MainEvent>();
 
- Future<bool> fetchImage(String query) async{
-   _state = state.copyWith(
-     isLoading: true,
-   );
-   notifyListeners();
+  Stream<MainEvent> get eventStream => _eventController.stream;
 
-  try{
-    final result = (await _repository.getSearchImage(query)).toList();
+  MainViewModel({
+    required ImageItemRepository repository,
+  }) : _repository = repository;
 
-    _state = state.copyWith(
-      isLoading: false,
-      imageItems: result,
-    );
+  Future<void> searchImage(String query) async {
+    // 화면갱신
+    _state = state.copyWith(isLoading: true);
     notifyListeners();
-    return true;
-  }catch(e){
-    return false;
+
+    final result = await _repository.getSearchImage(query);
+
+    switch (result) {
+      case Success<List<ImageItem>>():
+      // 화면갱신
+        _state = state.copyWith(
+          isLoading: false,
+          imageItems: result.data.toList(),
+        );
+        notifyListeners();
+        _eventController.add(const MainEvent.showSnackBar('성공!!'));
+      case Error<List<ImageItem>>():
+        _state = state.copyWith(
+          isLoading: false,
+        );
+        notifyListeners();
+        _eventController.add(MainEvent.showSnackBar(result.e.toString()));
+      case Loading<List<ImageItem>>():
+      // TODO: 로딩
+        print('loading');
+    }
   }
- }
-
-
 }
