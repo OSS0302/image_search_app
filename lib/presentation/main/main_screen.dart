@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:image_search_app/ui/main/main_view_model.dart';
-import 'package:image_search_app/ui/widget/image_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../widget/image_widget.dart';
 import 'main_event.dart';
+import 'main_view_model.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
