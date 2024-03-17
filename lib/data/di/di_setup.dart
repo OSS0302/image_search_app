@@ -11,6 +11,6 @@ void diSetUp() {
   getIt.registerSingleton<ImageItemRepository>(ImageItemRepositoryImpl());
   getIt.registerSingleton<SearchImageUseCase>(SearchImageUseCase(imageItemRepository: getIt<ImageItemRepository>()));
   
-  getIt.registerFactory<MainViewModel>(() => MainViewModel(repository: repository))
+  getIt.registerFactory<MainViewModel>(() => MainViewModel(searchImageUseCase: getIt<SearchImageUseCase>()));
   
 }
