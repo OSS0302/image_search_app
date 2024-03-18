@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/image_item.dart';
-import 'package:image_search_app/data/repository/image_repository.dart';
+import 'package:provider/provider.dart';
 import 'package:image_search_app/ui/main/home_view_model.dart';
 import 'package:image_search_app/ui/widget/image_widget.dart';
 
-class homeScreen extends StatefulWidget {
-  const homeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<homeScreen> createState() => _homeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _homeScreenState extends State<homeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   final textEditingController = TextEditingController();
-  final homeViewModel = HomeViewModel();
+
 
   @override
   Widget build(BuildContext context) {
+    final homeViewModel = context.watch<HomeViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -48,7 +48,7 @@ class _homeScreenState extends State<homeScreen> {
                   ),
                   hintText: '이미지 검색앱',
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                     onPressed: () async{
                      await homeViewModel.fetchImage(textEditingController.text);
                      setState(() {
@@ -59,7 +59,7 @@ class _homeScreenState extends State<homeScreen> {
                 ),
               ),
               const SizedBox(height: 24,),
-              homeViewModel.isLoading ? Center(child:  CircularProgressIndicator(),)
+              homeViewModel.isLoading ? const Center(child:  CircularProgressIndicator(),)
             :  Expanded(
                       child: GridView.builder(
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

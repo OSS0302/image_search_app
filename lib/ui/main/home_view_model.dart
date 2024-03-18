@@ -5,16 +5,18 @@ import '../../data/model/image_item.dart';
 
 class HomeViewModel extends ChangeNotifier {
   final repository = ImageRepositoryImpl();
-  bool isLoading = false;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
   List<ImageItem> _imageItem = [];
   List<ImageItem> get imageItems => List.unmodifiable(_imageItem);
 
   Future<void> fetchImage(String query) async{
-    isLoading =true;
+    _isLoading =true;
     notifyListeners();
 
     _imageItem = await repository.getSearchImage(query);
-    isLoading = false;
+    _isLoading = false;
     notifyListeners();
 
   }
