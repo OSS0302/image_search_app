@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/ui/main/home_screen.dart';
+import 'package:image_search_app/ui/main/home_view_model.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -20,7 +22,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: ChangeNotifierProvider(
+        create: (_) => HomeViewModel(),
+        child: HomeScreen(),
+      )
 
     );
   }
