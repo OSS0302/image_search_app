@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/model/image_item.dart';
 import 'package:image_search_app/data/repository/image_repository.dart';
+import 'package:image_search_app/ui/main/home_view_model.dart';
 import 'package:image_search_app/ui/widget/image_widget.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class homeScreen extends StatefulWidget {
+  const homeScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<homeScreen> createState() => _homeScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _homeScreenState extends State<homeScreen> {
   final textEditingController = TextEditingController();
+  final homeViewModel = HomeViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -47,34 +49,31 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: '이미지 검색앱',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
-                    onPressed: () {
-                      setState(() {});
+                    onPressed: () async{
+                     await homeViewModel.fetchImage(textEditingController.text);
+                     setState(() {
+
+                     });
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 24,),
-              FutureBuilder<List<ImageItem>>(
-                  future: ImageRepositoryImpl().getSearchImage(textEditingController.text),
-                  builder: (context, snapshot){
-                    if(!snapshot.hasData){
-                      return CircularProgressIndicator();
-                    }
-                    final imageItems = snapshot.data!;
-                    return Expanded(
+              homeViewModel.isLoading ? Center(child:  CircularProgressIndicator(),)
+            :  Expanded(
                       child: GridView.builder(
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
                             mainAxisSpacing: 22,
                             crossAxisSpacing: 22,
                           ),
-                          itemCount: imageItems.length,
+                          itemCount: homeViewModel.imageItems.length,
                           itemBuilder: (context, index){
-                            final imageItem = imageItems[index];
+                            final imageItem = homeViewModel.imageItems[index];
                             return ImageWidget(imageItem: imageItem);
                           }),
-                    );
-                  }),
+                    )
+
 
             ],
           ),
