@@ -5,7 +5,7 @@ import '../../data/model/image_item.dart';
 class ImageWidget extends StatelessWidget {
   final ImageItem imageItem;
 
-  ImageWidget({
+  const ImageWidget({
     super.key,
     required this.imageItem,
   });
@@ -16,7 +16,7 @@ class ImageWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       child: Image.network(
         imageItem.imageUrl,
-        fit: BoxFit.contain,
+        fit: BoxFit.cover,
       ),
     );
   }
