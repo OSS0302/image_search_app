@@ -3,8 +3,14 @@ import 'package:image_search_app/data/repository/image_repository.dart';
 
 import '../../data/model/image_item.dart';
 
+
+
 class HomeViewModel extends ChangeNotifier {
-  final repository = ImageRepositoryImpl();
+  final ImageRepository repository;
+
+   HomeViewModel({
+    required this.repository,
+  });
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
@@ -20,4 +26,6 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
 
   }
+
+
 }
