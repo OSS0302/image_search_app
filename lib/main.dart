@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_search_app/data/repository/image_repository.dart';
 import 'package:image_search_app/ui/main/home_screen.dart';
 import 'package:image_search_app/ui/main/home_view_model.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: ChangeNotifierProvider(
-        create: (_) => HomeViewModel(),
+        create: (_) => HomeViewModel(repository: ImageRepositoryImpl()),
         child: HomeScreen(),
       )
 
