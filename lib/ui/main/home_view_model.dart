@@ -11,19 +11,19 @@ class HomeViewModel extends ChangeNotifier {
    HomeViewModel({
     required this.repository,
   });
-    MainState _state = const MainState(imageItems: [], isLoading: false);
+    MainState _state = const MainState();
 
     MainState get state => _state;
 
   Future<void> fetchImage(String query) async{
     _state = state.copyWith(isLoading: true);
     notifyListeners();
-
+      final result = (await repository.getSearchImage(query)).toList();
     _state = state.copyWith(
         isLoading: false,
-        imageItems: (await repository.getSearchImage(query)).toList());
+        imageItems: result,
+    );
     notifyListeners();
-
   }
 
 
