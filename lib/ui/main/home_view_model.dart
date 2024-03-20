@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_repository.dart';
+import 'package:image_search_app/ui/main/main_state.dart';
 
-import '../../data/model/image_item.dart';
 
 
 
@@ -11,18 +11,17 @@ class HomeViewModel extends ChangeNotifier {
    HomeViewModel({
     required this.repository,
   });
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
+    MainState _state = const MainState(imageItems: [], isLoading: false);
 
-  List<ImageItem> _imageItem = [];
-  List<ImageItem> get imageItems => List.unmodifiable(_imageItem);
+    MainState get state => _state;
 
   Future<void> fetchImage(String query) async{
-    _isLoading =true;
+    _state = state.copyWith(isLoading: true);
     notifyListeners();
 
-    _imageItem = await repository.getSearchImage(query);
-    _isLoading = false;
+    _state = state.copyWith(
+        isLoading: false,
+        imageItems: (await repository.getSearchImage(query)).toList());
     notifyListeners();
 
   }
