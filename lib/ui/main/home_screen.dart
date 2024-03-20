@@ -15,6 +15,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final textEditingController = TextEditingController();
 
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
