@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
 import 'package:image_search_app/data/model/image_item.dart';
 import 'package:image_search_app/data/repository/image_repository.dart';
-import 'package:image_search_app/ui/main/main_state.dart';
+import 'package:image_search_app/ui/main/home_event.dart';
+import 'package:image_search_app/ui/main/home_state.dart';
 
 class HomeViewModel extends ChangeNotifier {
   final ImageRepository repository;
@@ -11,9 +14,12 @@ class HomeViewModel extends ChangeNotifier {
     required this.repository,
   });
 
-  MainState _state = const MainState();
+  HomeState _state = const HomeState();
 
-  MainState get state => _state;
+  HomeState get state => _state;
+
+  final _eventController = StreamController<HomeEvent>();
+  Stream<HomeEvent> get eventStream => _eventController.stream;
 
   Future<void> fetchImage(String query) async {
     _state = state.copyWith(isLoading: true);
@@ -26,9 +32,15 @@ class HomeViewModel extends ChangeNotifier {
           isLoading: false,
           imageItems: result.data.toList(),
         );
-
+        notifyListeners();
+        _eventController.add(HomeEvent.showSnackBar('성공!!'));
       case Error<List<ImageItem>>():
-        print('error!!!!!!!!!!!');
+        _state = state.copyWith(
+          isLoading: false,
+          
+        );
+        notifyListeners();
+        _eventController.add(HomeEvent.showSnackBar(result.e.toString()));
 
       case Loading<List<ImageItem>>():
       // TODO: Handle this case.

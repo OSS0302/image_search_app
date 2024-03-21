@@ -3,17 +3,17 @@ import 'package:flutter/foundation.dart';
 
 import '../../data/model/image_item.dart';
 
-part 'main_state.freezed.dart';
+part 'home_state.freezed.dart';
 
-part 'main_state.g.dart';
+part 'home_state.g.dart';
 
 @freezed
-class MainState with _$MainState {
-  const factory MainState({
+class HomeState with _$HomeState {
+  const factory HomeState({
     @Default([]) List<ImageItem> imageItems,
     @Default(false) bool isLoading,
 
   }) = _MainState;
 
-  factory MainState.fromJson(Map<String, Object?> json) => _$MainStateFromJson(json);
+  factory HomeState.fromJson(Map<String, Object?> json) => _$HomeStateFromJson(json);
 }
