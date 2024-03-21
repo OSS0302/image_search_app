@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:image_search_app/data/di/di_setup.dart';
-import 'package:image_search_app/ui/main/home_screen.dart';
-import 'package:image_search_app/ui/main/home_view_model.dart';
+import 'package:image_search_app/presentation/main/home_screen.dart';
+import 'package:image_search_app/presentation/main/home_view_model.dart';
 import 'package:provider/provider.dart';
 
 final router = GoRouter(routes: [

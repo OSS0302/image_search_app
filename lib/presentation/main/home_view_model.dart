@@ -2,18 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
-import 'package:image_search_app/data/model/image_item.dart';
-import 'package:image_search_app/data/repository/image_repository.dart';
-import 'package:image_search_app/ui/main/home_event.dart';
-import 'package:image_search_app/ui/main/home_state.dart';
+import 'package:image_search_app/domain/use_case/image_use_case.dart';
+
+import '../../domain/model/image_item.dart';
+import 'home_event.dart';
+import 'home_state.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  final ImageRepository repository;
+  final ImageUseCase _imageUseCase;
 
-  HomeViewModel({
-    required this.repository,
-  });
-
+   HomeViewModel({
+    required ImageUseCase imageUseCase,
+  }) : _imageUseCase = imageUseCase;
   HomeState _state = const HomeState();
 
   HomeState get state => _state;
@@ -24,7 +24,7 @@ class HomeViewModel extends ChangeNotifier {
   Future<void> fetchImage(String query) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
-    final result = (await repository.getSearchImage(query));
+    final result = (await _imageUseCase.execute(query));
 
     switch (result) {
       case Success<List<ImageItem>>():
@@ -33,7 +33,7 @@ class HomeViewModel extends ChangeNotifier {
           imageItems: result.data.toList(),
         );
         notifyListeners();
-        _eventController.add(HomeEvent.showSnackBar('성공!!'));
+        _eventController.add(const HomeEvent.showSnackBar('성공!!'));
       case Error<List<ImageItem>>():
         _state = state.copyWith(
           isLoading: false,
@@ -48,4 +48,6 @@ class HomeViewModel extends ChangeNotifier {
 
     notifyListeners();
   }
+
+
 }

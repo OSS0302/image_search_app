@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:image_search_app/ui/main/home_event.dart';
 import 'package:provider/provider.dart';
 
 import '../widget/image_widget.dart';
+import 'home_event.dart';
 import 'home_view_model.dart';
 
 
