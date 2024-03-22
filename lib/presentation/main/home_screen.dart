@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../widget/image_widget.dart';
+import 'home_event.dart';
 import 'home_view_model.dart';
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,13 +17,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final textEditingController = TextEditingController();
+  StreamSubscription<HomeEvent>? subscription;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      subscription = context.read<HomeViewModel>().eventStream.listen((event) {
+        switch (event) {
+          case ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.message));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          case ShowDialog():
+        }
+      });
+    });
+  }
 
   @override
   void dispose() {
     textEditingController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -58,32 +76,47 @@ class _HomeScreenState extends State<HomeScreen> {
                   hintText: '이미지 검색앱',
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
-                    onPressed: () async{
-                     await homeViewModel.fetchImage(textEditingController.text);
-                     setState(() {
-
-                     });
+                    onPressed: () async {
+                      await homeViewModel
+                          .fetchImage(textEditingController.text);
+                      setState(() {});
                     },
                   ),
                 ),
               ),
-              const SizedBox(height: 24,),
-              state.isLoading ? const Center(child:  CircularProgressIndicator(),)
-            :  Expanded(
+              const SizedBox(
+                height: 24,
+              ),
+              state.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
                       child: GridView.builder(
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
                             mainAxisSpacing: 22,
                             crossAxisSpacing: 22,
                           ),
                           itemCount: state.imageItems.length,
-                          itemBuilder: (context, index){
+                          itemBuilder: (context, index) {
                             final imageItem = state.imageItems[index];
-                            return ImageWidget(imageItem: imageItem);
+                            return GestureDetector(
+                              onTap: () {
+                                context.push('/detail', extra: imageItem);
+                              },
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.network(
+                                    imageItem.imageUrl,
+                                    fit: BoxFit.cover,
+                                    width: 400,
+                                    height: 400,
+                                  )),
+                            );
                           }),
                     )
-
-
             ],
           ),
         ),
