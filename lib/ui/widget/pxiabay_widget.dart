@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:image_search_app/data/model/pixabay_item.dart';
 
-import '../../domain/model/image_item.dart';
-
-
-class ImageWidget extends StatelessWidget {
+class PixabayWidget extends StatelessWidget {
   final ImageItem imageItem;
 
-  const ImageWidget({
+  const PixabayWidget({
     super.key,
     required this.imageItem,
   });
