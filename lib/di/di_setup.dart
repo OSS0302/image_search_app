@@ -6,5 +6,5 @@ final getIt = GetIt.instance;
 
 void diSetUp() {
   getIt.registerSingleton<PixabayRepository>(PixabayRepositoryImpl());
-  getIt.registerFactory<PixabayViewModel>(() => PixabayViewModel(repository: getIt<PixabayRepositoryImpl>()));
+  getIt.registerFactory<PixabayViewModel>(() => PixabayViewModel(repository: getIt<PixabayRepository>()));
 }

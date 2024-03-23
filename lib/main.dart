@@ -4,7 +4,10 @@ import 'package:image_search_app/ui/pixabay/pixabay_screen.dart';
 import 'package:image_search_app/ui/pixabay/pixabay_view_model.dart';
 import 'package:provider/provider.dart';
 
+import 'di/di_setup.dart';
+
 void main() {
+  diSetUp();
   runApp(const MyApp());
 }
 
@@ -20,8 +23,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: ChangeNotifierProvider(
-        create: (_) => PixabayViewModel(repository: PixabayRepositoryImpl()),
-        child: const PixabayScreen(),
+        create: (_) => getIt<PixabayViewModel>(),
+          child: const PixabayScreen(),
       )
     );
   }
