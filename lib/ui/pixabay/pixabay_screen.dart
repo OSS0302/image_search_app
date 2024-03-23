@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/pixabay_repository.dart';
 import 'package:image_search_app/ui/pixabay/pixabay_view_model.dart';
 import 'package:image_search_app/ui/widget/pxiabay_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../../data/model/pixabay_item.dart';
 
@@ -13,7 +14,7 @@ class PixabayScreen extends StatefulWidget {
 }
 
 class _PixabayScreenState extends State<PixabayScreen> {
-  final pixabayViewModel = PixabayViewModel();
+
   final textEditingController = TextEditingController();
 
   @override
@@ -24,6 +25,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final pixabayViewModel = context.watch<PixabayViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 서치앱 '),
