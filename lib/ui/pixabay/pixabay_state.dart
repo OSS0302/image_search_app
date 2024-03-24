@@ -1,57 +1,20 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
+
 import '../../data/model/pixabay_item.dart';
 
-class PixabayState {
-   bool isLoading = false;
-  final List<ImageItem> imageItems;
+part 'pixabay_state.freezed.dart';
 
-//<editor-fold desc="Data Methods">
-  PixabayState({
-    required this.isLoading,
-    required this.imageItems,
-  });
+part 'pixabay_state.g.dart';
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is PixabayState &&
-          runtimeType == other.runtimeType &&
-          isLoading == other.isLoading &&
-          imageItems == other.imageItems);
+@freezed
+class PixabayState with _$PixabayState {
+  const factory PixabayState({
+    @Default(false) bool isLoading,
+    @Default([]) List<PixabayItem> imageItems,
 
-  @override
-  int get hashCode => isLoading.hashCode ^ imageItems.hashCode;
+  }) = _PixabayState;
 
-  @override
-  String toString() {
-    return 'PixabayState{' +
-        ' isLoading: $isLoading,' +
-        ' imageItems: $imageItems,' +
-        '}';
-  }
-
-  PixabayState copyWith({
-    bool? isLoading,
-    List<ImageItem>? imageItems,
-  }) {
-    return PixabayState(
-      isLoading: isLoading ?? this.isLoading,
-      imageItems: imageItems ?? this.imageItems,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'isLoading': this.isLoading,
-      'imageItems': this.imageItems,
-    };
-  }
-
-  factory PixabayState.fromMap(Map<String, dynamic> json) {
-    return PixabayState(
-      isLoading: json['isLoading'] as bool,
-      imageItems: json['imageItems'] as List<ImageItem>,
-    );
-  }
-
-//</editor-fold>
+  factory PixabayState.fromJson(Map<String, Object?> json) => _$PixabayStateFromJson(json);
 }
+

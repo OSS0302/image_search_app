@@ -80,7 +80,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                         itemCount: state.imageItems.length,
                         itemBuilder: (context, index) {
                           final imageItems = state.imageItems[index];
-                          return PixabayWidget(imageItem: imageItems);
+                          return PixabayWidget(pixabayItem: imageItems,);
                         },
                       ),
                     ),

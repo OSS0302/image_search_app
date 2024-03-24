@@ -15,7 +15,7 @@ class PixabayViewModel  extends ChangeNotifier {
 
   PixabayState get state => _state;
 
-  List<ImageItem> get imageItem => List.unmodifiable(imageItem);
+  List<PixabayItem> get imageItem => List.unmodifiable(imageItem);
 
   Future<void> fetchImage(String query) async{
     _state = state.copyWith(isLoading: true);
