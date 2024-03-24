@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_search_app/data/model/pixabay_item.dart';
 
 class PixabayWidget extends StatelessWidget {
-  final ImageItem imageItem;
+  final PixabayItem pixabayItem;
 
   const PixabayWidget({
-    super.key,
-    required this.imageItem,
+    super.key, required this.pixabayItem,
+
   });
 
   @override
@@ -14,7 +14,7 @@ class PixabayWidget extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Image.network(
-        imageItem.imageUrl,
+        pixabayItem.imageUrl,
         fit: BoxFit.cover,
       ),
     );
