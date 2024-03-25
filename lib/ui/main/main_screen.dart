@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository.dart';
 import 'package:image_search_app/ui/main/main_view_model.dart';
 import 'package:image_search_app/ui/widget/image_widget.dart';
 import 'package:provider/provider.dart';
-import '../../data/model/image_item.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -65,16 +63,13 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(
                 height: 24,
               ),
-              StreamBuilder(stream: mainViewModel.isLoadingStream,
-                builder: (context,snapshot){
-                if(snapshot == true) {
-                  return const CircularProgressIndicator();
-                }
-               return Expanded(
+              mainViewModel.isLoading ?  Center(child: CircularProgressIndicator(),)
+
+              : Expanded(
                   child: GridView.builder(
-                    itemCount: mainViewModel.imageItem.length,
+                    itemCount: mainViewModel.imageItems.length,
                     itemBuilder: (context, index) {
-                      final imageItem = mainViewModel.imageItem[index];
+                      final imageItem = mainViewModel.imageItems[index];
                       return ImageWidget(imageItem: imageItem);
                     },
                     gridDelegate:
@@ -84,10 +79,9 @@ class _MainScreenState extends State<MainScreen> {
                       mainAxisSpacing: 22,
                     ),
                   ),
-                );
-                  }),
 
-            ],
+
+      )],
           ),
         ),
       ),
