@@ -53,7 +53,7 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: '이미지 검색하세요',
                   suffixIcon: IconButton(
                     onPressed: () async {
-                     await mainViewModel.fetchImage(textController.text);
+                      await mainViewModel.fetchImage(textController.text);
                     },
                     icon: const Icon(
                       Icons.search,
@@ -65,25 +65,28 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(
                 height: 24,
               ),
-              mainViewModel.isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Expanded(
-                      child: GridView.builder(
-                        itemCount: mainViewModel.imageItem.length,
-                        itemBuilder: (context, index) {
-                          final imageItem = mainViewModel.imageItem[index];
-                          return ImageWidget(imageItem: imageItem);
-                        },
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          crossAxisSpacing: 22,
-                          mainAxisSpacing: 22,
-                        ),
-                      ),
+              StreamBuilder(stream: mainViewModel.isLoadingStream,
+                builder: (context,snapshot){
+                if(snapshot == true) {
+                  return const CircularProgressIndicator();
+                }
+               return Expanded(
+                  child: GridView.builder(
+                    itemCount: mainViewModel.imageItem.length,
+                    itemBuilder: (context, index) {
+                      final imageItem = mainViewModel.imageItem[index];
+                      return ImageWidget(imageItem: imageItem);
+                    },
+                    gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 22,
+                      mainAxisSpacing: 22,
                     ),
+                  ),
+                );
+                  }),
+
             ],
           ),
         ),
