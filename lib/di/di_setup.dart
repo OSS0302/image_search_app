@@ -5,5 +5,5 @@ final getIt = GetIt.instance;
 
 void diSetUp (){
   getIt.registerSingleton<ImageRepository>(ImageRepositoryImpl());
-  getIt.registerFactory<MainViewModel>(() => MainViewModel(imageRepository: getIt<ImageRepositoryImpl>()));
+  getIt.registerFactory<MainViewModel>(() => MainViewModel(imageRepository: getIt<ImageRepository>()));
 }

@@ -50,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   hintText: '이미지 검색하세요',
                   suffixIcon: IconButton(
-                    onPressed: () async {
+                    onPressed: ()  async {
                       await mainViewModel.fetchImage(textController.text);
                     },
                     icon: const Icon(
@@ -63,25 +63,26 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(
                 height: 24,
               ),
-              mainViewModel.isLoading ?  Center(child: CircularProgressIndicator(),)
-
-              : Expanded(
-                  child: GridView.builder(
-                    itemCount: mainViewModel.imageItems.length,
-                    itemBuilder: (context, index) {
-                      final imageItem = mainViewModel.imageItems[index];
-                      return ImageWidget(imageItem: imageItem);
-                    },
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      crossAxisSpacing: 22,
-                      mainAxisSpacing: 22,
+              mainViewModel.isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: mainViewModel.imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = mainViewModel.imageItems[index];
+                          return ImageWidget(imageItem: imageItem);
+                        },
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          crossAxisSpacing: 22,
+                          mainAxisSpacing: 22,
+                        ),
+                      ),
                     ),
-                  ),
-
-
-      )],
+            ],
           ),
         ),
       ),

@@ -8,17 +8,19 @@ import '../../data/model/image_item.dart';
 class MainViewModel extends ChangeNotifier {
   final ImageRepository _imageRepository;
   bool isLoading = false;
-  List<ImageItem> imageItems = [];
+  List<ImageItem> imageItem = [];
+  List<ImageItem> get imageItems => List.unmodifiable(imageItem);
+
 
   MainViewModel({required ImageRepository imageRepository})
       : _imageRepository = imageRepository;
 
   Future<void> fetchImage(String query) async {
-    isLoading = false;
+    isLoading = true;
     notifyListeners();
 
-    imageItems = await _imageRepository.getImageItems(query);
-    isLoading = true;
+    imageItem = await _imageRepository.getImageItems(query);
+    isLoading = false;
     notifyListeners();
   }
 }
