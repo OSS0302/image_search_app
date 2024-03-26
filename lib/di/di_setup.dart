@@ -8,5 +8,7 @@ final getIt = GetIt.instance;
 
 void diSetUp (){
   getIt.registerSingleton<ImageRepository>(ImageRepositoryImpl());
+  getIt.registerSingleton<ImageSearchUseCase>(ImageSearchUseCase(imageRepository: getIt<ImageRepository>()));
+
   getIt.registerFactory<MainViewModel>(() => MainViewModel(imageSearchUseCase: getIt<ImageSearchUseCase>()));
 }
