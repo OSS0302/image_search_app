@@ -51,8 +51,16 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   hintText: '이미지 검색하세요',
                   suffixIcon: IconButton(
-                    onPressed: ()  async {
-                      await mainViewModel.fetchImage(textController.text);
+                    onPressed: () async {
+                      final result =
+                          await mainViewModel.fetchImage(textController.text);
+
+                      if (result == false) {
+                        final snackBar = SnackBar(content: Text('내용'));
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
                     },
                     icon: const Icon(
                       Icons.search,

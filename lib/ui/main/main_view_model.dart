@@ -11,7 +11,6 @@ class MainViewModel extends ChangeNotifier {
   bool isLoading = false;
   List<ImageItem> imageItem = [];
 
-
   MainState _state = MainState(
     isLoading: false,
     imageItems: List.unmodifiable([]),
@@ -22,16 +21,18 @@ class MainViewModel extends ChangeNotifier {
   MainViewModel({required ImageRepository imageRepository})
       : _imageRepository = imageRepository;
 
-  Future<void> fetchImage(String query) async {
-    _state = state.copyWith(
-      isLoading: true,
+  Future<bool> fetchImage(String query) async {
+    try {
+      final result = (await _imageRepository.getImageItems(query)).toList();
 
-    );
-
-    _state = state.copyWith(
-      isLoading: false,
-      imageItems: List.unmodifiable((await _imageRepository.getImageItems(query)).toList()),
-    );
-    notifyListeners();
+      _state = state.copyWith(
+        isLoading: false,
+        imageItems: result,
+      );
+      notifyListeners();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
