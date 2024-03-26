@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_search_app/ui/main/main_event.dart';
 import 'package:image_search_app/ui/main/main_view_model.dart';
 import 'package:image_search_app/ui/widget/image_widget.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,23 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      context.read<MainViewModel>().eventStream.listen((event) {
+        switch (event) {
+          case ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.message));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          case ShowDialog():
+          // TODO: Handle this case.
+        }
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -52,15 +70,7 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: '이미지 검색하세요',
                   suffixIcon: IconButton(
                     onPressed: () async {
-                      final result =
-                          await mainViewModel.fetchImage(textController.text);
-
-                      if (result == false) {
-                        final snackBar = SnackBar(content: Text('내용'));
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      }
+                      await mainViewModel.fetchImage(textController.text);
                     },
                     icon: const Icon(
                       Icons.search,
