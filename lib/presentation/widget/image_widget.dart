@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../data/model/image_item.dart';
+import '../../domain/model/image_item.dart';
+
 
 class ImageWidget extends StatelessWidget {
   final ImageItem imageItem;

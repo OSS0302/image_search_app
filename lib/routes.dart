@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:image_search_app/ui/main/main_screen.dart';
-import 'package:image_search_app/ui/main/main_view_model.dart';
+import 'package:image_search_app/presentation/main/main_screen.dart';
+import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'di/di_setup.dart';

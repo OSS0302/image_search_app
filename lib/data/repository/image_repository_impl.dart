@@ -2,11 +2,10 @@ import 'package:image_search_app/data/data_source/image_api.dart';
 import 'package:image_search_app/data/mapper/image_mapper.dart';
 
 import '../../core/result.dart';
-import '../model/image_item.dart';
+import '../../domain/model/image_item.dart';
+import '../../domain/repository/image_repository.dart';
 
-abstract interface class ImageRepository {
-  Future<Result<List<ImageItem>>> getImageItems(String query);
-}
+
 
 class ImageRepositoryImpl implements ImageRepository {
   final _api = ImageApi();
@@ -16,7 +15,7 @@ class ImageRepositoryImpl implements ImageRepository {
     try{
       final dto = await _api.getResult(query);
       if (dto.hits == null) {
-        return Result.success([]);
+        return const Result.success([]);
       }
       return Result.success( dto.hits!.map((e) => e.toImageItem()).toList());
     }catch(e){

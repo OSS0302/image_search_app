@@ -2,14 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
-import 'package:image_search_app/data/repository/image_repository.dart';
-import 'package:image_search_app/ui/main/main_event.dart';
+import 'package:image_search_app/domain/use_case/image_search_use_case.dart';
 
-import '../../data/model/image_item.dart';
+import '../../domain/model/image_item.dart';
+import 'main_event.dart';
 import 'main_state.dart';
 
 class MainViewModel extends ChangeNotifier {
-  final ImageRepository _imageRepository;
+  final ImageSearchUseCase _imageSearchUseCase;
+
+  MainViewModel({
+    required ImageSearchUseCase imageSearchUseCase,
+  }) : _imageSearchUseCase = imageSearchUseCase;
+
   bool isLoading = false;
   List<ImageItem> imageItem = [];
 
@@ -21,13 +26,12 @@ class MainViewModel extends ChangeNotifier {
   Stream<MainEvent> get eventStream => _eventController.stream;
 
 
-  MainViewModel({required ImageRepository imageRepository})
-      : _imageRepository = imageRepository;
+
 
   Future<void> fetchImage(String query) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
-    final result = await _imageRepository.getImageItems(query);
+    final result = await _imageSearchUseCase.execute(query);
 
     switch(result){
       case Success<List<ImageItem>>():
@@ -36,7 +40,7 @@ class MainViewModel extends ChangeNotifier {
           imageItems: result.data,
         );
         notifyListeners();
-        _eventController.add(MainEvent.showSnackBar('성공'));
+        _eventController.add(const MainEvent.showSnackBar('성공'));
 
       case Error<List<ImageItem>>():
         _state = state.copyWith(
@@ -51,4 +55,6 @@ class MainViewModel extends ChangeNotifier {
 
 
     }
+
+
 }
