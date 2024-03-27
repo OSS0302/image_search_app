@@ -43,7 +43,7 @@ class ImageItem {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'imageUrl': this.imageUrl,
       'tags': this.tags,
@@ -51,11 +51,11 @@ class ImageItem {
     };
   }
 
-  factory ImageItem.fromJson(Map<String, dynamic> json) {
+  factory ImageItem.fromMap(Map<String, dynamic> map) {
     return ImageItem(
-      imageUrl: json['imageUrl'] as String,
-      tags: json['tags'] as String,
-      id: json['id'] as int,
+      imageUrl: map['imageUrl'] as String,
+      tags: map['tags'] as String,
+      id: map['id'] as int,
     );
   }
 

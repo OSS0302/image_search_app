@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-import '../../key.dart';
-import '../dto/image_dto.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_search_app/data/dto/image_dto.dart';
+
+import '../../key.dart';
 
 class ImageApi {
-  Future<ImageDto> getResult(String query) async {
+  Future<ImageDto> getImageResult(String query) async {
     final response = await http.get(
         Uri.parse('https://pixabay.com/api/?key=$key&q=$query&pretty=true'));
     return ImageDto.fromJson(jsonDecode(response.body));
