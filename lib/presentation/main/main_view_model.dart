@@ -7,21 +7,23 @@ import '../../data/model/image_item.dart';
 
 class MainViewModel extends ChangeNotifier {
   final repository = ImageRepositoryImpl();
-  final isLoading = false;
-  List<ImageItem> _imageItem = [];
 
+  bool _isLoading = false;
+  bool  get  isLoading => _isLoading;
+
+  List<ImageItem> _imageItem = [];
   List<ImageItem> get imageItems => List.unmodifiable(_imageItem);
 
-  final _loadController = StreamController<bool>();
 
-  Stream<bool> get isLoadingStream => _loadController.stream;
 
   Future<void> searchImage(String query) async {
-    _loadController.add(true);
+    _isLoading = true;
+    notifyListeners();
 
     _imageItem = await repository.getImageResult(query);
 
-    _loadController.add(false);
+    _isLoading = false;
+    notifyListeners();
 
   }
 }
