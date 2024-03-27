@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:image_search_app/data/reposiotory/image_repository.dart';
+import 'package:image_search_app/presentation/widget/image_widget.dart';
 
-import '../widget/image_widget.dart';
-import 'main_event.dart';
-import 'main_view_model.dart';
+import '../../data/model/image_item.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,38 +12,19 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final textController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future.microtask(() {
-      context.read<MainViewModel>().eventStream.listen((event) {
-        switch (event) {
-          case ShowSnackBar():
-            final snackBar = SnackBar(content: Text(event.message));
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          case ShowDialog():
-          // TODO: Handle this case.
-        }
-      });
-    });
-  }
+  final imageSearchController = TextEditingController();
 
   @override
   void dispose() {
-    textController.dispose();
+    imageSearchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final mainViewModel = context.watch<MainViewModel>();
-    final state = mainViewModel.state;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('이미지앱'),
+        title: const Text('이미지 앱 '),
       ),
       body: SafeArea(
         child: Padding(
@@ -52,56 +32,59 @@ class _MainScreenState extends State<MainScreen> {
           child: Column(
             children: [
               TextField(
-                controller: textController,
+                controller: imageSearchController,
                 decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: const BorderSide(
-                      width: 2,
-                      color: Colors.cyan,
-                    ),
-                  ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: const BorderSide(
+                    borderSide: BorderSide(
                       width: 2,
-                      color: Colors.cyan,
+                      color: Colors.cyanAccent,
                     ),
                   ),
-                  hintText: '이미지 검색하세요',
-                  suffixIcon: IconButton(
-                    onPressed: () async {
-                      await mainViewModel.fetchImage(textController.text);
-                    },
-                    icon: const Icon(
-                      Icons.search,
-                      color: Colors.cyan,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      width: 2,
+                      color: Colors.cyanAccent,
                     ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  hintText: '이미지 검색앱',
+                  suffixIcon: IconButton(
+                    onPressed: ()  {
+                      setState(() {
+
+                      });
+                    },
+                    icon: const Icon(Icons.search),
                   ),
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 24,
               ),
-              mainViewModel.isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Expanded(
+              FutureBuilder(
+                  future: ImageRepositoryImpl()
+                      .getImageResult(imageSearchController.text),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData == null) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final imageItems = snapshot.data!;
+                    return Expanded(
                       child: GridView.builder(
-                        itemCount: state.imageItems.length,
-                        itemBuilder: (context, index) {
-                          final imageItem = state.imageItems[index];
-                          return ImageWidget(imageItem: imageItem);
-                        },
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          crossAxisSpacing: 22,
-                          mainAxisSpacing: 22,
-                        ),
-                      ),
-                    ),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              mainAxisSpacing: 22,
+                              crossAxisSpacing: 22),
+                          itemCount: imageItems.length,
+                          itemBuilder: (context, index) {
+                            final imageItem = imageItems[index];
+                            return ImageWidget(imageItem: imageItem);
+                          }),
+                    );
+                  }),
             ],
           ),
         ),
