@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
-import 'package:image_search_app/data/reposiotory/image_repository.dart';
 import 'package:image_search_app/presentation/main/main_event.dart';
 import 'package:image_search_app/presentation/main/main_state.dart';
 
-import '../../data/model/image_item.dart';
+import '../../domain/model/image_item.dart';
+import '../../domain/reposiotory/image_repository.dart';
 
 class MainViewModel extends ChangeNotifier {
   final ImageRepository _repository;
