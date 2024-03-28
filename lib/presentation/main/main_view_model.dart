@@ -24,7 +24,7 @@ class MainViewModel extends ChangeNotifier {
 
     _state = state.copyWith(
       isLoading: false,
-      imageItems: List.unmodifiable((await _repository.getImageResult(query)).toList()),
+      imageItems : List.unmodifiable((await _repository.getImageResult(query)).toList()),
     );
     notifyListeners();
   }
