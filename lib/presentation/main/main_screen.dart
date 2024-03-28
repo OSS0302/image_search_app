@@ -23,6 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainViewModel>();
+    final state = mainViewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱 '),
@@ -63,7 +64,7 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(
                 height: 24,
               ),
-              mainViewModel.isLoading  ? Center(child: CircularProgressIndicator(),)
+              state.isLoading  ? Center(child: CircularProgressIndicator(),)
                   : Expanded(
                 child: GridView.builder(
                     gridDelegate:
@@ -71,9 +72,9 @@ class _MainScreenState extends State<MainScreen> {
                             crossAxisCount: 4,
                             mainAxisSpacing: 22,
                             crossAxisSpacing: 22),
-                    itemCount: mainViewModel.imageItems.length,
+                    itemCount: state.imageItems.length,
                     itemBuilder: (context, index) {
-                      final imageItem = mainViewModel.imageItems[index];
+                      final imageItem = state.imageItems[index];
                       return ImageWidget(imageItem: imageItem);
                     }),
               ),
