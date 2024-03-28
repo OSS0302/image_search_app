@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:image_search_app/data/reposiotory/image_repository.dart';
-import 'package:image_search_app/presentation/widget/image_widget.dart';
+import 'dart:async';
 
-import '../../data/model/image_item.dart';
+import 'package:flutter/material.dart';
+import 'package:image_search_app/presentation/main/main_event.dart';
+import 'package:image_search_app/presentation/main/main_view_model.dart';
+import 'package:image_search_app/presentation/widget/image_widget.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -12,16 +14,38 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+
   final imageSearchController = TextEditingController();
+  StreamSubscription<MainEvent>? subscription;
+
+  @override
+  void initState() {
+
+    super.initState();
+    Future.microtask(() {
+     subscription =  context.read<MainViewModel>().eventStream.listen((event) {
+        switch(event) {
+          
+          case ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.message));
+          case ShowDialog():
+            // TODO: Handle this case.
+        }
+      });
+    });
+  }
 
   @override
   void dispose() {
+    subscription?.cancel();
     imageSearchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final mainViewModel = context.watch<MainViewModel>();
+    final state = mainViewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱 '),
@@ -36,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 2,
                       color: Colors.cyanAccent,
                     ),
@@ -50,41 +74,32 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   hintText: '이미지 검색앱',
                   suffixIcon: IconButton(
-                    onPressed: ()  {
-                      setState(() {
-
-                      });
+                    onPressed: () async {
+                      await mainViewModel
+                          .searchImage(imageSearchController.text);
+                      setState(() {});
                     },
                     icon: const Icon(Icons.search),
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-              FutureBuilder(
-                  future: ImageRepositoryImpl()
-                      .getImageResult(imageSearchController.text),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData == null) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    final imageItems = snapshot.data!;
-                    return Expanded(
-                      child: GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              mainAxisSpacing: 22,
-                              crossAxisSpacing: 22),
-                          itemCount: imageItems.length,
-                          itemBuilder: (context, index) {
-                            final imageItem = imageItems[index];
-                            return ImageWidget(imageItem: imageItem);
-                          }),
-                    );
-                  }),
+              state.isLoading  ? Center(child: CircularProgressIndicator(),)
+                  : Expanded(
+                child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            mainAxisSpacing: 22,
+                            crossAxisSpacing: 22),
+                    itemCount: state.imageItems.length,
+                    itemBuilder: (context, index) {
+                      final imageItem = state.imageItems[index];
+                      return ImageWidget(imageItem: imageItem);
+                    }),
+              ),
             ],
           ),
         ),
