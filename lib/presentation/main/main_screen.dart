@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:image_search_app/presentation/main/main_event.dart';
 import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 import 'package:provider/provider.dart';
@@ -13,9 +16,28 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
 
   final imageSearchController = TextEditingController();
+  StreamSubscription<MainEvent>? subscription;
+
+  @override
+  void initState() {
+
+    super.initState();
+    Future.microtask(() {
+     subscription =  context.read<MainViewModel>().eventStream.listen((event) {
+        switch(event) {
+          
+          case ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.message));
+          case ShowDialog():
+            // TODO: Handle this case.
+        }
+      });
+    });
+  }
 
   @override
   void dispose() {
+    subscription?.cancel();
     imageSearchController.dispose();
     super.dispose();
   }
