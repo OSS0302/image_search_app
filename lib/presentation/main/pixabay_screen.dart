@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
   @override
   Widget build(BuildContext context) {
     final pixabayViewModel = context.watch<PixabayViewModel>();
+    final state = pixabayViewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱 '),
@@ -64,9 +66,9 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       crossAxisCount: 4,
                       mainAxisSpacing: 22,
                       crossAxisSpacing: 22),
-                  itemCount: pixabayViewModel.imageItem.length,
+                  itemCount: state.imageItems.length,
                   itemBuilder: (context, index) {
-                    final imageItems = pixabayViewModel.imageItem[index];
+                    final imageItems = state.imageItems[index];
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(202),
                       child: Image.network(

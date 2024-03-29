@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/pixabay_item.dart';
 import 'package:image_search_app/data/repository/pixabay_repository.dart';
+import 'package:image_search_app/presentation/main/pixabay_state.dart';
 
 class PixabayViewModel extends ChangeNotifier {
   final PixabayRepository _pixabayRepository;
@@ -11,21 +11,18 @@ class PixabayViewModel extends ChangeNotifier {
     required PixabayRepository pixabayRepository,
   }) : _pixabayRepository = pixabayRepository;
 
+   PixabayState _state =  PixabayState(imageItems: List.unmodifiable([]), isLoading: false);
 
-  List<PixabayItem> _imageItems = [];
-  List<PixabayItem> get imageItem => List.unmodifiable(_imageItems);
-  bool _isLoading = false;
-  bool get  isLoading  => _isLoading;
-
-
+   PixabayState get state => _state;
 
   Future<void> fetchImage(String query) async {
-    _isLoading = true;
-    notifyListeners();
+    _state = state.copyWith(
+      isLoading: true,
+    );
+    _state = state.copyWith(
+      imageItems: List.unmodifiable((await _pixabayRepository.getImageItems(query)).toList()),
+      isLoading: false,
 
-    _imageItems = await _pixabayRepository.getImageItems(query);
-
-    _isLoading = false;
-    notifyListeners();
+    );
   }
 }
