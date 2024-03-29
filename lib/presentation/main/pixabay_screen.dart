@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_search_app/data/model/pixabay_item.dart';
 import 'package:image_search_app/data/repository/pixabay_repository.dart';
 import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 
@@ -44,8 +45,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   hintText: '이미지 검색앱',
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
-                    onPressed: () {
-                      pixabayViewModel.fetchImage(textEditingController.text);
+                    onPressed: () async {
+                     await pixabayViewModel.fetchImage(textEditingController.text);
                       setState(() {});
                     },
                   ),
@@ -54,11 +55,11 @@ class _PixabayScreenState extends State<PixabayScreen> {
               const SizedBox(
                 height: 24,
               ),
-              FutureBuilder(
-                future: PixabayRepositoryImpl()
-                    .getImageItems(textEditingController.text),
+              StreamBuilder<bool>(
+                initialData: false,
+                  stream: pixabayViewModel.isLoadingStream,
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
+                  if (snapshot.data! == true) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
@@ -70,13 +71,13 @@ class _PixabayScreenState extends State<PixabayScreen> {
                           crossAxisCount: 4,
                           mainAxisSpacing: 22,
                           crossAxisSpacing: 22),
-                      itemCount: pixabayViewModel.imageItems.length,
+                      itemCount: pixabayViewModel.imageItem.length,
                       itemBuilder: (context, index) {
-                        final imageItem = pixabayViewModel.imageItems[index];
+                        final imageItems = pixabayViewModel.imageItem[index];
                         return ClipRRect(
                           borderRadius: BorderRadius.circular(202),
                           child: Image.network(
-                            imageItem.imageUrl,
+                            imageItems.imageUrl,
                             fit: BoxFit.cover,
                           ),
                         );
