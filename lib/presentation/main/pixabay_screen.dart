@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/pixabay_repository.dart';
+import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 
 class PixabayScreen extends StatefulWidget {
   const PixabayScreen({super.key});
@@ -10,6 +11,7 @@ class PixabayScreen extends StatefulWidget {
 
 class _PixabayScreenState extends State<PixabayScreen> {
   final textEditingController = TextEditingController();
+  final pixabayViewModel = PixabayViewModel();
 
   @override
   void dispose() {
@@ -43,6 +45,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
                     onPressed: () {
+                      pixabayViewModel.fetchImage(textEditingController.text);
                       setState(() {});
                     },
                   ),
@@ -67,9 +70,9 @@ class _PixabayScreenState extends State<PixabayScreen> {
                           crossAxisCount: 4,
                           mainAxisSpacing: 22,
                           crossAxisSpacing: 22),
-                      itemCount: imageItems.length,
+                      itemCount: pixabayViewModel.imageItems.length,
                       itemBuilder: (context, index) {
-                        final imageItem = imageItems[index];
+                        final imageItem = pixabayViewModel.imageItems[index];
                         return ClipRRect(
                           borderRadius: BorderRadius.circular(202),
                           child: Image.network(
