@@ -2,19 +2,27 @@ import 'package:image_search_app/data/data_source/pixabay_api.dart';
 import 'package:image_search_app/data/mapper/pixabay_mapper.dart';
 import 'package:image_search_app/data/model/pixabay_item.dart';
 
+import '../../core/result.dart';
+
 abstract interface class PixabayRepository {
-  Future<List<PixabayItem>> getImageItems(String query);
+  Future<Result<List<PixabayItem>>> getImageItems(String query);
 }
 
 class PixabayRepositoryImpl implements PixabayRepository {
   final _api = PixabayApi();
   @override
-  Future<List<PixabayItem>> getImageItems(String query) async {
-    final dto  = await _api.getImageResult(query);
-    if(dto == null) {
-      return [];
+  Future<Result<List<PixabayItem>>> getImageItems(String query) async {
+    try {
+      final dto  = await _api.getImageResult(query);
+      if(dto == null) {
+        return Result.success([]);
+      }
+      return Result.success(dto.hits!.map((e) => e.toPixabayItem()).toList());
+    }catch(e){
+      return Result.error(Exception(e.toString()));
     }
-    return dto.hits!.map((e) => e.toPixabayItem()).toList();
+
+
   }
 
 }
