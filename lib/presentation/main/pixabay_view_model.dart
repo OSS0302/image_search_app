@@ -2,17 +2,20 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
-import 'package:image_search_app/data/model/pixabay_item.dart';
-import 'package:image_search_app/data/repository/pixabay_repository.dart';
+import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
+import 'package:image_search_app/domain/use_case/search_image_use_case.dart';
 import 'package:image_search_app/presentation/main/pixabay_event.dart';
 import 'package:image_search_app/presentation/main/pixabay_state.dart';
 
-class PixabayViewModel extends ChangeNotifier {
-  final PixabayRepository _pixabayRepository;
+import '../../domain/model/pixabay_item.dart';
+import '../../domain/repository/pixabay_repository.dart';
 
-  PixabayViewModel({
-    required PixabayRepository pixabayRepository,
-  }) : _pixabayRepository = pixabayRepository;
+class PixabayViewModel extends ChangeNotifier {
+  final SearchImageUseCase _searchImageUseCase;
+   PixabayViewModel({
+    required SearchImageUseCase searchImageUseCase,
+  }) : _searchImageUseCase = searchImageUseCase;
+
 
   PixabayState _state =
       PixabayState(imageItems: List.unmodifiable([]), isLoading: false);
@@ -24,7 +27,7 @@ class PixabayViewModel extends ChangeNotifier {
   Stream<PixabayEvent> get eventStream => _eventController.stream;
 
   Future<void> fetchImage(String query) async {
-    final result = await _pixabayRepository.getImageItems(query);
+    final result = await _searchImageUseCase.execute(query);
     switch (result) {
       case Success<List<PixabayItem>>():
         _state = state.copyWith(
@@ -40,4 +43,6 @@ class PixabayViewModel extends ChangeNotifier {
         _eventController.add(PixabayEvent.showSnackBar(result.e.toString()));
     }
   }
+
+
 }
