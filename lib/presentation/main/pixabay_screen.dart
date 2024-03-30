@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_search_app/presentation/main/pixabay_event.dart';
 import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 import 'package:provider/provider.dart';
@@ -89,11 +90,16 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   itemCount: state.imageItems.length,
                   itemBuilder: (context, index) {
                     final imageItems = state.imageItems[index];
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(202),
-                      child: Image.network(
-                        imageItems.imageUrl,
-                        fit: BoxFit.cover,
+                    return GestureDetector(
+                      onTap: () {
+                        context.push('/detail',extra: imageItems);
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(202),
+                        child: Image.network(
+                          imageItems.imageUrl,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     );
                   },
