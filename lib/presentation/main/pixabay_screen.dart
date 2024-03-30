@@ -1,5 +1,7 @@
+import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:image_search_app/presentation/main/pixabay_event.dart';
 import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -12,10 +14,28 @@ class PixabayScreen extends StatefulWidget {
 
 class _PixabayScreenState extends State<PixabayScreen> {
   final textEditingController = TextEditingController();
+  StreamSubscription<PixabayEvent>? subscription;
 
+  @override
+  void initState() {
+    Future.microtask(() {
+      subscription =
+          context.read<PixabayViewModel>().eventStream.listen((event) {
+            switch(event) {
+              case ShowSnackBar():
+                final snackBar = SnackBar(content: Text(event.message));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              case ShowDialog():
+                // TODO: Handle this case.
+            }
+            });
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
+    subscription?.cancel();
     textEditingController.dispose();
     super.dispose();
   }
