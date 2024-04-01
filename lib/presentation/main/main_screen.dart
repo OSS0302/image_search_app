@@ -16,6 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainViewModel>();
+    final state = mainViewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱'),
@@ -52,27 +53,21 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(
                 height: 24,
               ),
-              StreamBuilder(
-                stream: mainViewModel.loadingStream,
-                builder: (context , snapshot) {
-                  if(snapshot.data == true) {
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                  return Expanded(
+           Expanded(
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4,
                         crossAxisSpacing: 22,
                         mainAxisSpacing: 22,
                       ),
-                      itemCount: mainViewModel.imageItems.length,
+                      itemCount: state.imageItems.length,
                       itemBuilder: (context, index) {
-                        final imageItem = mainViewModel.imageItems[index];
+                        final imageItem = state.imageItems[index];
                         return ImageWidget(imageItem: imageItem);
                       },
                     ),
-                  );
-                },
+
+
               ),
 
             ],
