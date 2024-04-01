@@ -40,15 +40,8 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: '검색하세요',
                   suffixIcon: IconButton(
                     onPressed: () async {
-                      final result = await mainViewModel
+                      await mainViewModel
                           .searchImage(imageSearchController.text);
-
-                      if (result == null) {
-                        const snackBar = SnackBar(content: Text('bug'));
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      }
                     },
                     icon: const Icon(
                       Icons.search,
