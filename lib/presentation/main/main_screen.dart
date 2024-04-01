@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_repository.dart';
+import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 
 class MainScreen extends StatefulWidget {
@@ -11,6 +12,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final imageSearchController = TextEditingController();
+  final mainViewModel = MainViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: '검색하세요',
                   suffixIcon: IconButton(
                     onPressed: () {
+                      mainViewModel.searchImage(imageSearchController.text);
                       setState(() {});
                     },
                     icon: const Icon(
@@ -49,31 +52,20 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(
                 height: 24,
               ),
-              FutureBuilder(
-                future: ImageRepositoryImpl()
-                    .getImageSearch(imageSearchController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  final imageItems = snapshot.data!;
-                  return Expanded(
-                    child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          crossAxisSpacing: 22,
-                          mainAxisSpacing: 22,
-                        ),
-                        itemCount: imageItems.length,
-                        itemBuilder: (context, index) {
-                          final imageItem = imageItems[index];
-                          return ImageWidget(imageItem: imageItem);
-                        }),
-                  );
-                },
-              ),
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 22,
+                    mainAxisSpacing: 22,
+                  ),
+                  itemCount: mainViewModel.imageItem.length,
+                  itemBuilder: (context, index) {
+                    final imageItem = mainViewModel.imageItem[index];
+                    return ImageWidget(imageItem: imageItem);
+                  },
+                ),
+              )
             ],
           ),
         ),
