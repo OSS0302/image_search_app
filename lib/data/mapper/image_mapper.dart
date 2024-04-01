@@ -5,7 +5,7 @@ extension DtoToModel on Hits {
   ImageItem toImageItem() {
     return ImageItem(
       imageUrl: previewURL ?? '',
-      userImageURL: userImageURL ?? '',
+
       tags: tags ?? '',
       id: id as int,
     );

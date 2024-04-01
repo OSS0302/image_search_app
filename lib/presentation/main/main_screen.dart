@@ -39,9 +39,16 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   hintText: '검색하세요',
                   suffixIcon: IconButton(
-                    onPressed: () {
-                      mainViewModel.searchImage(imageSearchController.text);
-                      setState(() {});
+                    onPressed: () async {
+                      final result = await mainViewModel
+                          .searchImage(imageSearchController.text);
+
+                      if (result == null) {
+                        const snackBar = SnackBar(content: Text('bug'));
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
                     },
                     icon: const Icon(
                       Icons.search,
@@ -53,23 +60,20 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(
                 height: 24,
               ),
-           Expanded(
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        crossAxisSpacing: 22,
-                        mainAxisSpacing: 22,
-                      ),
-                      itemCount: state.imageItems.length,
-                      itemBuilder: (context, index) {
-                        final imageItem = state.imageItems[index];
-                        return ImageWidget(imageItem: imageItem);
-                      },
-                    ),
-
-
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 22,
+                    mainAxisSpacing: 22,
+                  ),
+                  itemCount: state.imageItems.length,
+                  itemBuilder: (context, index) {
+                    final imageItem = state.imageItems[index];
+                    return ImageWidget(imageItem: imageItem);
+                  },
+                ),
               ),
-
             ],
           ),
         ),
