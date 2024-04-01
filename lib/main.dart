@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/presentation/main/main_screen.dart';
-import 'package:image_search_app/routes.dart';
+import 'package:image_search_app/presentation/main/main_view_model.dart';
+import 'package:provider/provider.dart';
+
+import 'di/di_setup.dart';
 
 void main() {
+  diSetUp();
   runApp(const MyApp());
 }
 
@@ -17,7 +21,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MainScreen(),
+      home: ChangeNotifierProvider(
+        create: (_) => getIt<MainViewModel>(),
+        child: MainScreen(),
+      )
     );
   }
 }
