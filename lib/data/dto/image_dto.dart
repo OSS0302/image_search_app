@@ -1,10 +1,10 @@
-class PixabayDto {
-  PixabayDto({
-      this.total,
-      this.totalHits,
+class ImageDto {
+  ImageDto({
+      this.total, 
+      this.totalHits, 
       this.hits,});
 
-  PixabayDto.fromJson(dynamic json) {
+  ImageDto.fromJson(dynamic json) {
     total = json['total'];
     totalHits = json['totalHits'];
     if (json['hits'] != null) {
@@ -32,27 +32,27 @@ class PixabayDto {
 
 class Hits {
   Hits({
-      this.id,
-      this.pageURL,
-      this.type,
-      this.tags,
-      this.previewURL,
-      this.previewWidth,
-      this.previewHeight,
-      this.webformatURL,
-      this.webformatWidth,
-      this.webformatHeight,
-      this.largeImageURL,
-      this.imageWidth,
-      this.imageHeight,
-      this.imageSize,
-      this.views,
-      this.downloads,
-      this.collections,
-      this.likes,
-      this.comments,
-      this.userId,
-      this.user,
+      this.id, 
+      this.pageURL, 
+      this.type, 
+      this.tags, 
+      this.previewURL, 
+      this.previewWidth, 
+      this.previewHeight, 
+      this.webformatURL, 
+      this.webformatWidth, 
+      this.webformatHeight, 
+      this.largeImageURL, 
+      this.imageWidth, 
+      this.imageHeight, 
+      this.imageSize, 
+      this.views, 
+      this.downloads, 
+      this.collections, 
+      this.likes, 
+      this.comments, 
+      this.userId, 
+      this.user, 
       this.userImageURL,});
 
   Hits.fromJson(dynamic json) {
