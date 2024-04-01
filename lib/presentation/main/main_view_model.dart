@@ -16,12 +16,10 @@ class MainViewModel extends ChangeNotifier {
 
 
   Future<void> searchImage(String query) async {
-    isLoading = true;
-    notifyListeners();
+    _loadingController.add(true);
 
    _imageItems = await repository.getImageSearch(query);
-   isLoading = false;
-   notifyListeners();
+    _loadingController.add(false);
   }
 
 }
