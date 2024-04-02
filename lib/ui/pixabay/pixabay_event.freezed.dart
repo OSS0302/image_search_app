@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'main_event.dart';
+part of 'pixabay_event.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,23 +15,24 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$MainEvent<T> {
+mixin _$PixabayEvent<T> {
+  String get message => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String message) showSnackBar,
-    required TResult Function(Exception e) showDialog,
+    required TResult Function(String message) showDialog,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String message)? showSnackBar,
-    TResult? Function(Exception e)? showDialog,
+    TResult? Function(String message)? showDialog,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? showSnackBar,
-    TResult Function(Exception e)? showDialog,
+    TResult Function(String message)? showDialog,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -54,38 +55,59 @@ mixin _$MainEvent<T> {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $PixabayEventCopyWith<T, PixabayEvent<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $MainEventCopyWith<T, $Res> {
-  factory $MainEventCopyWith(
-          MainEvent<T> value, $Res Function(MainEvent<T>) then) =
-      _$MainEventCopyWithImpl<T, $Res, MainEvent<T>>;
+abstract class $PixabayEventCopyWith<T, $Res> {
+  factory $PixabayEventCopyWith(
+          PixabayEvent<T> value, $Res Function(PixabayEvent<T>) then) =
+      _$PixabayEventCopyWithImpl<T, $Res, PixabayEvent<T>>;
+  @useResult
+  $Res call({String message});
 }
 
 /// @nodoc
-class _$MainEventCopyWithImpl<T, $Res, $Val extends MainEvent<T>>
-    implements $MainEventCopyWith<T, $Res> {
-  _$MainEventCopyWithImpl(this._value, this._then);
+class _$PixabayEventCopyWithImpl<T, $Res, $Val extends PixabayEvent<T>>
+    implements $PixabayEventCopyWith<T, $Res> {
+  _$PixabayEventCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_value.copyWith(
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
 }
 
 /// @nodoc
-abstract class _$$ShowSnackBarImplCopyWith<T, $Res> {
+abstract class _$$ShowSnackBarImplCopyWith<T, $Res>
+    implements $PixabayEventCopyWith<T, $Res> {
   factory _$$ShowSnackBarImplCopyWith(_$ShowSnackBarImpl<T> value,
           $Res Function(_$ShowSnackBarImpl<T>) then) =
       __$$ShowSnackBarImplCopyWithImpl<T, $Res>;
+  @override
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
 class __$$ShowSnackBarImplCopyWithImpl<T, $Res>
-    extends _$MainEventCopyWithImpl<T, $Res, _$ShowSnackBarImpl<T>>
+    extends _$PixabayEventCopyWithImpl<T, $Res, _$ShowSnackBarImpl<T>>
     implements _$$ShowSnackBarImplCopyWith<T, $Res> {
   __$$ShowSnackBarImplCopyWithImpl(
       _$ShowSnackBarImpl<T> _value, $Res Function(_$ShowSnackBarImpl<T>) _then)
@@ -115,7 +137,7 @@ class _$ShowSnackBarImpl<T> implements ShowSnackBar<T> {
 
   @override
   String toString() {
-    return 'MainEvent<$T>.showSnackBar(message: $message)';
+    return 'PixabayEvent<$T>.showSnackBar(message: $message)';
   }
 
   @override
@@ -140,7 +162,7 @@ class _$ShowSnackBarImpl<T> implements ShowSnackBar<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String message) showSnackBar,
-    required TResult Function(Exception e) showDialog,
+    required TResult Function(String message) showDialog,
   }) {
     return showSnackBar(message);
   }
@@ -149,7 +171,7 @@ class _$ShowSnackBarImpl<T> implements ShowSnackBar<T> {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String message)? showSnackBar,
-    TResult? Function(Exception e)? showDialog,
+    TResult? Function(String message)? showDialog,
   }) {
     return showSnackBar?.call(message);
   }
@@ -158,7 +180,7 @@ class _$ShowSnackBarImpl<T> implements ShowSnackBar<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? showSnackBar,
-    TResult Function(Exception e)? showDialog,
+    TResult Function(String message)? showDialog,
     required TResult orElse(),
   }) {
     if (showSnackBar != null) {
@@ -199,27 +221,31 @@ class _$ShowSnackBarImpl<T> implements ShowSnackBar<T> {
   }
 }
 
-abstract class ShowSnackBar<T> implements MainEvent<T> {
+abstract class ShowSnackBar<T> implements PixabayEvent<T> {
   const factory ShowSnackBar(final String message) = _$ShowSnackBarImpl<T>;
 
+  @override
   String get message;
+  @override
   @JsonKey(ignore: true)
   _$$ShowSnackBarImplCopyWith<T, _$ShowSnackBarImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ShowDialogImplCopyWith<T, $Res> {
+abstract class _$$ShowDialogImplCopyWith<T, $Res>
+    implements $PixabayEventCopyWith<T, $Res> {
   factory _$$ShowDialogImplCopyWith(
           _$ShowDialogImpl<T> value, $Res Function(_$ShowDialogImpl<T>) then) =
       __$$ShowDialogImplCopyWithImpl<T, $Res>;
+  @override
   @useResult
-  $Res call({Exception e});
+  $Res call({String message});
 }
 
 /// @nodoc
 class __$$ShowDialogImplCopyWithImpl<T, $Res>
-    extends _$MainEventCopyWithImpl<T, $Res, _$ShowDialogImpl<T>>
+    extends _$PixabayEventCopyWithImpl<T, $Res, _$ShowDialogImpl<T>>
     implements _$$ShowDialogImplCopyWith<T, $Res> {
   __$$ShowDialogImplCopyWithImpl(
       _$ShowDialogImpl<T> _value, $Res Function(_$ShowDialogImpl<T>) _then)
@@ -228,13 +254,13 @@ class __$$ShowDialogImplCopyWithImpl<T, $Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? e = null,
+    Object? message = null,
   }) {
     return _then(_$ShowDialogImpl<T>(
-      null == e
-          ? _value.e
-          : e // ignore: cast_nullable_to_non_nullable
-              as Exception,
+      null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -242,14 +268,14 @@ class __$$ShowDialogImplCopyWithImpl<T, $Res>
 /// @nodoc
 
 class _$ShowDialogImpl<T> implements ShowDialog<T> {
-  const _$ShowDialogImpl(this.e);
+  const _$ShowDialogImpl(this.message);
 
   @override
-  final Exception e;
+  final String message;
 
   @override
   String toString() {
-    return 'MainEvent<$T>.showDialog(e: $e)';
+    return 'PixabayEvent<$T>.showDialog(message: $message)';
   }
 
   @override
@@ -257,11 +283,11 @@ class _$ShowDialogImpl<T> implements ShowDialog<T> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ShowDialogImpl<T> &&
-            (identical(other.e, e) || other.e == e));
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, e);
+  int get hashCode => Object.hash(runtimeType, message);
 
   @JsonKey(ignore: true)
   @override
@@ -273,29 +299,29 @@ class _$ShowDialogImpl<T> implements ShowDialog<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String message) showSnackBar,
-    required TResult Function(Exception e) showDialog,
+    required TResult Function(String message) showDialog,
   }) {
-    return showDialog(e);
+    return showDialog(message);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String message)? showSnackBar,
-    TResult? Function(Exception e)? showDialog,
+    TResult? Function(String message)? showDialog,
   }) {
-    return showDialog?.call(e);
+    return showDialog?.call(message);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? showSnackBar,
-    TResult Function(Exception e)? showDialog,
+    TResult Function(String message)? showDialog,
     required TResult orElse(),
   }) {
     if (showDialog != null) {
-      return showDialog(e);
+      return showDialog(message);
     }
     return orElse();
   }
@@ -332,10 +358,12 @@ class _$ShowDialogImpl<T> implements ShowDialog<T> {
   }
 }
 
-abstract class ShowDialog<T> implements MainEvent<T> {
-  const factory ShowDialog(final Exception e) = _$ShowDialogImpl<T>;
+abstract class ShowDialog<T> implements PixabayEvent<T> {
+  const factory ShowDialog(final String message) = _$ShowDialogImpl<T>;
 
-  Exception get e;
+  @override
+  String get message;
+  @override
   @JsonKey(ignore: true)
   _$$ShowDialogImplCopyWith<T, _$ShowDialogImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;

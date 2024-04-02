@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'main_state.dart';
+part of 'pixabay_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,33 +14,34 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-MainState _$MainStateFromJson(Map<String, dynamic> json) {
-  return _MainState.fromJson(json);
+PixabayState _$PixabayStateFromJson(Map<String, dynamic> json) {
+  return _PixabayState.fromJson(json);
 }
 
 /// @nodoc
-mixin _$MainState {
-  List<ImageItem> get imageItems => throw _privateConstructorUsedError;
+mixin _$PixabayState {
+  List<PixabayItem> get imageItems => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $MainStateCopyWith<MainState> get copyWith =>
+  $PixabayStateCopyWith<PixabayState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $MainStateCopyWith<$Res> {
-  factory $MainStateCopyWith(MainState value, $Res Function(MainState) then) =
-      _$MainStateCopyWithImpl<$Res, MainState>;
+abstract class $PixabayStateCopyWith<$Res> {
+  factory $PixabayStateCopyWith(
+          PixabayState value, $Res Function(PixabayState) then) =
+      _$PixabayStateCopyWithImpl<$Res, PixabayState>;
   @useResult
-  $Res call({List<ImageItem> imageItems, bool isLoading});
+  $Res call({List<PixabayItem> imageItems, bool isLoading});
 }
 
 /// @nodoc
-class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
-    implements $MainStateCopyWith<$Res> {
-  _$MainStateCopyWithImpl(this._value, this._then);
+class _$PixabayStateCopyWithImpl<$Res, $Val extends PixabayState>
+    implements $PixabayStateCopyWith<$Res> {
+  _$PixabayStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -57,7 +58,7 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
       imageItems: null == imageItems
           ? _value.imageItems
           : imageItems // ignore: cast_nullable_to_non_nullable
-              as List<ImageItem>,
+              as List<PixabayItem>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -67,22 +68,22 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
 }
 
 /// @nodoc
-abstract class _$$MainStateImplCopyWith<$Res>
-    implements $MainStateCopyWith<$Res> {
-  factory _$$MainStateImplCopyWith(
-          _$MainStateImpl value, $Res Function(_$MainStateImpl) then) =
-      __$$MainStateImplCopyWithImpl<$Res>;
+abstract class _$$PixabayStateImplCopyWith<$Res>
+    implements $PixabayStateCopyWith<$Res> {
+  factory _$$PixabayStateImplCopyWith(
+          _$PixabayStateImpl value, $Res Function(_$PixabayStateImpl) then) =
+      __$$PixabayStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ImageItem> imageItems, bool isLoading});
+  $Res call({List<PixabayItem> imageItems, bool isLoading});
 }
 
 /// @nodoc
-class __$$MainStateImplCopyWithImpl<$Res>
-    extends _$MainStateCopyWithImpl<$Res, _$MainStateImpl>
-    implements _$$MainStateImplCopyWith<$Res> {
-  __$$MainStateImplCopyWithImpl(
-      _$MainStateImpl _value, $Res Function(_$MainStateImpl) _then)
+class __$$PixabayStateImplCopyWithImpl<$Res>
+    extends _$PixabayStateCopyWithImpl<$Res, _$PixabayStateImpl>
+    implements _$$PixabayStateImplCopyWith<$Res> {
+  __$$PixabayStateImplCopyWithImpl(
+      _$PixabayStateImpl _value, $Res Function(_$PixabayStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -91,11 +92,11 @@ class __$$MainStateImplCopyWithImpl<$Res>
     Object? imageItems = null,
     Object? isLoading = null,
   }) {
-    return _then(_$MainStateImpl(
+    return _then(_$PixabayStateImpl(
       imageItems: null == imageItems
           ? _value._imageItems
           : imageItems // ignore: cast_nullable_to_non_nullable
-              as List<ImageItem>,
+              as List<PixabayItem>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -106,18 +107,18 @@ class __$$MainStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$MainStateImpl with DiagnosticableTreeMixin implements _MainState {
-  const _$MainStateImpl(
-      {final List<ImageItem> imageItems = const [], this.isLoading = false})
+class _$PixabayStateImpl with DiagnosticableTreeMixin implements _PixabayState {
+  const _$PixabayStateImpl(
+      {final List<PixabayItem> imageItems = const [], this.isLoading = false})
       : _imageItems = imageItems;
 
-  factory _$MainStateImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MainStateImplFromJson(json);
+  factory _$PixabayStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PixabayStateImplFromJson(json);
 
-  final List<ImageItem> _imageItems;
+  final List<PixabayItem> _imageItems;
   @override
   @JsonKey()
-  List<ImageItem> get imageItems {
+  List<PixabayItem> get imageItems {
     if (_imageItems is EqualUnmodifiableListView) return _imageItems;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_imageItems);
@@ -129,14 +130,14 @@ class _$MainStateImpl with DiagnosticableTreeMixin implements _MainState {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MainState(imageItems: $imageItems, isLoading: $isLoading)';
+    return 'PixabayState(imageItems: $imageItems, isLoading: $isLoading)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'MainState'))
+      ..add(DiagnosticsProperty('type', 'PixabayState'))
       ..add(DiagnosticsProperty('imageItems', imageItems))
       ..add(DiagnosticsProperty('isLoading', isLoading));
   }
@@ -145,7 +146,7 @@ class _$MainStateImpl with DiagnosticableTreeMixin implements _MainState {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MainStateImpl &&
+            other is _$PixabayStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._imageItems, _imageItems) &&
             (identical(other.isLoading, isLoading) ||
@@ -160,31 +161,31 @@ class _$MainStateImpl with DiagnosticableTreeMixin implements _MainState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MainStateImplCopyWith<_$MainStateImpl> get copyWith =>
-      __$$MainStateImplCopyWithImpl<_$MainStateImpl>(this, _$identity);
+  _$$PixabayStateImplCopyWith<_$PixabayStateImpl> get copyWith =>
+      __$$PixabayStateImplCopyWithImpl<_$PixabayStateImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$MainStateImplToJson(
+    return _$$PixabayStateImplToJson(
       this,
     );
   }
 }
 
-abstract class _MainState implements MainState {
-  const factory _MainState(
-      {final List<ImageItem> imageItems,
-      final bool isLoading}) = _$MainStateImpl;
+abstract class _PixabayState implements PixabayState {
+  const factory _PixabayState(
+      {final List<PixabayItem> imageItems,
+      final bool isLoading}) = _$PixabayStateImpl;
 
-  factory _MainState.fromJson(Map<String, dynamic> json) =
-      _$MainStateImpl.fromJson;
+  factory _PixabayState.fromJson(Map<String, dynamic> json) =
+      _$PixabayStateImpl.fromJson;
 
   @override
-  List<ImageItem> get imageItems;
+  List<PixabayItem> get imageItems;
   @override
   bool get isLoading;
   @override
   @JsonKey(ignore: true)
-  _$$MainStateImplCopyWith<_$MainStateImpl> get copyWith =>
+  _$$PixabayStateImplCopyWith<_$PixabayStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
