@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:image_search_app/data/core/result.dart';
+import 'package:image_search_app/data/model/pixabay_item.dart';
 import 'package:image_search_app/data/repository/pixabay_repository.dart';
+import 'package:image_search_app/ui/pixabay/pixabay_event.dart';
 import 'package:image_search_app/ui/pixabay/pixabay_state.dart';
 
 class PixabayViewModel extends ChangeNotifier {
@@ -14,22 +17,34 @@ class PixabayViewModel extends ChangeNotifier {
 
    PixabayState get state => _state;
 
+  final _eventController = StreamController<PixabayEvent>();
+  Stream<PixabayEvent> get eventStream => _eventController.stream;
 
-  Future<bool> fetchImage(String query) async {
+
+  Future<void> fetchImage(String query) async {
     _state = state.copyWith(
       isLoading: true,
     );
-    try {
+
       final result = await _repository.getImageSearch(query);
-      _state = state.copyWith(
-          imageItems: result,
-          isLoading: false,
-      );
-      notifyListeners();
-      return true;
-    }catch(e) {
-      return false;
-    }
+      switch(result){
+
+        case Success<List<PixabayItem>>():
+          _state = state.copyWith(
+            isLoading: false,
+            imageItems: result.data.toList()
+          );
+          notifyListeners();
+          _eventController.add(PixabayEvent.showSnackBar('성공!!!'));
+        case Error<List<PixabayItem>>():
+         _state = state.copyWith(
+           isLoading: false,
+         );
+         notifyListeners();
+         _eventController.add(PixabayEvent.showSnackBar(result.e.toString()));
+      }
+
+
 
   }
 

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:image_search_app/ui/pixabay/pixabay_event.dart';
 import 'package:image_search_app/ui/pixabay/pixabay_view_model.dart';
 import 'package:image_search_app/ui/widget/pixabay_widget.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +14,24 @@ class PixabayScreen extends StatefulWidget {
 }
 
 class _PixabayScreenState extends State<PixabayScreen> {
+  StreamSubscription<PixabayEvent>? subscription;
   final textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+  Future.microtask(() {
+    subscription = context.read<PixabayViewModel>().eventStream.listen((event) {
+      switch(event){
+
+        case ShowSnackBar():
+          final snackBar = SnackBar(content: Text(event.message));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        case ShowDialog():
+      }
+    });
+  });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +68,6 @@ class _PixabayScreenState extends State<PixabayScreen> {
                     onPressed: () async {
                       final result = await pixabayViewModel
                           .fetchImage(textEditingController.text);
-
-                      if (result == false) {
-                       const snackBar = SnackBar(content: Text('버그'));
-                       if(mounted) {
-                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                       }
-                      }
-
                     },
                     icon: const Icon(Icons.search),
                   ),
