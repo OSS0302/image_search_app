@@ -1,10 +1,8 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/pixabay_item.dart';
-import 'package:image_search_app/data/repository/pixabay_repository.dart';
 import 'package:image_search_app/ui/pixabay/pixabay_view_model.dart';
 import 'package:image_search_app/ui/widget/pixabay_widget.dart';
+import 'package:provider/provider.dart';
 
 class PixabayScreen extends StatefulWidget {
   const PixabayScreen({super.key});
@@ -14,11 +12,12 @@ class PixabayScreen extends StatefulWidget {
 }
 
 class _PixabayScreenState extends State<PixabayScreen> {
-  final pixabayViewModel = PixabayViewModel();
+
   final textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final pixabayViewModel = context.watch<PixabayViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('아미지 앱'),
@@ -49,9 +48,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   suffixIcon: IconButton(
                     onPressed: () {
                       pixabayViewModel.fetchImage(textEditingController.text);
-                      setState(() {
-
-                      });
+                      setState(() {});
                     },
                     icon: const Icon(Icons.search),
                   ),
@@ -60,24 +57,25 @@ class _PixabayScreenState extends State<PixabayScreen> {
               const SizedBox(
                 height: 24,
               ),
-              StreamBuilder<bool>(
-                initialData: false,
-                stream: pixabayViewModel.loadingStream,
-                builder: (context, snapshot){
-                  if(snapshot.data! == true){
-                    return const Center(child: CircularProgressIndicator(),);
-                  }
-                  return Expanded(
-                    child: GridView.builder(
-                      itemCount: pixabayViewModel.imageItems.length,
-                      itemBuilder: (context , index){
-                        final imageItem = pixabayViewModel.imageItems[index];
-                        return PixabayWidget(imageItem: imageItem);
-                      },
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,crossAxisSpacing: 22,mainAxisSpacing: 22,),),
-                  );
-                },
-              )
+              pixabayViewModel.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: pixabayViewModel.imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = pixabayViewModel.imageItems[index];
+                          return PixabayWidget(imageItem: imageItem);
+                        },
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          crossAxisSpacing: 22,
+                          mainAxisSpacing: 22,
+                        ),
+                      ),
+                    ),
             ],
           ),
         ),

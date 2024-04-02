@@ -5,20 +5,23 @@ import 'package:image_search_app/data/model/pixabay_item.dart';
 import 'package:image_search_app/data/repository/pixabay_repository.dart';
 
 class PixabayViewModel extends ChangeNotifier {
-  final repository = PixabayRepositoryImpl();
+  final PixabayRepository _repository;
+   PixabayViewModel({
+    required PixabayRepository repository,
+  }) : _repository = repository;
+
+
   bool isLoading = false;
   List<PixabayItem> _imageItems = [];
   List<PixabayItem> get  imageItems => List.unmodifiable(_imageItems);
 
-  final _loadController = StreamController<bool>();
-  Stream<bool> get loadingStream => _loadController.stream;
-
-
   Future<void> fetchImage(String query) async {
-    _loadController.add(true);
+    isLoading = true;
 
-    _imageItems = await repository.getImageSearch(query);
-    _loadController.add(false);
+    _imageItems = await _repository.getImageSearch(query);
+    isLoading = false;
     notifyListeners();
   }
+
+
 }
