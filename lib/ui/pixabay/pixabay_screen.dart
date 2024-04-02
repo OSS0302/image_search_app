@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:image_search_app/data/model/pixabay_item.dart';
 import 'package:image_search_app/data/repository/pixabay_repository.dart';
 import 'package:image_search_app/ui/pixabay/pixabay_view_model.dart';
 import 'package:image_search_app/ui/widget/pixabay_widget.dart';
@@ -59,18 +60,18 @@ class _PixabayScreenState extends State<PixabayScreen> {
               const SizedBox(
                 height: 24,
               ),
-              FutureBuilder(
-                future: PixabayRepositoryImpl().getImageSearch(textEditingController.text),
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: pixabayViewModel.loadingStream,
                 builder: (context, snapshot){
-                  if(!snapshot.hasData){
+                  if(snapshot.data! == true){
                     return const Center(child: CircularProgressIndicator(),);
                   }
-                  final imageItems = snapshot.data!;
                   return Expanded(
                     child: GridView.builder(
                       itemCount: pixabayViewModel.imageItems.length,
                       itemBuilder: (context , index){
-                        final imageItem = imageItems[index];
+                        final imageItem = pixabayViewModel.imageItems[index];
                         return PixabayWidget(imageItem: imageItem);
                       },
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,crossAxisSpacing: 22,mainAxisSpacing: 22,),),
