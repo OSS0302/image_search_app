@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_search_app/presentation/main/main_event.dart';
 import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,29 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+
   final imageSearchController = TextEditingController();
+  @override
+  void initState() {
+    Future.microtask(() {
+      context.read<MainViewModel>().eventStream.listen((event) {
+        switch(event){
+          case ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.message));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          case ShowDialog():
+
+        }
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    imageSearchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +63,8 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: '검색하세요',
                   suffixIcon: IconButton(
                     onPressed: () async {
-                      final result = await mainViewModel
+                      await mainViewModel
                           .searchImage(imageSearchController.text);
-
-                      if (result == null) {
-                        const snackBar = SnackBar(content: Text('bug'));
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      }
                     },
                     icon: const Icon(
                       Icons.search,
@@ -62,7 +78,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               Expanded(
                 child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
                     crossAxisSpacing: 22,
                     mainAxisSpacing: 22,
