@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:image_search_app/ui/pixabay/pixabay_view_model.dart';
 import 'package:image_search_app/ui/widget/pixabay_widget.dart';
@@ -12,7 +11,6 @@ class PixabayScreen extends StatefulWidget {
 }
 
 class _PixabayScreenState extends State<PixabayScreen> {
-
   final textEditingController = TextEditingController();
 
   @override
@@ -48,7 +46,16 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   hintText: '이미지 앱',
                   suffixIcon: IconButton(
                     onPressed: () async {
-                     await pixabayViewModel.fetchImage(textEditingController.text);
+                      final result = await pixabayViewModel
+                          .fetchImage(textEditingController.text);
+
+                      if (result == false) {
+                       const snackBar = SnackBar(content: Text('버그'));
+                       if(mounted) {
+                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                       }
+                      }
+
                     },
                     icon: const Icon(Icons.search),
                   ),
