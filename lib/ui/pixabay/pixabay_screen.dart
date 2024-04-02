@@ -18,6 +18,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
   @override
   Widget build(BuildContext context) {
     final pixabayViewModel = context.watch<PixabayViewModel>();
+    final state = pixabayViewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('아미지 앱'),
@@ -46,9 +47,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   ),
                   hintText: '이미지 앱',
                   suffixIcon: IconButton(
-                    onPressed: () {
-                      pixabayViewModel.fetchImage(textEditingController.text);
-                      setState(() {});
+                    onPressed: () async {
+                     await pixabayViewModel.fetchImage(textEditingController.text);
                     },
                     icon: const Icon(Icons.search),
                   ),
@@ -57,15 +57,15 @@ class _PixabayScreenState extends State<PixabayScreen> {
               const SizedBox(
                 height: 24,
               ),
-              pixabayViewModel.isLoading
+              state.isLoading
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
                   : Expanded(
                       child: GridView.builder(
-                        itemCount: pixabayViewModel.imageItems.length,
+                        itemCount: state.imageItems.length,
                         itemBuilder: (context, index) {
-                          final imageItem = pixabayViewModel.imageItems[index];
+                          final imageItem = state.imageItems[index];
                           return PixabayWidget(imageItem: imageItem);
                         },
                         gridDelegate:
