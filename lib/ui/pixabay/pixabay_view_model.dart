@@ -1,17 +1,19 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/core/result.dart';
-import 'package:image_search_app/data/model/pixabay_item.dart';
-import 'package:image_search_app/data/repository/pixabay_repository.dart';
+import 'package:image_search_app/domain/use_case/search_image_usecase.dart';
 import 'package:image_search_app/ui/pixabay/pixabay_event.dart';
 import 'package:image_search_app/ui/pixabay/pixabay_state.dart';
 
+import '../../domain/model/pixabay_item.dart';
+import '../../domain/repository/pixabay_repository.dart';
+
 class PixabayViewModel extends ChangeNotifier {
-  final PixabayRepository _repository;
-   PixabayViewModel({
-    required PixabayRepository repository,
-  }) : _repository = repository;
+  final SearchImageUseCase _imageUseCase;
+
+  PixabayViewModel({
+    required SearchImageUseCase imageUseCase,
+  }) : _imageUseCase = imageUseCase;
 
    PixabayState _state =  PixabayState(isLoading: false, imageItems: List.unmodifiable([]));
 
@@ -26,7 +28,7 @@ class PixabayViewModel extends ChangeNotifier {
       isLoading: true,
     );
 
-      final result = await _repository.getImageSearch(query);
+      final result = await _imageUseCase.execute(query);
       switch(result){
 
         case Success<List<PixabayItem>>():
@@ -35,7 +37,7 @@ class PixabayViewModel extends ChangeNotifier {
             imageItems: result.data.toList()
           );
           notifyListeners();
-          _eventController.add(PixabayEvent.showSnackBar('성공!!!'));
+          _eventController.add(const PixabayEvent.showSnackBar('성공!!!'));
         case Error<List<PixabayItem>>():
          _state = state.copyWith(
            isLoading: false,
