@@ -2,18 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
-import 'package:image_search_app/data/repository/image_repository.dart';
+import 'package:image_search_app/data/repository/image_repository_imp.dart';
+import 'package:image_search_app/domain/use_case/image_search_use_case.dart';
 import 'package:image_search_app/presentation/main/main_event.dart';
 import 'package:image_search_app/presentation/main/main_state.dart';
 
-import '../../data/model/image_item.dart';
+import '../../domain/model/image_item.dart';
 
 class MainViewModel extends ChangeNotifier {
-  final ImageRepository _repository;
+  final ImageSearchUseCase _imageSearchUseCase;
 
-  MainViewModel({
-    required ImageRepository repository,
-  }) : _repository = repository;
+   MainViewModel({
+    required ImageSearchUseCase imageSearchUseCase,
+  }) : _imageSearchUseCase = imageSearchUseCase;
 
   MainState _state =
   MainState(
@@ -30,7 +31,7 @@ class MainViewModel extends ChangeNotifier {
     _state = state.copyWith(
       isLoading: true,
     );
-    final result = await _repository.getImageSearch(query);
+    final result = await _imageSearchUseCase.execute(query);
 
     switch (result) {
       case Success<List<ImageItem>>():
@@ -48,4 +49,6 @@ class MainViewModel extends ChangeNotifier {
         _eventController.add(MainEvent.showSnackBar(result.e.toString()));
     }
   }
+
+
 }

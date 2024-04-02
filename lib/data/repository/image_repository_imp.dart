@@ -1,6 +1,6 @@
 import 'package:image_search_app/data/data_source/image_api.dart';
 import 'package:image_search_app/data/mapper/image_mapper.dart';
-import 'package:image_search_app/data/model/image_item.dart';
+import 'package:image_search_app/domain/model/image_item.dart';
 
 import '../../core/result.dart';
 
