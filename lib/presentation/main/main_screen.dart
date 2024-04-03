@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_repository.dart';
+import 'package:image_search_app/presentation/main/main_view_model.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -10,6 +11,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final searchImageController = TextEditingController();
+  final mainViewModel = MainViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -25,43 +27,44 @@ class _MainScreenState extends State<MainScreen> {
               TextField(
                 controller: searchImageController,
                 decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(width: 2, color: Colors.blue),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(width: 2, color: Colors.blue),
                   ),
                   hintText: '이미지를 검색하세요 ',
                   suffixIcon: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.search,
                       color: Colors.blue,
                     ),
                     onPressed: () {
+                      mainViewModel.fetchImage(searchImageController.text);
                       setState(() {});
                     },
                   ),
                 ),
               ),
-              SizedBox(height: 24,),
+              const SizedBox(height: 24,),
               FutureBuilder(
                   future: ImageRepositoryImpl().getImageSearch(
                       searchImageController.text),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return Center(child: CircularProgressIndicator(),);
+                      return const Center(child: CircularProgressIndicator(),);
                     }
                     final imageItems = snapshot.data!;
                     return Expanded(
                       child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 4,
                           mainAxisSpacing: 22,
                           crossAxisSpacing: 22,
                         ),
-                        itemCount: imageItems.length,
+                        itemCount: mainViewModel.imageItems.length,
                         itemBuilder: (context, index) {
-                          final imageItem = imageItems[index];
+                          final imageItem = mainViewModel.imageItems[index];
                           return ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Image.network(imageItem.imageUrl,fit: BoxFit.cover,),
