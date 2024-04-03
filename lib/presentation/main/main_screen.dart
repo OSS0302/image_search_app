@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository.dart';
 import 'package:image_search_app/presentation/main/main_view_model.dart';
 
 class MainScreen extends StatefulWidget {
@@ -46,34 +45,38 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24,),
-              FutureBuilder(
-                  future: ImageRepositoryImpl().getImageSearch(
-                      searchImageController.text),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator(),);
-                    }
-                    final imageItems = snapshot.data!;
-                    return Expanded(
-                      child: GridView.builder(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          mainAxisSpacing: 22,
-                          crossAxisSpacing: 22,
-                        ),
-                        itemCount: mainViewModel.imageItems.length,
-                        itemBuilder: (context, index) {
-                          final imageItem = mainViewModel.imageItems[index];
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.network(imageItem.imageUrl,fit: BoxFit.cover,),
-                          );
-                        },
-                      ),
-                    );
+              const SizedBox(
+                height: 24,
+              ),
+              StreamBuilder(
+                initialData: false,
+                stream: mainViewModel.loadingStream,
+                builder: (context, snapshot) {
+                  if(snapshot.data! == true){
+                    return const Center(child: CircularProgressIndicator(),);
                   }
-              )
+                 return Expanded(
+                    child: GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        mainAxisSpacing: 22,
+                        crossAxisSpacing: 22,
+                      ),
+                      itemCount: mainViewModel.imageItems.length,
+                      itemBuilder: (context, index) {
+                        final imageItem = mainViewModel.imageItems[index];
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            imageItem.imageUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
