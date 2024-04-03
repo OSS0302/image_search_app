@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
 import 'package:image_search_app/data/repository/image_repository.dart';
+import 'package:image_search_app/presentation/main/main_event.dart';
 import 'package:image_search_app/presentation/main/main_state.dart';
 
 import '../../data/model/image_item.dart';
@@ -18,6 +19,9 @@ class MainViewModel extends ChangeNotifier {
       MainState(isLoading: false, imageItems: List.unmodifiable([]));
 
   MainState get state => _state;
+  
+  final _eventController = StreamController<MainEvent>();
+  Stream<MainEvent> get eventStream => _eventController.stream;
 
   Future<void > fetchImage(String query) async {
     _state = state.copyWith(isLoading: true);
@@ -30,19 +34,15 @@ class MainViewModel extends ChangeNotifier {
         _state = state.copyWith(
           isLoading: false,
           imageItems: result.data,
-        );
+        );_eventController.add(const MainEvent.showSnackBar('성공'));
+        notifyListeners();
+        
       case Error<List<ImageItem>>():
         _state = state.copyWith(
           isLoading: false,
         );
+        notifyListeners();
+        _eventController.add(MainEvent.showSnackBar(result.e.toString()));
     }
-
-
-
-      notifyListeners();
-
-
-
-
   }
 }
