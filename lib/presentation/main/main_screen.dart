@@ -15,6 +15,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainViewModel>();
+    final state = mainViewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱 '),
@@ -56,9 +57,9 @@ class _MainScreenState extends State<MainScreen> {
                     mainAxisSpacing: 22,
                     crossAxisSpacing: 22,
                   ),
-                  itemCount: mainViewModel.imageItems.length,
+                  itemCount: state.imageItems.length,
                   itemBuilder: (context, index) {
-                    final imageItem = mainViewModel.imageItems[index];
+                    final imageItem = state.imageItems[index];
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.network(
