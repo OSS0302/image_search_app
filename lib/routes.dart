@@ -4,7 +4,7 @@ import 'package:image_search_app/presentation/main/main_screen.dart';
 import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:provider/provider.dart';
 
-import 'data/repository/image_repository.dart';
+import 'data/repository/image_repository_impl.dart';
 
 final router = GoRouter(
   routes: [
@@ -12,7 +12,7 @@ final router = GoRouter(
       path: '/',
       builder: (context, state) => ChangeNotifierProvider(
         create: (_) => getIt<MainViewModel>(),
-        child: MainScreen(),
+        child: const MainScreen(),
       ),
     ),
   ],
