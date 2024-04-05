@@ -50,14 +50,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       color: Colors.blueGrey,
                     ),
                     onPressed: () async {
-                    final result = await pixabayViewModel.fetchImage(searchImageController.text);
-                    if(result == false){
-                      const snackBar = SnackBar (content: Text('Yay! Bug!'),);
-                    if(mounted){
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
+                     await pixabayViewModel.fetchImage(searchImageController.text);
 
-                    }
                       setState(() {});
                     },
                   ),
