@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/pixabay_repository.dart';
 import 'package:image_search_app/presentation/main/pixabay_state.dart';
 
-import '../../data/model/pixabay_item.dart';
 
 class PixabayViewModel extends ChangeNotifier {
   final  PixabayRepository _repository ;
@@ -17,17 +16,22 @@ class PixabayViewModel extends ChangeNotifier {
 
   PixabayState get state => _state;
 
-  Future<void> fetchImage(String query) async {
+  Future<bool> fetchImage(String query) async {
     _state = state.copyWith(
       isLoading: true,
     );
     notifyListeners();
-    _state = state.copyWith(
-     isLoading: false,
-     imageItems: (await _repository.getImageSearch(query)).toList(),
-   );
-    notifyListeners();
+
+    try{
+      final result = (await _repository.getImageSearch(query)).toList();
+      _state = state.copyWith(
+        isLoading: false,
+        imageItems: result,
+      );
+      notifyListeners();
+      return true;
+    }catch(e){
+      return false;
+    }
   }
-
-
 }

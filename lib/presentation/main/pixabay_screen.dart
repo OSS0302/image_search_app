@@ -19,7 +19,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
     final state = pixabayViewModel.state;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: const Text('이미지 앱 '),
       ),
       body: SafeArea(
         child: Padding(
@@ -49,8 +49,15 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       Icons.search,
                       color: Colors.blueGrey,
                     ),
-                    onPressed: () {
-                      pixabayViewModel.fetchImage(searchImageController.text);
+                    onPressed: () async {
+                    final result = await pixabayViewModel.fetchImage(searchImageController.text);
+                    if(result == false){
+                      const snackBar = SnackBar (content: Text('Yay! Bug!'),);
+                    if(mounted){
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+
+                    }
                       setState(() {});
                     },
                   ),
