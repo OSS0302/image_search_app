@@ -57,7 +57,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              state.isLoading  ? Center(child: CircularProgressIndicator(),)
+              state.isLoading  ? const Center(child: CircularProgressIndicator(),)
               : Expanded(
                 child: GridView.builder(
                   itemCount: state.imageItems.length,
