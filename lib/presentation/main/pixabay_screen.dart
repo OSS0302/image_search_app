@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/pixabay_item.dart';
-import 'package:image_search_app/data/repository/pixabay_repository.dart';
+import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 
 class PixabayScreen extends StatefulWidget {
@@ -11,6 +10,7 @@ class PixabayScreen extends StatefulWidget {
 }
 
 class _PixabayScreenState extends State<PixabayScreen> {
+  final pixabayViewModel = PixabayViewModel();
   final searchImageController = TextEditingController();
 
   @override
@@ -48,38 +48,37 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       color: Colors.blueGrey,
                     ),
                     onPressed: () {
+                      pixabayViewModel.fetchImage(searchImageController.text);
                       setState(() {});
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              FutureBuilder<List<PixabayItem>>(
-                future: PixabayRepositoryImpl()
-                    .getImageSearch(searchImageController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const CircularProgressIndicator();
-                  }
-
-                  final imageItems = snapshot.data!;
-                  return Expanded(
-                    child: GridView.builder(
-                      itemCount: imageItems.length,
-                      itemBuilder: (context, index) {
-                        final imageItem = imageItems[index];
-                        return ImageWidget(imageItems: imageItem);
-                      },
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 32,
-                        mainAxisSpacing: 32,
+               StreamBuilder<bool>(
+                 initialData: false,
+                   stream: pixabayViewModel.loadingStream,
+                   builder: (context , snapshot ){
+                    if(snapshot.data! == true){
+                      return Center(child: CircularProgressIndicator(),);
+                    }
+                    return Expanded(
+                      child: GridView.builder(
+                        itemCount: pixabayViewModel.imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = pixabayViewModel.imageItems[index];
+                          return ImageWidget(imageItems: imageItem);
+                        },
+                        gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          crossAxisSpacing: 32,
+                          mainAxisSpacing: 32,
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                   }),
+
             ],
           ),
         ),
