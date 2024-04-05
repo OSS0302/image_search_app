@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
+import 'package:provider/provider.dart';
 
 class PixabayScreen extends StatefulWidget {
   const PixabayScreen({super.key});
@@ -10,11 +11,11 @@ class PixabayScreen extends StatefulWidget {
 }
 
 class _PixabayScreenState extends State<PixabayScreen> {
-  final pixabayViewModel = PixabayViewModel();
   final searchImageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final pixabayViewModel = context.watch<PixabayViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text(''),

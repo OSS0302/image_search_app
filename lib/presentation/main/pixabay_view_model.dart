@@ -6,7 +6,12 @@ import 'package:image_search_app/data/repository/pixabay_repository.dart';
 import '../../data/model/pixabay_item.dart';
 
 class PixabayViewModel extends ChangeNotifier {
-  final _repository = PixabayRepositoryImpl();
+  final  PixabayRepository _repository ;
+
+   PixabayViewModel({
+    required PixabayRepository repository,
+  }) : _repository = repository;
+
   List<PixabayItem> _imageItems = [];
   bool isLoading = false;
 
@@ -20,5 +25,6 @@ class PixabayViewModel extends ChangeNotifier {
    isLoading = false;
    notifyListeners();
   }
+
 
 }
