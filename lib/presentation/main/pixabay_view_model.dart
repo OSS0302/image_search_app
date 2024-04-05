@@ -12,14 +12,13 @@ class PixabayViewModel extends ChangeNotifier {
 
   List<PixabayItem> get imageItems => List.unmodifiable(_imageItems);
 
-  final _loadingController = StreamController<bool>();
-
-  Stream<bool> get loadingStream => _loadingController.stream;
-
   Future<void> fetchImage(String query) async {
-    _loadingController.add(true);
+    isLoading = true;
+    notifyListeners();
 
-    _imageItems = await _repository.getImageSearch(query);
-    _loadingController.add(false);
+   _imageItems = await _repository.getImageSearch(query);
+   isLoading = false;
+   notifyListeners();
   }
+
 }

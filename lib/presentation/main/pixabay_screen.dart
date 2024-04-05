@@ -55,30 +55,21 @@ class _PixabayScreenState extends State<PixabayScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-               StreamBuilder<bool>(
-                 initialData: false,
-                   stream: pixabayViewModel.loadingStream,
-                   builder: (context , snapshot ){
-                    if(snapshot.data! == true){
-                      return Center(child: CircularProgressIndicator(),);
-                    }
-                    return Expanded(
-                      child: GridView.builder(
-                        itemCount: pixabayViewModel.imageItems.length,
-                        itemBuilder: (context, index) {
-                          final imageItem = pixabayViewModel.imageItems[index];
-                          return ImageWidget(imageItems: imageItem);
-                        },
-                        gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          crossAxisSpacing: 32,
-                          mainAxisSpacing: 32,
-                        ),
-                      ),
-                    );
-                   }),
-
+              pixabayViewModel.isLoading  ? Center(child: CircularProgressIndicator(),)
+              : Expanded(
+                child: GridView.builder(
+                  itemCount: pixabayViewModel.imageItems.length,
+                  itemBuilder: (context, index) {
+                    final imageItem = pixabayViewModel.imageItems[index];
+                    return ImageWidget(imageItems: imageItem);
+                  },
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 32,
+                    mainAxisSpacing: 32,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
