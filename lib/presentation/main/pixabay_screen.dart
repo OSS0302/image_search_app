@@ -21,7 +21,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      subscription = context.watch<PixabayViewModel>().eventStream.listen((event) {
+      subscription = context.read<PixabayViewModel>().eventStream.listen((event) {
         switch(event){
           case ShowSnackBar():
             final snackBar = SnackBar(content: Text(event.message));
