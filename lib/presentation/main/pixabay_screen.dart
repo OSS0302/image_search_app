@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/pixabay_item.dart';
-import 'package:image_search_app/data/repository/pixabay_repository.dart';
+import 'package:image_search_app/presentation/main/pixabay_event.dart';
+import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
+import 'package:provider/provider.dart';
 
 class PixabayScreen extends StatefulWidget {
   const PixabayScreen({super.key});
@@ -11,13 +14,37 @@ class PixabayScreen extends StatefulWidget {
 }
 
 class _PixabayScreenState extends State<PixabayScreen> {
+  StreamSubscription<PixabayEvent>? subscription;
   final searchImageController = TextEditingController();
+  
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      subscription = context.read<PixabayViewModel>().eventStream.listen((event) {
+        switch(event){
+          case ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.message));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          case ShowDialog():
+        }
+      });
+    });
+  }
+  @override
+  void dispose() {
+    subscription?.cancel();
+    searchImageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final pixabayViewModel = context.watch<PixabayViewModel>();
+    final state = pixabayViewModel.state;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: const Text('이미지 앱 '),
       ),
       body: SafeArea(
         child: Padding(
@@ -47,38 +74,29 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       Icons.search,
                       color: Colors.blueGrey,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                     await pixabayViewModel.fetchImage(searchImageController.text);
+
                       setState(() {});
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              FutureBuilder<List<PixabayItem>>(
-                future: PixabayRepositoryImpl()
-                    .getImageSearch(searchImageController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const CircularProgressIndicator();
-                  }
-
-                  final imageItems = snapshot.data!;
-                  return Expanded(
-                    child: GridView.builder(
-                      itemCount: imageItems.length,
-                      itemBuilder: (context, index) {
-                        final imageItem = imageItems[index];
-                        return ImageWidget(imageItems: imageItem);
-                      },
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 32,
-                        mainAxisSpacing: 32,
-                      ),
-                    ),
-                  );
-                },
+              state.isLoading  ? const Center(child: CircularProgressIndicator(),)
+              : Expanded(
+                child: GridView.builder(
+                  itemCount: state.imageItems.length,
+                  itemBuilder: (context, index) {
+                    final imageItem = state.imageItems[index];
+                    return ImageWidget(imageItems: imageItem);
+                  },
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 32,
+                    mainAxisSpacing: 32,
+                  ),
+                ),
               ),
             ],
           ),
