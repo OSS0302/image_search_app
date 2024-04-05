@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/pixabay_repository.dart';
+import 'package:image_search_app/di/di_setup.dart';
 import 'package:image_search_app/presentation/main/pixabay_screen.dart';
 import 'package:image_search_app/routes.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ import 'presentation/main/pixabay_view_model.dart';
 
 
 void main() {
+  diSetUp();
   runApp(const MyApp());
 }
 
