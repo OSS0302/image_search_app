@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_search_app/presentation/main/pixabay_event.dart';
 import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
@@ -89,7 +90,11 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   itemCount: state.imageItems.length,
                   itemBuilder: (context, index) {
                     final imageItem = state.imageItems[index];
-                    return ImageWidget(imageItems: imageItem);
+                    return GestureDetector(
+                      onTap: (){
+                        context.push('/detail',extra: imageItem);
+                      },
+                        child: ImageWidget(imageItems: imageItem,));
                   },
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
