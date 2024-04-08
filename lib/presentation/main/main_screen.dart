@@ -54,26 +54,36 @@ class _MainScreenState extends State<MainScreen> {
                       onPressed: () {
                         mainViewModel.fetchImage(textEditingController.text);
                         setState(() {});
-                      }, icon: const Icon(Icons.search),)
-                ),
+                      },
+                      icon: const Icon(Icons.search),
+                    )),
               ),
-              const SizedBox(height: 24,),
-              FutureBuilder<List<ImageItem>>(
-                  future: ImageRepositoryImpl().getImage(
-                      textEditingController.text),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    final imageItem = snapshot.data!;
-                    return Expanded(child: GridView.builder(
-                      itemCount: mainViewModel.imageItems.length ,
-                      itemBuilder: (context, index){
+              const SizedBox(
+                height: 24,
+              ),
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: mainViewModel.loadingStream,
+                builder: (context , snapshot){
+                  if(snapshot.data! == true){
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                  return Expanded(
+                    child: GridView.builder(
+                      itemCount: mainViewModel.imageItems.length,
+                      itemBuilder: (context, index) {
                         final imageItems = mainViewModel.imageItems[index];
                         return ImageWidget(imageItem: imageItems);
                       },
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, mainAxisSpacing: 22,crossAxisSpacing: 22), ));
-                  })
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        mainAxisSpacing: 22,
+                        crossAxisSpacing: 22,
+                      ),
+                    ),
+                  );
+                },
+              )
             ],
           ),
         ),
