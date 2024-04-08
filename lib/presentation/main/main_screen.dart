@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository.dart';
-import 'package:image_search_app/model/image_item.dart';
+import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -11,6 +11,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+
   final textEditingController = TextEditingController();
 
   @override
@@ -21,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainViewModel = context.watch<MainViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱'),
@@ -50,27 +52,38 @@ class _MainScreenState extends State<MainScreen> {
                     hintText: '이미지 검색앱',
                     suffixIcon: IconButton(
                       onPressed: () {
+                        mainViewModel.fetchImage(textEditingController.text);
                         setState(() {});
-                      }, icon: const Icon(Icons.search),)
-                ),
+                      },
+                      icon: const Icon(Icons.search),
+                    )),
               ),
-              const SizedBox(height: 24,),
-              FutureBuilder<List<ImageItem>>(
-                  future: ImageRepositoryImpl().getImage(
-                      textEditingController.text),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    final imageItem = snapshot.data!;
-                    return Expanded(child: GridView.builder(
-                      itemCount: imageItem.length ,
-                      itemBuilder: (context, index){
-                        final imageItems = imageItem[index];
+              const SizedBox(
+                height: 24,
+              ),
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: mainViewModel.loadingStream,
+                builder: (context , snapshot){
+                  if(snapshot.data! == true){
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                  return Expanded(
+                    child: GridView.builder(
+                      itemCount: mainViewModel.imageItems.length,
+                      itemBuilder: (context, index) {
+                        final imageItems = mainViewModel.imageItems[index];
                         return ImageWidget(imageItem: imageItems);
                       },
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, mainAxisSpacing: 22,crossAxisSpacing: 22), ));
-                  })
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        mainAxisSpacing: 22,
+                        crossAxisSpacing: 22,
+                      ),
+                    ),
+                  );
+                },
+              )
             ],
           ),
         ),
