@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_repository.dart';
 import 'package:image_search_app/model/image_item.dart';
+import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 
 class MainScreen extends StatefulWidget {
@@ -11,6 +12,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final mainViewModel = MainViewModel();
   final textEditingController = TextEditingController();
 
   @override
@@ -50,6 +52,7 @@ class _MainScreenState extends State<MainScreen> {
                     hintText: '이미지 검색앱',
                     suffixIcon: IconButton(
                       onPressed: () {
+                        mainViewModel.fetchImage(textEditingController.text);
                         setState(() {});
                       }, icon: const Icon(Icons.search),)
                 ),
@@ -64,9 +67,9 @@ class _MainScreenState extends State<MainScreen> {
                     }
                     final imageItem = snapshot.data!;
                     return Expanded(child: GridView.builder(
-                      itemCount: imageItem.length ,
+                      itemCount: mainViewModel.imageItems.length ,
                       itemBuilder: (context, index){
-                        final imageItems = imageItem[index];
+                        final imageItems = mainViewModel.imageItems[index];
                         return ImageWidget(imageItem: imageItems);
                       },
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, mainAxisSpacing: 22,crossAxisSpacing: 22), ));
