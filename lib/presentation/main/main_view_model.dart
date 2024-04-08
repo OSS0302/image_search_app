@@ -6,7 +6,11 @@ import 'package:image_search_app/data/repository/image_repository.dart';
 import '../../model/image_item.dart';
 
 class MainViewModel extends ChangeNotifier {
-  final _repository = ImageRepositoryImpl();
+  final ImageRepository _repository;
+   MainViewModel({
+    required ImageRepository repository,
+  }) : _repository = repository;
+
   List<ImageItem> _imageItems = [];
   List<ImageItem> get imageItems => List.unmodifiable(_imageItems);
   bool isLoading = false;
@@ -17,9 +21,13 @@ class MainViewModel extends ChangeNotifier {
 
 
   Future<void> fetchImage(String query) async {
-    loadingController.add(true);
+    isLoading = true;
+    notifyListeners();
 
     _imageItems = await _repository.getImage(query);
-    loadingController.add(false);
+    isLoading = false;
+    notifyListeners();
   }
+
+
 }

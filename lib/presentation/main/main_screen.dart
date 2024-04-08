@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository.dart';
-import 'package:image_search_app/model/image_item.dart';
 import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -12,7 +11,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final mainViewModel = MainViewModel();
+
   final textEditingController = TextEditingController();
 
   @override
@@ -23,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainViewModel = context.watch<MainViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱'),
