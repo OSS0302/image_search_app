@@ -52,16 +52,8 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     hintText: '이미지 검색앱',
                     suffixIcon: IconButton(
-                      onPressed: () {
-                       final result =  mainViewModel.fetchImage(textEditingController.text);
-
-                       if(result == null ) {
-                        const snackBar = SnackBar(content: Text('Yay! Bug!'));
-                        if(mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                       }
-
+                      onPressed: () async {
+                       await mainViewModel.fetchImage(textEditingController.text);
                         setState(() {});
                       },
                       icon: const Icon(Icons.search),
