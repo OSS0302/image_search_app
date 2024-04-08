@@ -23,6 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainViewModel>();
+    final state = mainViewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱'),
@@ -70,9 +71,9 @@ class _MainScreenState extends State<MainScreen> {
                   }
                   return Expanded(
                     child: GridView.builder(
-                      itemCount: mainViewModel.imageItems.length,
+                      itemCount: state.imageItems.length,
                       itemBuilder: (context, index) {
-                        final imageItems = mainViewModel.imageItems[index];
+                        final imageItems = state.imageItems[index];
                         return ImageWidget(imageItem: imageItems);
                       },
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
