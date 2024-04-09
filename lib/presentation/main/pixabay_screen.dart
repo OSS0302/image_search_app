@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_search_app/data/model/pixabay_item.dart';
 import 'package:image_search_app/data/repository/pixabay_repository.dart';
 import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
+import 'package:provider/provider.dart';
 
 class PixabayScreen extends StatefulWidget {
   const PixabayScreen({super.key});
@@ -12,10 +13,10 @@ class PixabayScreen extends StatefulWidget {
 
 class _PixabayScreenState extends State<PixabayScreen> {
   final imageSearchController = TextEditingController();
-  final pixbayViewModel = PixabayViewModel();
 
   @override
   Widget build(BuildContext context) {
+    final pixbayViewModel =context.watch<PixabayViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱'),
@@ -58,14 +59,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
           const SizedBox(
             height: 24,
           ),
-          StreamBuilder<bool>(
-            initialData: false,
-            stream: pixbayViewModel.loadingStream,
-            builder: (context, snapshot) {
-              if(snapshot.data! == true){
-                return Center(child: CircularProgressIndicator(),);
-              }
-              return Expanded(
+          pixbayViewModel.isLoading ? Center(child: CircularProgressIndicator(),)
+              : Expanded(
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
@@ -84,8 +79,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                     );
                   },
                 ),
-              );
-            },
+
+
           ),
 
             ],
