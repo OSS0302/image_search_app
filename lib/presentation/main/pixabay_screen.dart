@@ -1,11 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_search_app/presentation/main/pixabay_event.dart';
 import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
+
 
 class PixabayScreen extends ConsumerStatefulWidget {
   const PixabayScreen({super.key});
@@ -13,6 +13,7 @@ class PixabayScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState createState() => _PixabayScreenState();
 }
+
 
 class _PixabayScreenState extends ConsumerState<PixabayScreen> {
   StreamSubscription<PixabayEvent>? subscription;
@@ -43,10 +44,12 @@ class _PixabayScreenState extends ConsumerState<PixabayScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(pixabayViewModelProvider);
     final notifier = ref.read(pixabayViewModelProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('이미지 앱 '),
+        title: const Text('이미지 앱'),
       ),
+
       body: state.when(
           data: (data) {
             return SafeArea(
@@ -137,6 +140,80 @@ class _PixabayScreenState extends ConsumerState<PixabayScreen> {
               child: CircularProgressIndicator(),
             );
           },
+
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+            TextField(
+            controller: imageSearchController,
+            decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    width: 2,
+                    color: Colors.pinkAccent,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    width: 2,
+                    color: Colors.pinkAccent,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                hintText: '이미지 검색하세요',
+                suffixIcon: IconButton(
+                  onPressed: () async {
+                  final result =  await pixbayViewModel
+                        .fetchImage(imageSearchController.text);
+                  if(result == false){
+                   const snackBar =SnackBar(content: Text('오류'));
+                   if(mounted){
+                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                   }
+                  }
+
+                    setState(() {});
+                  },
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.pinkAccent,
+                  ),
+                )),
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          state.isLoading ? Center(child: CircularProgressIndicator(),)
+              : Expanded(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 22,
+                    crossAxisSpacing: 22,
+                  ),
+                  itemCount: state.imageItem.length,
+                  itemBuilder: (context, index) {
+                    final imageItem = state.imageItem[index];
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        imageItem.imageUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  },
+                ),
+
+
+          ),
+
+            ],
+          ),
+        ),
+>>>>>>> main
       ),
     );
   }

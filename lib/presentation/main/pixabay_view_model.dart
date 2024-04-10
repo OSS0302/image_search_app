@@ -8,8 +8,10 @@ import 'package:image_search_app/di/di_setup.dart';
 import 'package:image_search_app/domain/model/pixabay_item.dart';
 import 'package:image_search_app/domain/use_case/search_use_case.dart';
 import 'package:image_search_app/presentation/main/pixabay_event.dart';
+
 import 'package:image_search_app/presentation/main/pixabay_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 
 part 'pixabay_view_model.g.dart';
 
@@ -58,6 +60,7 @@ class PixabayViewModel extends _$PixabayViewModel {
             await update((state) => state.copyWith(isLoading: false, imageItems: []));
           });
     });
+
   }
 }
 
