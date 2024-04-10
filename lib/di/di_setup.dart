@@ -10,5 +10,5 @@ final getIt = GetIt.instance;
 void diSetUp() {
   getIt.registerSingleton<PixabayRepository>(PixabayRepositoryImpl());
   getIt.registerSingleton<SearchUseCase>(SearchUseCase(repository: getIt<PixabayRepository>()));
-  getIt.registerFactory<PixabayViewModel>(() => PixabayViewModel( searchUseCase: getIt<SearchUseCase>()));
+  // getIt.registerFactory<PixabayViewModel>(() => PixabayViewModel( searchUseCase: getIt<SearchUseCase>()));
 }

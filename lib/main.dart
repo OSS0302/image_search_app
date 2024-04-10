@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_search_app/di/di_setup.dart';
 import 'package:image_search_app/routes.dart';
 
@@ -7,7 +8,7 @@ import 'package:image_search_app/routes.dart';
 
 void main() {
   diSetUp();
-  runApp(const MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
