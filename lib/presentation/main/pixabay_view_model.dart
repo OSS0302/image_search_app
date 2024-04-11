@@ -61,6 +61,22 @@ class PixabayViewModel extends _$PixabayViewModel {
           });
     });
 
+
+    final result = (await _searchUseCase.execute(query));
+    switch (result) {
+      case Success<List<PixabayItem>>():
+        _state = state.copyWith(isLoading: false, imageItems: result.data);
+        notifyListeners();
+        _eventController.add(PixabayEvent.showSnackBar('성공!!'));
+        _eventController.add(PixabayEvent.showDialog('성공!!!'));
+      case Error<List<PixabayItem>>():
+        _state = state.copyWith(
+          isLoading: false,
+        );
+        notifyListeners();
+        _eventController.add(PixabayEvent.showSnackBar(result.e.toString()));
+    }
+
   }
 }
 
