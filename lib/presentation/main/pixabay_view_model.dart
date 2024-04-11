@@ -36,6 +36,7 @@ class PixabayViewModel extends ChangeNotifier {
         _state = state.copyWith(isLoading: false, imageItems: result.data);
         notifyListeners();
         _eventController.add(PixabayEvent.showSnackBar('성공!!'));
+        _eventController.add(PixabayEvent.showDialog('성공!!!'));
       case Error<List<PixabayItem>>():
         _state = state.copyWith(
           isLoading: false,

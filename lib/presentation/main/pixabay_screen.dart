@@ -17,7 +17,7 @@ class PixabayScreen extends StatefulWidget {
 class _PixabayScreenState extends State<PixabayScreen> {
   StreamSubscription<PixabayEvent>? subscription;
   final searchImageController = TextEditingController();
-  
+
   @override
   void initState() {
     super.initState();
@@ -28,7 +28,32 @@ class _PixabayScreenState extends State<PixabayScreen> {
             final snackBar = SnackBar(content: Text(event.message));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           case ShowDialog():
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('이미지 검색 앱'),
+                  content: Text('이미지를 가져 왔습니다.'),
+                  actions: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        child: const Text('확인',style: TextStyle(color: Colors.black),),
+                      ),
+                    ),
+
+                  ],
+                );
+              },
+            );
         }
+
       });
     });
   }
