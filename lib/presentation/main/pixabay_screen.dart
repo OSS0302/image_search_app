@@ -34,7 +34,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('이미지 검색 앱'),
-                  content: Text('이미지를 가져 왔습니다.'),
+                  content: const Text('이미지를 가져 왔습니다.'),
                   actions: [
                     Container(
                       decoration: BoxDecoration(
