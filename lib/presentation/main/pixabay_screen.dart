@@ -22,8 +22,9 @@ class _PixabayScreenState extends State<PixabayScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      subscription = context.read<PixabayViewModel>().eventStream.listen((event) {
-        switch(event){
+      subscription =
+          context.read<PixabayViewModel>().eventStream.listen((event) {
+        switch (event) {
           case ShowSnackBar():
             final snackBar = SnackBar(content: Text(event.message));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -44,19 +45,21 @@ class _PixabayScreenState extends State<PixabayScreen> {
                         onPressed: () {
                           context.pop();
                         },
-                        child: const Text('확인',style: TextStyle(color: Colors.black),),
+                        child: const Text(
+                          '확인',
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ),
-
                   ],
                 );
               },
             );
         }
-
       });
     });
   }
+
   @override
   void dispose() {
     subscription?.cancel();
@@ -101,7 +104,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       color: Colors.blueGrey,
                     ),
                     onPressed: () async {
-                     await pixabayViewModel.fetchImage(searchImageController.text);
+                      await pixabayViewModel
+                          .fetchImage(searchImageController.text);
 
                       setState(() {});
                     },
@@ -109,25 +113,73 @@ class _PixabayScreenState extends State<PixabayScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              state.isLoading  ? const Center(child: CircularProgressIndicator(),)
-              : Expanded(
-                child: GridView.builder(
-                  itemCount: state.imageItems.length,
-                  itemBuilder: (context, index) {
-                    final imageItem = state.imageItems[index];
-                    return GestureDetector(
-                      onTap: (){
-                        context.push('/detail',extra: imageItem);
-                      },
-                        child: ImageWidget(imageItems: imageItem,));
-                  },
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 32,
-                    mainAxisSpacing: 32,
-                  ),
-                ),
-              ),
+              state.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: state.imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = state.imageItems[index];
+                          return GestureDetector(
+                            onTap: () async {
+                              await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('이미지 검색 앱'),
+                                    content: const Text('자세한화면을 보시겠습니까?.'),
+                                    actions: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.orange,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            context.pop();
+                                          },
+                                          child: const Text('닫기'),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.orange,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            context.pop(true);
+                                            context.push('/detail',
+                                                extra: imageItem);
+                                          },
+                                          child: const Text('확인'),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ).then((value) {
+                                if (value != null && value) {
+                                }
+                              });
+                            },
+                            child: ImageWidget(
+                              imageItems: imageItem,
+                            ),
+                          );
+                        },
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          crossAxisSpacing: 32,
+                          mainAxisSpacing: 32,
+                        ),
+                      ),
+                    ),
             ],
           ),
         ),
