@@ -79,4 +79,3 @@ class PixabayViewModel extends _$PixabayViewModel {
 
   }
 }
-
