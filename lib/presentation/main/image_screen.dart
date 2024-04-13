@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_item_repository.dart';
+import 'package:image_search_app/presentation/main/image_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_item_widget.dart';
 
-import '../../data/model/image_item.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class ImageScreen extends StatefulWidget {
+  const ImageScreen({super.key});
 
   @override
-  State<MainScreen> createState() => MainScreenState();
+  State<ImageScreen> createState() => MainScreenState();
 }
 
-class MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<ImageScreen> {
   final imageSearchController = TextEditingController();
+  final imageViewModel = ImageViewModel();
 
   @override
   void dispose() {
@@ -63,27 +63,20 @@ class MainScreenState extends State<MainScreen> {
               SizedBox(
                 height: 24,
               ),
-              FutureBuilder<List<ImageItem>>(
-                future: ImageItemRepositoryImpl()
-                    .getImageSearch(imageSearchController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                  final imageItems = snapshot.data!;
-                  return Expanded(
+               imageViewModel.isLoading  ? Center(child: CircularProgressIndicator(),)
+                   : Expanded(
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 4,
                           crossAxisSpacing: 32,
                           mainAxisSpacing: 32),
-                      itemCount: imageItems.length,
+                      itemCount: imageViewModel.imageItems.length,
                       itemBuilder: (context, index){
-                        final imageItem = imageItems[index];
+                        final imageItem = imageViewModel.imageItems[index];
                         return ImageItemWidget(imageItem: imageItem);
                       },),
-                  );
-                },
+
+
               )
             ],
           ),

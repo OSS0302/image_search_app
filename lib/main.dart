@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/presentation/main/main_screen.dart';
+import 'package:image_search_app/presentation/main/image_screen.dart';
+import 'package:image_search_app/presentation/main/image_view_model.dart';
 
 
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MainScreen(),
+      home: ImageScreen(),
     );
   }
 }
