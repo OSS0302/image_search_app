@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/presentation/main/image_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_item_widget.dart';
-
+import 'package:provider/provider.dart';
 
 class ImageScreen extends StatefulWidget {
   const ImageScreen({super.key});
@@ -12,7 +12,6 @@ class ImageScreen extends StatefulWidget {
 
 class MainScreenState extends State<ImageScreen> {
   final imageSearchController = TextEditingController();
-  final imageViewModel = ImageViewModel();
 
   @override
   void dispose() {
@@ -22,6 +21,7 @@ class MainScreenState extends State<ImageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final imageViewModel = context.watch<ImageViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱'),
@@ -36,14 +36,14 @@ class MainScreenState extends State<ImageScreen> {
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 2,
                       color: Colors.limeAccent,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 2,
                       color: Colors.limeAccent,
                     ),
@@ -54,30 +54,33 @@ class MainScreenState extends State<ImageScreen> {
                       Icons.search,
                       color: Colors.limeAccent,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      imageViewModel.fetchImage(imageSearchController.text);
                       setState(() {});
                     },
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-               imageViewModel.isLoading  ? Center(child: CircularProgressIndicator(),)
-                   : Expanded(
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          crossAxisSpacing: 32,
-                          mainAxisSpacing: 32),
-                      itemCount: imageViewModel.imageItems.length,
-                      itemBuilder: (context, index){
-                        final imageItem = imageViewModel.imageItems[index];
-                        return ImageItemWidget(imageItem: imageItem);
-                      },),
-
-
-              )
+              imageViewModel.isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            crossAxisSpacing: 32,
+                            mainAxisSpacing: 32),
+                        itemCount: imageViewModel.imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = imageViewModel.imageItems[index];
+                          return ImageItemWidget(imageItem: imageItem);
+                        },
+                      ),
+                    ),
             ],
           ),
         ),
