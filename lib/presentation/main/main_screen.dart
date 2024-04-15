@@ -36,10 +36,11 @@ class _MainScreenState extends State<MainScreen> {
                   content: const Text('이미지를 가져 왔습니다.'),
                   actions: [
                     TextButton(
-                        onPressed: () {
-                          context.pop();
-                        },
-                        child: Text('확인')),
+                      onPressed: () {
+                        context.pop();
+                      },
+                      child: Text('확인'),
+                    ),
                   ],
                 );
               });
@@ -104,7 +105,36 @@ class _MainScreenState extends State<MainScreen> {
                         itemCount: state.imageItems.length,
                         itemBuilder: (context, index) {
                           final imageItem = state.imageItems[index];
-                          return ImageWidget(imageItem: imageItem);
+                          return GestureDetector(
+                              onTap: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('이미지 검색 앱'),
+                                        content: Text('자세히 보시겠습니까'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              context.pop(true);
+                                              context.push('/detail',
+                                                  extra: imageItem);
+                                            },
+                                            child: Text('확인'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              context.pop();
+                                            },
+                                            child: Text('취소'),
+                                          ),
+                                        ],
+                                      );
+                                    }).then((value) {
+                                    if (value != null && value) {}
+                                });
+                              },
+                              child: ImageWidget(imageItem: imageItem));
                         },
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
