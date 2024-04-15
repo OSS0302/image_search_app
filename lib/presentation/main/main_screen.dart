@@ -46,8 +46,14 @@ class _MainScreenState extends State<MainScreen> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () async {
-                      await mainViewModel
+                      final result = await mainViewModel
                           .fetchImage(textEditingController.text);
+                      if (result == false) {
+                        const snackBar = SnackBar(content: Text('오류!'));
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
                       setState(() {});
                     },
                   ),
@@ -56,22 +62,23 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(
                 height: 24,
               ),
-               state.isLoading ? Center(child: CircularProgressIndicator(),)
-              : Expanded(
-                    child: GridView.builder(
-                      itemCount: state.imageItems.length,
-                      itemBuilder: (context, index) {
-                        final imageItem = state.imageItems[index];
-                        return ImageWidget(imageItem: imageItem);
-                      },
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          mainAxisSpacing: 32,
-                          crossAxisSpacing: 32),
+              state.isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: state.imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = state.imageItems[index];
+                          return ImageWidget(imageItem: imageItem);
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            mainAxisSpacing: 32,
+                            crossAxisSpacing: 32),
+                      ),
                     ),
-
-
-              ),
             ],
           ),
         ),
