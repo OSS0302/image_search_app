@@ -4,32 +4,23 @@ class ImageItem {
   final int id;
 
 //<editor-fold desc="Data Methods">
-
-
   const ImageItem({
     required this.imageUrl,
     required this.tags,
     required this.id,
   });
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is ImageItem &&
-              runtimeType == other.runtimeType &&
-              imageUrl == other.imageUrl &&
-              tags == other.tags &&
-              id == other.id
-          );
-
+      (other is ImageItem &&
+          runtimeType == other.runtimeType &&
+          imageUrl == other.imageUrl &&
+          tags == other.tags &&
+          id == other.id);
 
   @override
-  int get hashCode =>
-      imageUrl.hashCode ^
-      tags.hashCode ^
-      id.hashCode;
-
+  int get hashCode => imageUrl.hashCode ^ tags.hashCode ^ id.hashCode;
 
   @override
   String toString() {
@@ -39,7 +30,6 @@ class ImageItem {
         ' id: $id,' +
         '}';
   }
-
 
   ImageItem copyWith({
     String? imageUrl,
@@ -52,7 +42,6 @@ class ImageItem {
       id: id ?? this.id,
     );
   }
-
 
   Map<String, dynamic> toJson() {
     return {
@@ -69,7 +58,6 @@ class ImageItem {
       id: json['id'] as int,
     );
   }
-
 
 //</editor-fold>
 }
