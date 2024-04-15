@@ -46,14 +46,8 @@ class _MainScreenState extends State<MainScreen> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () async {
-                      final result = await mainViewModel
+                      await mainViewModel
                           .fetchImage(textEditingController.text);
-                      if (result == false) {
-                        const snackBar = SnackBar(content: Text('오류!'));
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      }
                       setState(() {});
                     },
                   ),
