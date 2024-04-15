@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository.dart';
+import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 
-import '../../model/image_item.dart';
 
 class MainScreen extends StatefulWidget {
-
   const MainScreen({super.key});
 
   @override
@@ -14,6 +12,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final textEditingController = TextEditingController();
+  final mainViewModel = MainViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +33,7 @@ class _MainScreenState extends State<MainScreen> {
                       borderSide: const BorderSide(
                         width: 2,
                         color: Colors.deepOrangeAccent,
-                      )
-                  ),
+                      )),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     borderSide: const BorderSide(
@@ -46,34 +44,35 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: '이미지 앱',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
-                    onPressed: () {
-                      setState(() {});
+                    onPressed: () async {
+                      await mainViewModel.fetchImage(textEditingController.text);
+                      setState(() {
+
+                      });
                     },
                   ),
                 ),
               ),
-              SizedBox(height: 24,),
-              FutureBuilder<List<ImageItem>>(
-                future: ImageRepositoryImpl().getfetchImage(
-                    textEditingController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                  final imageItems = snapshot.data!;
-                  return Expanded(
+              SizedBox(
+                height: 24,
+              ),
+              mainViewModel.isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
                       child: GridView.builder(
-                        itemCount: imageItems.length,
+                        itemCount: mainViewModel.imageItems.length,
                         itemBuilder: (context, index) {
-                          final imageItem = imageItems[index];
+                          final imageItem = mainViewModel.imageItems[index];
                           return ImageWidget(imageItem: imageItem);
                         },
-
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, mainAxisSpacing: 32, crossAxisSpacing: 32),
-                      )
-                  );
-                },
-              )
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            mainAxisSpacing: 32,
+                            crossAxisSpacing: 32),
+                      ),
+                    ),
             ],
           ),
         ),
