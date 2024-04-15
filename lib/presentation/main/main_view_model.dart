@@ -16,12 +16,10 @@ class MainViewModel extends ChangeNotifier {
   Stream<bool> get isLoadingStream => loadingController.stream;
 
   Future<void> fetchImage(String query) async {
-    isLoading = true;
-    notifyListeners();
+    loadingController.add(true);
 
     _imageItems = await _repository.getfetchImage(query);
 
-    isLoading = false;
-    notifyListeners();
+    loadingController.add(false);
   }
 }
