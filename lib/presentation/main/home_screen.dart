@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_search_app/data/repository/image_repository_impl.dart';
 import 'package:image_search_app/presentation/image_widget/image_widget.dart';
+import 'package:image_search_app/presentation/main/home_event.dart';
 import 'package:image_search_app/presentation/main/home_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +17,39 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final imageSearchController = TextEditingController();
+  StreamSubscription<HomeEvent>? subscription;
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      context.read<HomeViewModel>().eventStream.listen((event) {
+        switch (event) {
+          case ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.message));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          case ShowDialog():
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text('Image_Search_App'),
+                  content: Text('이미지를 가져왔습니다.'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        context.pop();
+                      },
+                      child: Text('확인'),
+                    ),
+                  ],
+                );
+              },
+            );
+        }
+      });
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
