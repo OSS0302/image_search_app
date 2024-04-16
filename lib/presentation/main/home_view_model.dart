@@ -2,18 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
+import 'package:image_search_app/domain/use_case/image_use_case.dart';
 import 'package:image_search_app/presentation/main/home_event.dart';
 import 'package:image_search_app/presentation/main/home_state.dart';
 
-import '../../data/model/image_item.dart';
-import '../../data/repository/image_repository.dart';
+import '../../domain/model/image_item.dart';
+import '../../domain/repository/image_repository.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  final ImageRepository _repository;
+  final ImageUseCase _imageUseCase;
+   HomeViewModel({
+    required ImageUseCase imageUseCase,
+  }) : _imageUseCase = imageUseCase;
 
-  HomeViewModel({
-    required ImageRepository repository,
-  }) : _repository = repository;
 
   HomeState _state =
       HomeState(isLoading: false, imageItem: List.unmodifiable([]));
@@ -28,7 +29,7 @@ class HomeViewModel extends ChangeNotifier {
       isLoading: true,
     );
     notifyListeners();
-    final result = (await _repository.getImageSearch(query));
+    final result = (await _imageUseCase.execute(query));
       switch(result){
         case Success<List<ImageItem>>():
           _state = state.copyWith(
@@ -44,4 +45,6 @@ class HomeViewModel extends ChangeNotifier {
           );
       }
   }
+
+
 }
