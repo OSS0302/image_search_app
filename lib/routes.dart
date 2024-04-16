@@ -2,19 +2,17 @@ import 'package:go_router/go_router.dart';
 import 'package:image_search_app/di/di_setup.dart';
 import 'package:image_search_app/domain/model/image_item.dart';
 import 'package:image_search_app/presentation/detail/detail_screen.dart';
-import 'package:image_search_app/presentation/main/main_screen.dart';
-import 'package:image_search_app/presentation/main/main_view_model.dart';
+import 'package:image_search_app/presentation/main/home_screen.dart';
+import 'package:image_search_app/presentation/main/home_view_model.dart';
 import 'package:provider/provider.dart';
-
-import 'data/repository/image_repository_impl.dart';
 
 final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
       builder: (context, state) => ChangeNotifierProvider(
-        create: (_) => getIt<MainViewModel>(),
-        child: MainScreen(),
+        create: (_) => getIt<HomeViewModel>(),
+        child: HomeScreen(),
       ),
     ),
     GoRoute(

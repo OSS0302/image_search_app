@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../domain/model/image_item.dart';
+import 'package:image_search_app/domain/model/image_item.dart';
 
 class DetailScreen extends StatelessWidget {
   final ImageItem imageItem;
@@ -11,7 +10,7 @@ class DetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(imageItem.tags),
+        title: Text(imageItem.tags),
       ),
       body: Hero(
         tag: imageItem.id,
@@ -22,7 +21,6 @@ class DetailScreen extends StatelessWidget {
             fit: BoxFit.cover,
             width: 400,
             height: 400,
-            
           ),
         ),
       ),
