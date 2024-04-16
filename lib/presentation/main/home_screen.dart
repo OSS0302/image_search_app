@@ -56,8 +56,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       Icons.search_outlined,
                       color: Colors.deepPurpleAccent,
                     ),
-                    onPressed: () async{
-                     await homeViewModel.fetchImage(imageSearchController.text);
+                    onPressed: () async {
+                      final result = await homeViewModel
+                          .fetchImage(imageSearchController.text);
+                      if (result == null) {
+                        const snackBar =SnackBar(content: Text('오류'));
+                      if(mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                      }
                       setState(() {});
                     },
                   ),

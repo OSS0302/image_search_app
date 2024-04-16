@@ -18,14 +18,19 @@ class HomeViewModel extends ChangeNotifier {
 
   HomeState get state => _state;
 
-  Future<void> fetchImage(String query) async {
+  Future<bool> fetchImage(String query) async {
     _state = state.copyWith(
       isLoading: true,
     );
-
-    _state = state.copyWith(
-        isLoading: false,
-        imageItem: await _repository.getImageSearch(query)
-    );
+      try {
+        final result = (await _repository.getImageSearch(query)).toList();
+        _state = state.copyWith(
+            isLoading: false,
+            imageItem: result
+        );
+        return true;
+      }catch(e){
+        return false;
+      }
   }
 }
