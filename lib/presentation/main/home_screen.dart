@@ -59,12 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () async {
                       final result = await homeViewModel
                           .fetchImage(imageSearchController.text);
-                      if (result == null) {
-                        const snackBar =SnackBar(content: Text('오류'));
-                      if(mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      }
-                      }
                       setState(() {});
                     },
                   ),
