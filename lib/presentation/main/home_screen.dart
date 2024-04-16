@@ -23,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final homeViewModel = context.watch<HomeViewModel>();
+    final state = homeViewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Image_Search_App'),
@@ -65,15 +66,15 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 24,
               ),
-              homeViewModel.isLoading
+              state.isLoading
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
                   : Expanded(
                       child: GridView.builder(
-                        itemCount: homeViewModel.imageItem.length,
+                        itemCount: state.imageItem.length,
                         itemBuilder: (context, index) {
-                          final imageItems = homeViewModel.imageItem[index];
+                          final imageItems = state.imageItem[index];
                           return ImageWidget(imageItems: imageItems);
                         },
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
