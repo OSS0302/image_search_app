@@ -1,27 +1,28 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/dto/image_dto.dart';
-import 'package:image_search_app/data/repository/image_repository_impl.dart';
 
 import '../../data/model/image_item.dart';
+import '../../data/repository/image_repository.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  final _repository = ImageRepositoryImpl();
+  final ImageRepository _repository;
+   HomeViewModel({
+    required ImageRepository repository,
+  }) : _repository = repository;
   bool isLoading = false;
   List<ImageItem> imageItem = [];
+
   List<ImageItem> get imageItems => List.unmodifiable(imageItem);
 
-  final loadingController = StreamController<bool>();
-  Stream<bool> get isLoadingStream => loadingController.stream;
 
-  Future<void> fetchImage(String query) async{
-   loadingController.add(true);
-   // isLoading = true;
+  Future<void> fetchImage(String query) async {
+    isLoading = true;
+    notifyListeners();
 
     imageItem = await _repository.getImageSearch(query);
-   loadingController.add(false);
-    // isLoading = false;
-    // notifyListeners();
+
+    isLoading = false;
+    notifyListeners();
   }
 }

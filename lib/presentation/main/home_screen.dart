@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_repository_impl.dart';
 import 'package:image_search_app/presentation/image_widget/image_widget.dart';
 import 'package:image_search_app/presentation/main/home_view_model.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,7 +13,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final imageSearchController = TextEditingController();
-  final homeViewModel = HomeViewModel();
 
   @override
   void dispose() {
@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final homeViewModel = context.watch<HomeViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Image_Search_App'),
@@ -54,9 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       Icons.search_outlined,
                       color: Colors.deepPurpleAccent,
                     ),
-                    onPressed: () async {
-                      await homeViewModel
-                          .fetchImage(imageSearchController.text);
+                    onPressed: () async{
+                     await homeViewModel.fetchImage(imageSearchController.text);
                       setState(() {});
                     },
                   ),
@@ -65,30 +65,24 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 24,
               ),
-              StreamBuilder<bool>(
-                initialData: false,
-                stream: homeViewModel.isLoadingStream,
-                builder: (context,snapshot){
-                  if(snapshot.data! == true){
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                  return Expanded(
-                    child: GridView.builder(
-                      itemCount: homeViewModel.imageItem.length,
-                      itemBuilder: (context, index) {
-                        final imageItems = homeViewModel.imageItem[index];
-                        return ImageWidget(imageItems: imageItems);
-                      },
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 22,
-                        mainAxisSpacing: 22,
+              homeViewModel.isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: homeViewModel.imageItem.length,
+                        itemBuilder: (context, index) {
+                          final imageItems = homeViewModel.imageItem[index];
+                          return ImageWidget(imageItems: imageItems);
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 22,
+                          mainAxisSpacing: 22,
+                        ),
                       ),
                     ),
-                  );
-                },
-              ),
-
             ],
           ),
         ),
