@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
           case ShowDialog():
             showDialog(
               context: context,
-              builder: (context) {
+              builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text('Image_Search_App'),
                   content: Text('이미지를 가져왔습니다.'),
@@ -113,7 +113,38 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: state.imageItem.length,
                         itemBuilder: (context, index) {
                           final imageItems = state.imageItem[index];
-                          return ImageWidget(imageItems: imageItems);
+                          return GestureDetector(
+                            onTap: () async {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context){
+                                  return AlertDialog(
+                                    title: Text('Image_Search_App'),
+                                    content: Text('자세히 보시겠습니까 ?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          context.pop(true);
+                                          context.push('/detail', extra: imageItems);
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          context.pop();
+                                        },
+                                        child: Text('취소'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ).then((value) {
+                                if(value != null &&  value){}
+                              });
+
+                            },
+                              child:ImageWidget(imageItems: imageItems),
+                          );
                         },
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
