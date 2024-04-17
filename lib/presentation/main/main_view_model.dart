@@ -2,17 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
-import 'package:image_search_app/data/model/image_item.dart';
-import 'package:image_search_app/data/repository/image_repository.dart';
 import 'package:image_search_app/presentation/main/main_event.dart';
 import 'package:image_search_app/presentation/main/main_state.dart';
 
+import '../../domain/model/image_item.dart';
+import '../../domain/use_case/image_use_case.dart';
+
 class MainViewModel extends ChangeNotifier {
-  final ImageRepository _repository;
+  final ImageUseCase _imageUseCase;
 
   MainViewModel({
-    required ImageRepository repository,
-  }) : _repository = repository;
+    required ImageUseCase imageUseCase,
+  }) : _imageUseCase = imageUseCase;
 
   MainState _state =
       MainState(isLoading: false, imageItem: List.unmodifiable([]));
@@ -28,7 +29,7 @@ class MainViewModel extends ChangeNotifier {
       isLoading: true,
     );
     notifyListeners();
-    final result = (await _repository.getImageSearch(query));
+    final result = (await _imageUseCase.execute(query));
     switch (result) {
       case Success<List<ImageItem>>():
         _state = state.copyWith(
