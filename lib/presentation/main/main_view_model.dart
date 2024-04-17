@@ -4,21 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
 import 'package:image_search_app/data/model/image_item.dart';
 import 'package:image_search_app/data/repository/image_repository.dart';
+import 'package:image_search_app/presentation/main/main_event.dart';
 import 'package:image_search_app/presentation/main/main_state.dart';
 
 class MainViewModel extends ChangeNotifier {
-  final ImageRepository  _repository ;
+  final ImageRepository _repository;
 
-   MainViewModel({
+  MainViewModel({
     required ImageRepository repository,
   }) : _repository = repository;
 
-  MainState _state =  MainState(isLoading: false, imageItem: List.unmodifiable([]));
+  MainState _state =
+      MainState(isLoading: false, imageItem: List.unmodifiable([]));
 
   MainState get state => _state;
 
+  final _eventController = StreamController<MainEvent>();
 
-
+  Stream<MainEvent> get eventStream => _eventController.stream;
 
   Future<void> searchImage(String query) async {
     _state = state.copyWith(
@@ -26,19 +29,19 @@ class MainViewModel extends ChangeNotifier {
     );
     notifyListeners();
     final result = (await _repository.getImageSearch(query));
-    switch(result){
-
+    switch (result) {
       case Success<List<ImageItem>>():
         _state = state.copyWith(
           isLoading: false,
-          imageItem: result.data.toList()
+          imageItem: result.data.toList(),
         );
+        notifyListeners();
+        _eventController.add(MainEvent.showSnackBar('성공!!입니다.'));
+        _eventController.add(MainEvent.showDialog('다이얼로그!.'));
       case Error<List<ImageItem>>():
         _state = state.copyWith(
-            isLoading: false,
+          isLoading: false,
         );
     }
   }
-
-
 }
