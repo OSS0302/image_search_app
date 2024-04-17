@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/image_item.dart';
-import 'package:image_search_app/data/repository/image_repository_impl.dart';
+import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 
 class MainScreen extends StatefulWidget {
@@ -12,6 +11,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final searchController = TextEditingController();
+  final mainViewModel = MainViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -27,55 +27,48 @@ class _MainScreenState extends State<MainScreen> {
               TextField(
                 controller: searchController,
                 decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
-                      width: 2,
-                      color: Colors.greenAccent,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(
+                        width: 2,
+                        color: Colors.greenAccent,
+                      ),
                     ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
-                      width: 2,
-                      color: Colors.greenAccent,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(
+                        width: 2,
+                        color: Colors.greenAccent,
+                      ),
                     ),
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.search_outlined),
-                    onPressed: () {
-                      setState(() {
-
-                      });
-                    },
-                  )
-                ),
-
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.search_outlined),
+                      onPressed: () async {
+                        await mainViewModel.searchImage(searchController.text);
+                        setState(() {});
+                      },
+                    )),
               ),
               SizedBox(
                 height: 24,
               ),
-              FutureBuilder<List<ImageItem>>(
-                future:
-                ImageRepositoryImpl().getImageSearch(searchController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
+              mainViewModel.isLoading
+                  ? Center(
                       child: CircularProgressIndicator(),
-                    );
-                  }
-                  final imageItem = snapshot.data!;
-                  return Expanded(
+                    )
+                  : Expanded(
                       child: GridView.builder(
-                        itemCount: imageItem.length,
-                        itemBuilder: (context , index) {
-                          final imageItems = imageItem[index];
+                        itemCount: mainViewModel.imageItem.length,
+                        itemBuilder: (context, index) {
+                          final imageItems = mainViewModel.imageItem[index];
                           return ImageWidget(imageItems: imageItems);
                         },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5,mainAxisSpacing: 32,crossAxisSpacing: 32),
-                      ));
-                },
-              ),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 5,
+                            mainAxisSpacing: 32,
+                            crossAxisSpacing: 32),
+                      ),
+                    ),
             ],
           ),
         ),
