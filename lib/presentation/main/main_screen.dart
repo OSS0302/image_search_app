@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_search_app/presentation/main/main_view_model.dart';
-import 'package:image_search_app/presentation/widget/image_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../widget/image_widget.dart';
 import 'main_event.dart';
 
 class MainScreen extends StatefulWidget {
@@ -37,8 +37,9 @@ class _MainScreenState extends State<MainScreen> {
                   actions: [
                     TextButton(
                         onPressed: () {
-                      context.pop();
-                    }, child: Text('확인')),
+                          context.pop();
+                        },
+                        child: Text('확인')),
                   ],
                 );
               },
@@ -105,7 +106,36 @@ class _MainScreenState extends State<MainScreen> {
                         itemCount: state.imageItem.length,
                         itemBuilder: (context, index) {
                           final imageItems = state.imageItem[index];
-                          return ImageWidget(imageItems: imageItems);
+                          return GestureDetector(
+                              onTap: () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('이미지 검색앱 '),
+                                      content: Text('이미지 데이터를 가져왔습니다.'),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              context.pop(true);
+                                              context.push('/detail', extra: imageItems);
+                                            },
+                                            child: Text('확인')),
+                                        TextButton(
+                                            onPressed: () {
+                                              context.pop();
+                                            },
+                                            child: Text('취소')),
+                                      ],
+                                    );
+                                  },
+                                ).then((value) {
+                                  if(value == null && value){}
+                                },
+                                );
+
+
+                              },child:ImageWidget(imageItems: imageItems),);
                         },
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 5,
