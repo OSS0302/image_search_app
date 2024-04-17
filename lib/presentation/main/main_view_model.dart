@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:image_search_app/core/result.dart';
+import 'package:image_search_app/data/model/image_item.dart';
 import 'package:image_search_app/data/repository/image_repository.dart';
 import 'package:image_search_app/presentation/main/main_state.dart';
 
@@ -18,25 +20,24 @@ class MainViewModel extends ChangeNotifier {
 
 
 
-  Future<bool> searchImage(String query) async {
+  Future<void> searchImage(String query) async {
     _state = state.copyWith(
       isLoading: true,
     );
     notifyListeners();
+    final result = (await _repository.getImageSearch(query));
+    switch(result){
 
-    try {
-      final result = (await _repository.getImageSearch(query)).toList();
-      _state = state.copyWith(
+      case Success<List<ImageItem>>():
+        _state = state.copyWith(
           isLoading: false,
-          imageItem: result,
-      );
-      notifyListeners();
-      return true;
-    }catch(e){
-      return false;
+          imageItem: result.data.toList()
+        );
+      case Error<List<ImageItem>>():
+        _state = state.copyWith(
+            isLoading: false,
+        );
     }
-
-
   }
 
 
