@@ -1,7 +1,7 @@
-import 'package:image_search_app/domain/model/image_item.dart';
 import 'package:image_search_app/domain/repository/image_repository.dart';
 
 import '../../core/result.dart';
+import '../model/image_item.dart';
 
 class ImageUseCase {
   final ImageRepository _repository;
@@ -12,12 +12,11 @@ class ImageUseCase {
 
   Future<Result<List<ImageItem>>> execute(String query) async {
     final result = await _repository.getImageSearch(query);
-    switch(result){
-
+    switch (result) {
       case Success<List<ImageItem>>():
         Result.success(result.data.toList());
       case Error<List<ImageItem>>():
-        Result.error(Exception(result.e));
+        Result.error(Exception(result.e.toString()));
     }
     return result;
   }

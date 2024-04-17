@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'home_state.dart';
+part of 'main_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,33 +14,33 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-HomeState _$HomeStateFromJson(Map<String, dynamic> json) {
-  return _HomeState.fromJson(json);
+MainState _$MainStateFromJson(Map<String, dynamic> json) {
+  return _MainState.fromJson(json);
 }
 
 /// @nodoc
-mixin _$HomeState {
-  bool get isLoading => throw _privateConstructorUsedError;
+mixin _$MainState {
   List<ImageItem> get imageItem => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $HomeStateCopyWith<HomeState> get copyWith =>
+  $MainStateCopyWith<MainState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $HomeStateCopyWith<$Res> {
-  factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
-      _$HomeStateCopyWithImpl<$Res, HomeState>;
+abstract class $MainStateCopyWith<$Res> {
+  factory $MainStateCopyWith(MainState value, $Res Function(MainState) then) =
+      _$MainStateCopyWithImpl<$Res, MainState>;
   @useResult
-  $Res call({bool isLoading, List<ImageItem> imageItem});
+  $Res call({List<ImageItem> imageItem, bool isLoading});
 }
 
 /// @nodoc
-class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
-    implements $HomeStateCopyWith<$Res> {
-  _$HomeStateCopyWithImpl(this._value, this._then);
+class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
+    implements $MainStateCopyWith<$Res> {
+  _$MainStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -50,73 +50,70 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isLoading = null,
     Object? imageItem = null,
+    Object? isLoading = null,
   }) {
     return _then(_value.copyWith(
-      isLoading: null == isLoading
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
       imageItem: null == imageItem
           ? _value.imageItem
           : imageItem // ignore: cast_nullable_to_non_nullable
               as List<ImageItem>,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$HomeStateImplCopyWith<$Res>
-    implements $HomeStateCopyWith<$Res> {
-  factory _$$HomeStateImplCopyWith(
-          _$HomeStateImpl value, $Res Function(_$HomeStateImpl) then) =
-      __$$HomeStateImplCopyWithImpl<$Res>;
+abstract class _$$MainStateImplCopyWith<$Res>
+    implements $MainStateCopyWith<$Res> {
+  factory _$$MainStateImplCopyWith(
+          _$MainStateImpl value, $Res Function(_$MainStateImpl) then) =
+      __$$MainStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, List<ImageItem> imageItem});
+  $Res call({List<ImageItem> imageItem, bool isLoading});
 }
 
 /// @nodoc
-class __$$HomeStateImplCopyWithImpl<$Res>
-    extends _$HomeStateCopyWithImpl<$Res, _$HomeStateImpl>
-    implements _$$HomeStateImplCopyWith<$Res> {
-  __$$HomeStateImplCopyWithImpl(
-      _$HomeStateImpl _value, $Res Function(_$HomeStateImpl) _then)
+class __$$MainStateImplCopyWithImpl<$Res>
+    extends _$MainStateCopyWithImpl<$Res, _$MainStateImpl>
+    implements _$$MainStateImplCopyWith<$Res> {
+  __$$MainStateImplCopyWithImpl(
+      _$MainStateImpl _value, $Res Function(_$MainStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isLoading = null,
     Object? imageItem = null,
+    Object? isLoading = null,
   }) {
-    return _then(_$HomeStateImpl(
-      isLoading: null == isLoading
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
+    return _then(_$MainStateImpl(
       imageItem: null == imageItem
           ? _value._imageItem
           : imageItem // ignore: cast_nullable_to_non_nullable
               as List<ImageItem>,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$HomeStateImpl with DiagnosticableTreeMixin implements _HomeState {
-  const _$HomeStateImpl(
-      {this.isLoading = false, final List<ImageItem> imageItem = const []})
+class _$MainStateImpl with DiagnosticableTreeMixin implements _MainState {
+  const _$MainStateImpl(
+      {final List<ImageItem> imageItem = const [], this.isLoading = false})
       : _imageItem = imageItem;
 
-  factory _$HomeStateImpl.fromJson(Map<String, dynamic> json) =>
-      _$$HomeStateImplFromJson(json);
+  factory _$MainStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MainStateImplFromJson(json);
 
-  @override
-  @JsonKey()
-  final bool isLoading;
   final List<ImageItem> _imageItem;
   @override
   @JsonKey()
@@ -127,63 +124,67 @@ class _$HomeStateImpl with DiagnosticableTreeMixin implements _HomeState {
   }
 
   @override
+  @JsonKey()
+  final bool isLoading;
+
+  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'HomeState(isLoading: $isLoading, imageItem: $imageItem)';
+    return 'MainState(imageItem: $imageItem, isLoading: $isLoading)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'HomeState'))
-      ..add(DiagnosticsProperty('isLoading', isLoading))
-      ..add(DiagnosticsProperty('imageItem', imageItem));
+      ..add(DiagnosticsProperty('type', 'MainState'))
+      ..add(DiagnosticsProperty('imageItem', imageItem))
+      ..add(DiagnosticsProperty('isLoading', isLoading));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$HomeStateImpl &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
+            other is _$MainStateImpl &&
             const DeepCollectionEquality()
-                .equals(other._imageItem, _imageItem));
+                .equals(other._imageItem, _imageItem) &&
+            (identical(other.isLoading, isLoading) ||
+                other.isLoading == isLoading));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, isLoading, const DeepCollectionEquality().hash(_imageItem));
+      runtimeType, const DeepCollectionEquality().hash(_imageItem), isLoading);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>
-      __$$HomeStateImplCopyWithImpl<_$HomeStateImpl>(this, _$identity);
+  _$$MainStateImplCopyWith<_$MainStateImpl> get copyWith =>
+      __$$MainStateImplCopyWithImpl<_$MainStateImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$HomeStateImplToJson(
+    return _$$MainStateImplToJson(
       this,
     );
   }
 }
 
-abstract class _HomeState implements HomeState {
-  const factory _HomeState(
-      {final bool isLoading,
-      final List<ImageItem> imageItem}) = _$HomeStateImpl;
+abstract class _MainState implements MainState {
+  const factory _MainState(
+      {final List<ImageItem> imageItem,
+      final bool isLoading}) = _$MainStateImpl;
 
-  factory _HomeState.fromJson(Map<String, dynamic> json) =
-      _$HomeStateImpl.fromJson;
+  factory _MainState.fromJson(Map<String, dynamic> json) =
+      _$MainStateImpl.fromJson;
 
-  @override
-  bool get isLoading;
   @override
   List<ImageItem> get imageItem;
   @override
+  bool get isLoading;
+  @override
   @JsonKey(ignore: true)
-  _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>
+  _$$MainStateImplCopyWith<_$MainStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

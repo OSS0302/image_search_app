@@ -1,5 +1,5 @@
+import 'package:image_search_app/core/result.dart';
 
-import '../../core/result.dart';
 import '../model/image_item.dart';
 
 abstract interface class ImageRepository {

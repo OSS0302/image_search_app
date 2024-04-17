@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'home_state.dart';
+part of 'main_state.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$HomeStateImpl _$$HomeStateImplFromJson(Map<String, dynamic> json) =>
-    _$HomeStateImpl(
-      isLoading: json['isLoading'] as bool? ?? false,
+_$MainStateImpl _$$MainStateImplFromJson(Map<String, dynamic> json) =>
+    _$MainStateImpl(
       imageItem: (json['imageItem'] as List<dynamic>?)
               ?.map((e) => ImageItem.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      isLoading: json['isLoading'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$$HomeStateImplToJson(_$HomeStateImpl instance) =>
+Map<String, dynamic> _$$MainStateImplToJson(_$MainStateImpl instance) =>
     <String, dynamic>{
-      'isLoading': instance.isLoading,
       'imageItem': instance.imageItem,
+      'isLoading': instance.isLoading,
     };

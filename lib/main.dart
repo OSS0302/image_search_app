@@ -3,7 +3,7 @@ import 'package:image_search_app/di/di_setup.dart';
 import 'package:image_search_app/routes.dart';
 
 void main() {
-  diSetUp();
+  diSetup();
   runApp(const MyApp());
 }
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-    routerConfig: router,
+      routerConfig: router,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

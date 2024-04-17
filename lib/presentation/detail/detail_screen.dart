@@ -10,7 +10,7 @@ class DetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(imageItem.tags),
+        title: Text(imageItem.imageUrl),
       ),
       body: Hero(
         tag: imageItem.id,
