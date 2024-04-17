@@ -9,6 +9,7 @@ class ImageRepositoryImpl implements ImageRepository {
 
   @override
   Future<List<ImageItem>> getImageSearch(String query) async {
+
     final dto = await _api.getImageResult(query);
     if(dto.hits == null) {
       return [];
