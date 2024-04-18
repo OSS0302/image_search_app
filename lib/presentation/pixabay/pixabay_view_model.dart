@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
 
 import '../../data/model/pixabay_item.dart';
+import '../../data/repository/pixabay_repository.dart';
 
 class PixabayViewModel extends ChangeNotifier {
-  final _repository = PixabayRepositoryImpl();
+  final  PixabayRepository _repository;
+
+   PixabayViewModel({
+    required PixabayRepository repository,
+  }) : _repository = repository;
 
   List<PixabayItem> _pixabayItem = [];
   List<PixabayItem> get pixabayItem => List.unmodifiable(_pixabayItem);
@@ -22,4 +27,5 @@ class PixabayViewModel extends ChangeNotifier {
     _pixabayItem = await _repository.getfetchImage(query);
     _loadingController.add(false);
   }
+
 }
