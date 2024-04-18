@@ -1,12 +1,15 @@
 import 'package:get_it/get_it.dart';
-import 'package:image_search_app/domain/repository/image_repository.dart';
-import 'package:image_search_app/data/repository/image_repository_impl.dart';
+import 'package:http/http.dart';
+import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
 import 'package:image_search_app/domain/use_case/image_use_case.dart';
-import 'package:image_search_app/presentation/main/main_view_model.dart';
+import 'package:image_search_app/presentation/pixabay/pixabay_view_model.dart';
+
+import '../domain/repository/pixabay_repository.dart';
 
 final getIt = GetIt.instance;
-void diSetup() {
-  getIt.registerSingleton<ImageRepository>(ImageRepositoryImpl());
-  getIt.registerSingleton<ImageUseCase>(ImageUseCase(repository: getIt<ImageRepository>()));
-  getIt.registerFactory<MainViewModel>(() => MainViewModel(imageUseCase: getIt<ImageUseCase>()));
+
+void diSetUp() {
+  getIt.registerSingleton<PixabayRepository>(PixabayRepositoryImpl());
+  getIt.registerSingleton<ImageUseCase>(ImageUseCase(repository: getIt<PixabayRepository>()));
+  getIt.registerFactory<PixabayViewModel>(() => PixabayViewModel(imageUseCase: getIt<ImageUseCase>()));
 }
