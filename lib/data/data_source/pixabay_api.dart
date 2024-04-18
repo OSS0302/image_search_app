@@ -1,11 +1,13 @@
 import 'dart:convert';
 
-import '../../key.dart';
-import '../dto/image_dto.dart';
+import 'package:image_search_app/data/dto/pixabay_dto.dart';
 import 'package:http/http.dart' as http;
+
+import '../../key.dart';
+
 class PixabayApi {
-  Future<ImageDto> getImageResult(String query) async {
+  Future<PixabayDto> getImageResult(String query) async{
     final response =  await http.get(Uri.parse('https://pixabay.com/api/?key=$key&q=$query&image_type=photo'));
-    return ImageDto.fromJson(jsonDecode(response.body));
+    return PixabayDto.fromJson(jsonDecode(response.body));
   }
 }
