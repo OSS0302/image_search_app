@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/image_item.dart';
-import 'package:image_search_app/data/repository/image_repository_impl.dart';
 import 'package:image_search_app/presentation/image/image_view_model.dart';
 
 class ImageScreen extends StatefulWidget {
@@ -28,19 +26,19 @@ class _ImageScreenState extends State<ImageScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               TextField(
                 controller: textEditingController,
                 decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       width: 2,
                       color: Colors.deepOrange,
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
                       width: 2,
                       color: Colors.deepOrange,
@@ -48,7 +46,7 @@ class _ImageScreenState extends State<ImageScreen> {
                   ),
                   hintText: '이미지검색앱',
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.search_rounded),
+                    icon: const Icon(Icons.search_rounded),
                     onPressed: () async {
                       await imageViewModel
                           .searchImage(textEditingController.text);
@@ -57,33 +55,39 @@ class _ImageScreenState extends State<ImageScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-              imageViewModel.isLoaidng
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Expanded(
-                      child: GridView.builder(
-                        itemCount: imageViewModel.imageItem.length,
-                        itemBuilder: (context, index) {
-                          final imageItems = imageViewModel.imageItem[index];
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.network(
-                              imageItems.imageUrl,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 22,
-                          mainAxisSpacing: 22,
-                        ),
+              StreamBuilder(
+                initialData: false,
+                stream: imageViewModel.isLoadingStream,
+                builder: (context ,snapshot) {
+                  if(snapshot.data! == true) {
+                    return const Center(child: CircularProgressIndicator(),);
+                  }
+                  return Expanded(
+                    child: GridView.builder(
+                      itemCount: imageViewModel.imageItem.length,
+                      itemBuilder: (context, index) {
+                        final imageItems = imageViewModel.imageItem[index];
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            imageItems.imageUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 22,
+                        mainAxisSpacing: 22,
                       ),
                     ),
+                  );
+                },
+              ),
+
             ],
           ),
         ),
