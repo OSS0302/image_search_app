@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/presentation/image/image_view_model.dart';
+import 'package:provider/provider.dart';
 
 class ImageScreen extends StatefulWidget {
   const ImageScreen({super.key});
@@ -10,7 +11,7 @@ class ImageScreen extends StatefulWidget {
 
 class _ImageScreenState extends State<ImageScreen> {
   final textEditingController = TextEditingController();
-  final imageViewModel = ImageViewModel();
+
 
   @override
   void dispose() {
@@ -20,6 +21,7 @@ class _ImageScreenState extends State<ImageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final imageViewModel = context.watch<ImageViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 검색앱'),
@@ -44,7 +46,7 @@ class _ImageScreenState extends State<ImageScreen> {
                       color: Colors.deepOrange,
                     ),
                   ),
-                  hintText: '이미지검색앱',
+                  hintText: '이미지 검색 앱',
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search_rounded),
                     onPressed: () async {
@@ -58,36 +60,27 @@ class _ImageScreenState extends State<ImageScreen> {
               const SizedBox(
                 height: 24,
               ),
-              StreamBuilder(
-                initialData: false,
-                stream: imageViewModel.isLoadingStream,
-                builder: (context ,snapshot) {
-                  if(snapshot.data! == true) {
-                    return const Center(child: CircularProgressIndicator(),);
-                  }
-                  return Expanded(
-                    child: GridView.builder(
-                      itemCount: imageViewModel.imageItem.length,
-                      itemBuilder: (context, index) {
-                        final imageItems = imageViewModel.imageItem[index];
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network(
-                            imageItems.imageUrl,
-                            fit: BoxFit.cover,
-                          ),
-                        );
-                      },
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 22,
-                        mainAxisSpacing: 22,
+              imageViewModel.isLoadidng ? const Center(child: CircularProgressIndicator(),)
+             : Expanded(
+                child: GridView.builder(
+                  itemCount: imageViewModel.imageItem.length,
+                  itemBuilder: (context, index) {
+                    final imageItems = imageViewModel.imageItem[index];
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        imageItems.imageUrl,
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 22,
+                    mainAxisSpacing: 22,
+                  ),
+                ),
               ),
-
             ],
           ),
         ),
