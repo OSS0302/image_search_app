@@ -51,14 +51,9 @@ class _ImageScreenState extends State<ImageScreen> {
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search_rounded),
                     onPressed: () async {
-                     final result =  await imageViewModel
+                       await imageViewModel
                           .searchImage(textEditingController.text);
-                     if(result == false) {
-                       const snackBar = SnackBar(content: Text('오류'));
-                      if(mounted){
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      }
-                     }
+
                       setState(() {});
                     },
                   ),
