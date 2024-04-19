@@ -5,6 +5,7 @@ import 'package:image_search_app/data/repository/image_repository_impl.dart';
 
 import '../../data/model/image_item.dart';
 import '../../data/repository/image_repository.dart';
+import 'image_state.dart';
 
 class ImageViewModel extends ChangeNotifier {
   final   ImageRepository  _repository;
@@ -13,20 +14,20 @@ class ImageViewModel extends ChangeNotifier {
   }) : _repository = repository;
 
 
-  List<ImageItem> _imageItem = [];
-  List<ImageItem> get  imageItem => List.unmodifiable(_imageItem);
-  bool isLoadidng = false;
+  ImageState _state =  ImageState(imageItem: List.unmodifiable([]), isLoadidng: false);
 
-  final _isLoadingController = StreamController<bool>();
-  Stream<bool> get isLoadingStream => _isLoadingController.stream;
+  ImageState get state => _state;
 
   Future<void> searchImage(String query) async {
-    isLoadidng = true;
+    final result = (await _repository.getImageItem(query)).toList();
+    _state = state.copyWith(
+      isLoadidng: true,
+    );
     notifyListeners();
-
-    _imageItem = await _repository.getImageItem(query);
-    isLoadidng = false;
-    notifyListeners();
+    _state = state.copyWith(
+      isLoadidng: false,
+      imageItem: result,
+    );
   }
 
 
