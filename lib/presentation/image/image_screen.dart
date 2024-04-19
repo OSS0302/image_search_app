@@ -51,8 +51,14 @@ class _ImageScreenState extends State<ImageScreen> {
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search_rounded),
                     onPressed: () async {
-                      await imageViewModel
+                     final result =  await imageViewModel
                           .searchImage(textEditingController.text);
+                     if(result == false) {
+                       const snackBar = SnackBar(content: Text('오류'));
+                      if(mounted){
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                     }
                       setState(() {});
                     },
                   ),
@@ -61,7 +67,7 @@ class _ImageScreenState extends State<ImageScreen> {
               const SizedBox(
                 height: 24,
               ),
-              state.isLoadidng ? const Center(child: CircularProgressIndicator(),)
+              state.isLoading ? const Center(child: CircularProgressIndicator(),)
              : Expanded(
                 child: GridView.builder(
                   itemCount: state.imageItem.length,
