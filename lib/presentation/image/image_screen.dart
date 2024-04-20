@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_search_app/domain/model/image_item.dart';
 import 'package:image_search_app/presentation/image/image_view_model.dart';
+import 'package:image_search_app/presentation/image_wdiget.dart';
 import 'package:provider/provider.dart';
 
 import 'image_event.dart';
@@ -101,13 +103,36 @@ class _ImageScreenState extends State<ImageScreen> {
                   itemCount: state.imageItem.length,
                   itemBuilder: (context, index) {
                     final imageItems = state.imageItem[index];
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        imageItems.imageUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    );
+                    return GestureDetector(
+                        onTap: () async {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext  context){
+                              return AlertDialog(
+                                title: Text('이미지 검색앱'),
+                                content : Text('자세히 보시겠습니까?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      context.pop(true);
+                                      context.push('/detail',extra: imageItems);
+                                    },
+                                    child: Text('확인'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      context.pop();
+                                    },
+                                    child: Text('취소'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ).then((value) {
+                            if(value != null && value){}
+                          });
+                        },
+                        child: ImageWidget(imageItem: imageItems,));
                   },
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
