@@ -16,13 +16,16 @@ class DetailScreen extends StatelessWidget {
       ),
       body: Hero(
         tag: imageItem.id,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image.network(
-            imageItem.imageUrl,
-            fit: BoxFit.cover,
-            width: 400,
-            height: 400,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.network(
+              imageItem.imageUrl,
+              fit: BoxFit.cover,
+              width: 390,
+              height: 400,
+            ),
           ),
         ),
       ),
