@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/model/pixabay_item.dart';
 import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
+import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/pixabay_widget.dart';
 
 class PixabayScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class PixabayScreen extends StatefulWidget {
 
 class _PixabayScreenState extends State<PixabayScreen> {
   final textEditingController = TextEditingController();
+  final pixabayViewModel = PixabayViewModel();
 
   @override
   void dispose() {
@@ -49,7 +51,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                     ),
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.search),
-                      onPressed: () {
+                      onPressed: () async {
+                       await pixabayViewModel.fetchImage(textEditingController.text);
                         setState(() {});
                       },
                     )),
@@ -68,9 +71,9 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   final pixabayItem = snapshot.data!;
                   return Expanded(
                     child: GridView.builder(
-                      itemCount: pixabayItem.length,
+                      itemCount: pixabayViewModel.pixabayItem.length,
                       itemBuilder: (context, index) {
-                        final pixabayItems = pixabayItem[index];
+                        final pixabayItems = pixabayViewModel.pixabayItem[index];
                         return PixabayWdiget(pixabayItems: pixabayItems);
                       },
                       gridDelegate:
