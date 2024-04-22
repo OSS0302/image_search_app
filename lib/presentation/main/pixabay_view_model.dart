@@ -1,20 +1,20 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
-import 'package:image_search_app/data/model/pixabay_item.dart';
+import 'package:image_search_app/domain/use_case/image_search_use_case.dart';
 import 'package:image_search_app/presentation/main/pixabay_event.dart';
 import 'package:image_search_app/presentation/main/pixabay_state.dart';
 
-import '../../data/repository/pixabay_repository.dart';
+import '../../domain/model/pixabay_item.dart';
+import '../../domain/repository/pixabay_repository.dart';
 
 class PixabayViewModel extends ChangeNotifier {
-  final PixabayRepository _repository;
+  final ImageSearchUseCase _searchUseCase;
 
-  PixabayViewModel({
-    required PixabayRepository repository,
-  }) : _repository = repository;
+   PixabayViewModel({
+    required ImageSearchUseCase searchUseCase,
+  }) : _searchUseCase = searchUseCase;
 
   PixabayState _state =  PixabayState(pixabayItem: List.unmodifiable([]), isLoading: false);
 
@@ -30,7 +30,7 @@ class PixabayViewModel extends ChangeNotifier {
       isLoading: true);
     notifyListeners();
 
-    final result = await _repository.getImageSearch(query);
+    final result = await _searchUseCase.execute(query);
       switch(result){
 
         case Success<List<PixabayItem>>():
@@ -45,4 +45,6 @@ class PixabayViewModel extends ChangeNotifier {
           // TODO: Handle this case.
       }
   }
+
+
 }
