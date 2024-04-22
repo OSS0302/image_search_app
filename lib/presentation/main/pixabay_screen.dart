@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_search_app/presentation/main/pixabay_event.dart';
 import 'package:image_search_app/presentation/main/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/pixabay_widget.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +16,40 @@ class PixabayScreen extends StatefulWidget {
 
 class _PixabayScreenState extends State<PixabayScreen> {
   final textEditingController = TextEditingController();
+  StreamSubscription<PixabayEvent>? subscription;
 
+  @override
+  void initState() {
+    Future.microtask(() {
+      subscription =
+          context.read<PixabayViewModel>().eventStream.listen((event) {
+        switch (event) {
+          case ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.message));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          case ShowDialog():
+            showDialog(context: context, builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('이미지 검색앱'),
+                content: Text('데이터를 가져왔습니다.'),
+                actions: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.green,
+                    ),
+                    child: TextButton(onPressed: () {
+                      context.pop();
+                    }, child: Text('확인')),
+                  )
+                ],
+              );
+            });
+        }
+      });
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -70,8 +107,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       child: GridView.builder(
                         itemCount: state.pixabayItem.length,
                         itemBuilder: (context, index) {
-                          final pixabayItems =
-                              state.pixabayItem[index];
+                          final pixabayItems = state.pixabayItem[index];
                           return PixabayWdiget(pixabayItems: pixabayItems);
                         },
                         gridDelegate:
