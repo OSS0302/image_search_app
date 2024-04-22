@@ -52,7 +52,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.search),
                       onPressed: () async {
-                       await pixabayViewModel.fetchImage(textEditingController.text);
+                        await pixabayViewModel
+                            .fetchImage(textEditingController.text);
                         setState(() {});
                       },
                     )),
@@ -60,15 +61,13 @@ class _PixabayScreenState extends State<PixabayScreen> {
               const SizedBox(
                 height: 24,
               ),
-              FutureBuilder<List<PixabayItem>>(
-                future: PixabayRepositoryImpl()
-                    .getImageSearch(textEditingController.text),
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: pixabayViewModel.isLoadingStream,
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return  const Center(child: CircularProgressIndicator(),
-                    );
+                  if(snapshot.data! == true) {
+                    return Center(child: CircularProgressIndicator(),);
                   }
-                  final pixabayItem = snapshot.data!;
                   return Expanded(
                     child: GridView.builder(
                       itemCount: pixabayViewModel.pixabayItem.length,
@@ -76,8 +75,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                         final pixabayItems = pixabayViewModel.pixabayItem[index];
                         return PixabayWdiget(pixabayItems: pixabayItems);
                       },
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4,
                         mainAxisSpacing: 32,
                         crossAxisSpacing: 32,
@@ -86,6 +84,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   );
                 },
               ),
+
             ],
           ),
         ),
