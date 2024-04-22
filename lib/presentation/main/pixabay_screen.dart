@@ -108,7 +108,25 @@ class _PixabayScreenState extends State<PixabayScreen> {
                         itemCount: state.pixabayItem.length,
                         itemBuilder: (context, index) {
                           final pixabayItems = state.pixabayItem[index];
-                          return PixabayWdiget(pixabayItems: pixabayItems);
+                          return GestureDetector(
+                            onTap: () async {
+                              await showDialog(context: context, builder: (BuildContext context){
+                                return AlertDialog(
+                                  title: Text('이미지 검색앱'),
+                                  content: Text('자세히 보시겠습니까'),
+                                  actions: [
+                                    TextButton(onPressed: () {
+                                      context.pop();
+                                      context.push('/detail', extra: pixabayItems);
+                                    }, child: Text('확인')),
+                                    TextButton(onPressed: () {
+                                      context.pop();
+                                    }, child: Text('취소')),
+                                  ],
+                                );
+                              });
+                            },
+                              child: PixabayWdiget(pixabayItems: pixabayItems));
                         },
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
