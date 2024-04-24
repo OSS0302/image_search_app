@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/model/image_item.dart';
 import 'package:image_search_app/data/repository/image_repository_impl.dart';
+import 'package:image_search_app/presentation/image/image_view_model.dart';
 import 'package:image_search_app/routes.dart';
 
 class ImageScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class ImageScreen extends StatefulWidget {
 
 class _ImageScreenState extends State<ImageScreen> {
   final imageSearchController = TextEditingController();
+  final imageViewModel = ImageViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -54,34 +56,34 @@ class _ImageScreenState extends State<ImageScreen> {
                 height: 24,
               ),
               FutureBuilder<List<ImageItem>>(
-                  future: ImageRepositoryImpl()
-                      .getImageItem(imageSearchController.text),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    final imageItems = snapshot.data!;
-                    return Expanded(
-                      child: GridView.builder(
-                        itemCount: imageItems.length,
-                        itemBuilder: (context, index) {
-                          final imageItem = imageItems[index];
-                          return ImageWidget(imageItem: imageItem);
-                        },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            crossAxisSpacing: 32,
-                            mainAxisSpacing: 32),
-                      ),
+                future: ImageRepositoryImpl()
+                    .getImageItem(imageSearchController.text),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(),
                     );
-                  }),
+                  }
+                  final imageItems = snapshot.data!;
+                  return Expanded(
+                    child: GridView.builder(
+                      itemCount: imageItems.length,
+                      itemBuilder: (context, index) {
+                        final imageItem = imageItems[index];
+                        return ImageWidget(imageItem: imageItem);
+                      },
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          crossAxisSpacing: 32,
+                          mainAxisSpacing: 32),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
       ),
     );
-
   }
 }
