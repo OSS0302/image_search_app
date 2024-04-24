@@ -46,7 +46,8 @@ class _ImageScreenState extends State<ImageScreen> {
                   hintText: '이미지 검색 해주세요',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
-                    onPressed: () {
+                    onPressed: () async{
+                      await imageViewModel.fetchImage(imageSearchController.text);
                       setState(() {});
                     },
                   ),
@@ -55,21 +56,12 @@ class _ImageScreenState extends State<ImageScreen> {
               SizedBox(
                 height: 24,
               ),
-              FutureBuilder<List<ImageItem>>(
-                future: ImageRepositoryImpl()
-                    .getImageItem(imageSearchController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  final imageItems = snapshot.data!;
-                  return Expanded(
+              imageViewModel.isLoading ? Center(child: CircularProgressIndicator(),)
+              : Expanded(
                     child: GridView.builder(
-                      itemCount: imageItems.length,
+                      itemCount: imageViewModel.imageItems.length,
                       itemBuilder: (context, index) {
-                        final imageItem = imageItems[index];
+                        final imageItem = imageViewModel.imageItems[index];
                         return ImageWidget(imageItem: imageItem);
                       },
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -77,8 +69,8 @@ class _ImageScreenState extends State<ImageScreen> {
                           crossAxisSpacing: 32,
                           mainAxisSpacing: 32),
                     ),
-                  );
-                },
+
+
               ),
             ],
           ),
