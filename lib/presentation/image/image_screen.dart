@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/video_item.dart';
-import 'package:image_search_app/data/repository/video_repository_impl.dart';
-import 'package:image_search_app/presentation/widget/video_widget.dart';
+import 'package:image_search_app/data/model/image_item.dart';
+import 'package:image_search_app/data/repository/image_repository_impl.dart';
+import 'package:image_search_app/routes.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class ImageScreen extends StatefulWidget {
+  const ImageScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<ImageScreen> createState() => _ImageScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
-  final textEditingController = TextEditingController();
+class _ImageScreenState extends State<ImageScreen> {
+  final imageSearchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('이미지 앱'),
+        title: const Text('이미지 앱 '),
       ),
       body: SafeArea(
         child: Padding(
@@ -25,22 +25,23 @@ class _MainScreenState extends State<MainScreen> {
           child: Column(
             children: [
               TextField(
-                controller: textEditingController,
+                controller: imageSearchController,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide(
                       width: 2,
-                      color: Colors.blue,
+                      color: Colors.tealAccent,
                     ),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide(
                       width: 2,
-                      color: Colors.blue,
+                      color: Colors.tealAccent,
                     ),
+                    borderRadius: BorderRadius.circular(20),
                   ),
+                  hintText: '이미지 검색 해주세요',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () {
@@ -52,27 +53,27 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(
                 height: 24,
               ),
-              FutureBuilder<List<VideoItem>>(
-                  future: VideoRepositoryImpl()
-                      .getVideoItem(textEditingController.text),
+              FutureBuilder<List<ImageItem>>(
+                  future: ImageRepositoryImpl()
+                      .getImageItem(imageSearchController.text),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(
                         child: CircularProgressIndicator(),
                       );
                     }
-                    final videoItems = snapshot.data!;
+                    final imageItems = snapshot.data!;
                     return Expanded(
                       child: GridView.builder(
-                        itemCount: videoItems.length,
+                        itemCount: imageItems.length,
                         itemBuilder: (context, index) {
-                          final videoItem = videoItems[index];
-                          return VideoWidget(videoItem: videoItem);
+                          final imageItem = imageItems[index];
+                          return ImageWidget(imageItem: imageItem);
                         },
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 32,
-                            crossAxisSpacing: 32),
+                            crossAxisCount: 4,
+                            crossAxisSpacing: 32,
+                            mainAxisSpacing: 32),
                       ),
                     );
                   }),
@@ -81,5 +82,6 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+
   }
 }

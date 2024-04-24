@@ -1,11 +1,11 @@
-class VideoItem {
-  final String pageURL;
+class ImageItem {
+  final String imageUrl;
   final String tags;
   final int id;
 
 //<editor-fold desc="Data Methods">
-  const VideoItem({
-    required this.pageURL,
+  const ImageItem({
+    required this.imageUrl,
     required this.tags,
     required this.id,
   });
@@ -13,31 +13,31 @@ class VideoItem {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is VideoItem &&
+      (other is ImageItem &&
           runtimeType == other.runtimeType &&
-          pageURL == other.pageURL &&
+          imageUrl == other.imageUrl &&
           tags == other.tags &&
           id == other.id);
 
   @override
-  int get hashCode => pageURL.hashCode ^ tags.hashCode ^ id.hashCode;
+  int get hashCode => imageUrl.hashCode ^ tags.hashCode ^ id.hashCode;
 
   @override
   String toString() {
-    return 'VideoItem{' +
-        ' pageURL: $pageURL,' +
+    return 'ImageItem{' +
+        ' imageUrl: $imageUrl,' +
         ' tags: $tags,' +
         ' id: $id,' +
         '}';
   }
 
-  VideoItem copyWith({
-    String? pageURL,
+  ImageItem copyWith({
+    String? imageUrl,
     String? tags,
     int? id,
   }) {
-    return VideoItem(
-      pageURL: pageURL ?? this.pageURL,
+    return ImageItem(
+      imageUrl: imageUrl ?? this.imageUrl,
       tags: tags ?? this.tags,
       id: id ?? this.id,
     );
@@ -45,15 +45,15 @@ class VideoItem {
 
   Map<String, dynamic> toJson() {
     return {
-      'pageURL': this.pageURL,
+      'imageUrl': this.imageUrl,
       'tags': this.tags,
       'id': this.id,
     };
   }
 
-  factory VideoItem.fromJson(Map<String, dynamic> json) {
-    return VideoItem(
-      pageURL: json['pageURL'] as String,
+  factory ImageItem.fromJson(Map<String, dynamic> json) {
+    return ImageItem(
+      imageUrl: json['imageUrl'] as String,
       tags: json['tags'] as String,
       id: json['id'] as int,
     );
