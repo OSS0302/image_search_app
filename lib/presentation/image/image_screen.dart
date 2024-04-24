@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/presentation/image/image_view_model.dart';
 import 'package:image_search_app/routes.dart';
+import 'package:provider/provider.dart';
 
 class ImageScreen extends StatefulWidget {
   const ImageScreen({super.key});
@@ -11,10 +12,10 @@ class ImageScreen extends StatefulWidget {
 
 class _ImageScreenState extends State<ImageScreen> {
   final imageSearchController = TextEditingController();
-  final imageViewModel = ImageViewModel();
 
   @override
   Widget build(BuildContext context) {
+    final imageViewModel = context.watch<ImageViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱 '),
@@ -55,14 +56,11 @@ class _ImageScreenState extends State<ImageScreen> {
               SizedBox(
                 height: 24,
               ),
-              StreamBuilder<bool>(
-                initialData: false,
-                  stream: imageViewModel.isLoadingStream,
-                  builder: (context , snapshot){
-                    if(snapshot.data! == true) {
-                      return Center(child: CircularProgressIndicator(),);
-                    }
-                    return Expanded(
+              imageViewModel.isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
                       child: GridView.builder(
                         itemCount: imageViewModel.imageItems.length,
                         itemBuilder: (context, index) {
@@ -74,8 +72,7 @@ class _ImageScreenState extends State<ImageScreen> {
                             crossAxisSpacing: 32,
                             mainAxisSpacing: 32),
                       ),
-                    );
-                  }),
+                    ),
             ],
           ),
         ),
