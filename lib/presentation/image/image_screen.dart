@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/presentation/image/image_view_model.dart';
-import 'package:image_search_app/routes.dart';
 import 'package:provider/provider.dart';
+
+import '../widget/image_widget.dart';
 
 class ImageScreen extends StatefulWidget {
   const ImageScreen({super.key});

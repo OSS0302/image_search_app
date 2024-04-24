@@ -1,15 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/image_item.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_search_app/di/di_setup.dart';
+import 'package:image_search_app/presentation/image/image_screen.dart';
+import 'package:image_search_app/presentation/image/image_view_model.dart';
+import 'package:provider/provider.dart';
 
-class ImageWidget extends StatelessWidget {
-  final ImageItem imageItem;
-  const ImageWidget({super.key, required this.imageItem});
+import 'data/repository/image_repository_impl.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Image.network(imageItem.imageUrl,fit: BoxFit.cover,),
-    );
-  }
-}
+final router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => getIt<ImageViewModel>(),
+        child: ImageScreen(),
+      ),
+    ),
+  ],
+);
