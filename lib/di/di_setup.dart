@@ -5,5 +5,5 @@ import 'package:image_search_app/ui/main/main_view_model.dart';
 final getIt = GetIt.instance;
 void diSetup() {
   getIt.registerSingleton<PixabayRepository>(PixabayRepositoryImpl());
-  getIt.registerFactory<MainViewModel>(() => getIt<MainViewModel>());
+  getIt.registerFactory<MainViewModel>(() => MainViewModel(repository: getIt<PixabayRepository>()));
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/pixabay_item.dart';
-import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
 import 'package:image_search_app/ui/main/main_view_model.dart';
 import 'package:image_search_app/ui/widget/image_widget.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +22,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final mainViewModel = context.watch<MainViewModel>();
+    final state = mainViewModel.state;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱'),
@@ -67,15 +67,15 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(
                 height: 24,
               ),
-              mainViewModel.isLoading
+              state.isLoading
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
                   : Expanded(
                       child: GridView.builder(
-                        itemCount: mainViewModel.pixabayItem.length,
+                        itemCount: state.pixabayItem.length,
                         itemBuilder: (context, index) {
-                          final pixabayItems = mainViewModel.pixabayItem[index];
+                          final pixabayItems = state.pixabayItem[index];
                           return ImageWidget(pixabayItems: pixabayItems);
                         },
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
