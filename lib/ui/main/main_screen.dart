@@ -66,23 +66,30 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(
                 height: 24,
               ),
-              mainViewModel.isLoading
-                  ? Center(
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: mainViewModel.eventStream,
+                builder: (context, snapshot) {
+                  if (snapshot.data == true) {
+                    return Center(
                       child: CircularProgressIndicator(),
-                    )
-                  : Expanded(
-                      child: GridView.builder(
-                        itemCount: mainViewModel.pixabayItem.length,
-                        itemBuilder: (context, index) {
-                          final pixabayItems = mainViewModel.pixabayItem[index];
-                          return ImageWidget(pixabayItems: pixabayItems);
-                        },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            mainAxisSpacing: 32,
-                            crossAxisSpacing: 32),
-                      ),
+                    );
+                  }
+                  return Expanded(
+                    child: GridView.builder(
+                      itemCount: mainViewModel.pixabayItem.length,
+                      itemBuilder: (context, index) {
+                        final pixabayItems = mainViewModel.pixabayItem[index];
+                        return ImageWidget(pixabayItems: pixabayItems);
+                      },
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 32,
+                          crossAxisSpacing: 32),
                     ),
+                  );
+                },
+              ),
             ],
           ),
         ),
