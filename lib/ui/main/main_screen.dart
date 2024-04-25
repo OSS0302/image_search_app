@@ -2,28 +2,27 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_search_app/presentation/image/image_view_model.dart';
+import 'package:image_search_app/ui/main/main_view_model.dart';
+import 'package:image_search_app/ui/widget/image_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../widget/image_widget.dart';
-import 'image_event.dart';
+import 'main_event.dart';
 
-class ImageScreen extends StatefulWidget {
-  const ImageScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<ImageScreen> createState() => _ImageScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _ImageScreenState extends State<ImageScreen> {
-  final imageSearchController = TextEditingController();
-  StreamSubscription<ImageEvent>? subscription;
+class _MainScreenState extends State<MainScreen> {
+  final textEditingController = TextEditingController();
+  StreamSubscription<MainEvent>? subscription;
 
   @override
   void initState() {
-    super.initState();
     Future.microtask(() {
-      subscription = context.read<ImageViewModel>().eventStream.listen((event) {
+      subscription = context.read<MainViewModel>().eventStream.listen((event) {
         switch (event) {
           case ShowSnackBar():
             final snackBar = SnackBar(content: Text(event.message));
@@ -34,34 +33,34 @@ class _ImageScreenState extends State<ImageScreen> {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: Text('이미지 검색앱'),
-                    content: Text('이미지 가져오기 완료'),
+                    content: Text('데이터 가져오기 완료'),
                     actions: [
                       TextButton(onPressed: () {
                         context.pop();
-                      }, child: Text('확인'))
+                      }, child: Text('확인')),
                     ],
                   );
                 });
         }
       });
     });
-
+    super.initState();
   }
 
   @override
   void dispose() {
-    subscription?.cancel();
-    imageSearchController.dispose();
     super.dispose();
+    textEditingController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final imageViewModel = context.watch<ImageViewModel>();
-    final state = imageViewModel.state;
+    final mainViewModel = context.watch<MainViewModel>();
+    final state = mainViewModel.state;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('이미지 앱 '),
+        title: const Text('이미지 앱'),
       ),
       body: SafeArea(
         child: Padding(
@@ -69,28 +68,32 @@ class _ImageScreenState extends State<ImageScreen> {
           child: Column(
             children: [
               TextField(
-                controller: imageSearchController,
+                controller: textEditingController,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide(
                       width: 2,
-                      color: Colors.tealAccent,
+                      color: Colors.purple,
                     ),
-                    borderRadius: BorderRadius.circular(20),
                   ),
                   enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide(
                       width: 2,
-                      color: Colors.tealAccent,
+                      color: Colors.purple,
                     ),
-                    borderRadius: BorderRadius.circular(20),
                   ),
                   hintText: '이미지 검색 해주세요',
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.search),
+                    icon: Icon(
+                      Icons.search,
+                      color: Colors.purple,
+                    ),
                     onPressed: () async {
-                      await imageViewModel
-                          .fetchImage(imageSearchController.text);
+                      await mainViewModel
+                          .fetchImage(textEditingController.text);
+
                       setState(() {});
                     },
                   ),
@@ -105,15 +108,15 @@ class _ImageScreenState extends State<ImageScreen> {
                     )
                   : Expanded(
                       child: GridView.builder(
-                        itemCount: state.imageItems.length,
+                        itemCount: state.pixabayItem.length,
                         itemBuilder: (context, index) {
-                          final imageItem = state.imageItems[index];
-                          return ImageWidget(imageItem: imageItem);
+                          final pixabayItems = state.pixabayItem[index];
+                          return ImageWidget(pixabayItems: pixabayItems);
                         },
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            crossAxisSpacing: 32,
-                            mainAxisSpacing: 32),
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 32,
+                            crossAxisSpacing: 32),
                       ),
                     ),
             ],
