@@ -3,6 +3,7 @@ import 'package:image_search_app/data/model/pixabay_item.dart';
 import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
 import 'package:image_search_app/ui/main/main_view_model.dart';
 import 'package:image_search_app/ui/widget/image_widget.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,7 +14,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final textEditingController = TextEditingController();
-  final mainViewModel = MainViewModel();
 
   @override
   void dispose() {
@@ -23,6 +23,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainViewModel = context.watch<MainViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 앱'),
@@ -66,30 +67,23 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(
                 height: 24,
               ),
-              StreamBuilder<bool>(
-                initialData: false,
-                stream: mainViewModel.eventStream,
-                builder: (context, snapshot) {
-                  if (snapshot.data == true) {
-                    return Center(
+              mainViewModel.isLoading
+                  ? Center(
                       child: CircularProgressIndicator(),
-                    );
-                  }
-                  return Expanded(
-                    child: GridView.builder(
-                      itemCount: mainViewModel.pixabayItem.length,
-                      itemBuilder: (context, index) {
-                        final pixabayItems = mainViewModel.pixabayItem[index];
-                        return ImageWidget(pixabayItems: pixabayItems);
-                      },
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 32,
-                          crossAxisSpacing: 32),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: mainViewModel.pixabayItem.length,
+                        itemBuilder: (context, index) {
+                          final pixabayItems = mainViewModel.pixabayItem[index];
+                          return ImageWidget(pixabayItems: pixabayItems);
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 32,
+                            crossAxisSpacing: 32),
+                      ),
                     ),
-                  );
-                },
-              ),
             ],
           ),
         ),
