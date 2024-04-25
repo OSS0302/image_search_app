@@ -57,8 +57,14 @@ class _MainScreenState extends State<MainScreen> {
                       color: Colors.purple,
                     ),
                     onPressed: () async {
-                      await mainViewModel
+                      final result = await mainViewModel
                           .fetchImage(textEditingController.text);
+                      if (result == false) {
+                        const snackBar = SnackBar(content: Text('오류'));
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
                       setState(() {});
                     },
                   ),
