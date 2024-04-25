@@ -3,15 +3,17 @@ import 'package:image_search_app/data/mappper/pixabay_mapper.dart';
 import 'package:image_search_app/data/model/pixabay_item.dart';
 import 'package:image_search_app/data/repository/pixabay_repository.dart';
 
+import '../../core/result.dart';
+
 class PixabayRepositoryImpl implements PixabayRepository {
   final _api = PixabayApi();
 
   @override
-  Future<List<PixabayItem>> getPixabayItem(String query) async {
+  Future<Result<List<PixabayItem>>> getPixabayItem(String query) async {
     final dto = await _api.getImageResult(query);
     if (dto.hits == null) {
-      return [];
+      return Result.success([]);
     }
-    return dto.hits!.map((e) => e.toPixabayItem()).toList();
+    return Result.success(dto.hits!.map((e) => e.toPixabayItem()).toList());
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:image_search_app/core/result.dart';
 import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
 import 'package:image_search_app/ui/main/main_state.dart';
 
@@ -19,22 +20,22 @@ class MainViewModel extends ChangeNotifier {
 
   MainState get state => _state;
 
-  Future<bool> fetchImage(String query) async {
+  Future<void> fetchImage(String query) async {
     _state = state.copyWith(
       isLoading: true,
     );
     notifyListeners();
+    final result = (await _repository.getPixabayItem(query));
+    switch(result){
 
-    try {
-      final result = (await _repository.getPixabayItem(query)).toList();
-      _state = state.copyWith(
-        isLoading: false,
-        pixabayItem: result,
-      );
-      notifyListeners();
-      return true;
-    } catch (e) {
-      return false;
+      case Success<List<PixabayItem>>():
+        _state = state.copyWith(
+          isLoading: false,
+          pixabayItem: result.data
+        );
+        notifyListeners();
+      case Error<List<PixabayItem>>():
+        // TODO: Handle this case.
     }
   }
 }
