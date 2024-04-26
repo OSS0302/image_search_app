@@ -111,7 +111,11 @@ class _MainScreenState extends State<MainScreen> {
                         itemCount: state.pixabayItem.length,
                         itemBuilder: (context, index) {
                           final pixabayItems = state.pixabayItem[index];
-                          return ImageWidget(pixabayItems: pixabayItems);
+                          return GestureDetector(
+                            onTap: () {
+                              context.push('/detail',extra: pixabayItems);
+                            },
+                              child: ImageWidget(pixabayItems: pixabayItems));
                         },
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
