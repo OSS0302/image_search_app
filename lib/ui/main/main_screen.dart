@@ -35,9 +35,15 @@ class _MainScreenState extends State<MainScreen> {
                     title: Text('이미지 검색앱'),
                     content: Text('데이터 가져오기 완료'),
                     actions: [
-                      TextButton(onPressed: () {
-                        context.pop();
-                      }, child: Text('확인')),
+                      Container(
+                        child: TextButton(onPressed: () {
+                          context.pop();
+                        }, child: Text('확인')),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.cyan
+                        ),
+                      ),
                     ],
                   );
                 });
@@ -120,18 +126,31 @@ class _MainScreenState extends State<MainScreen> {
                                       title: Text('이미지 검색앱'),
                                       content : Text('자세히 보시겠습니까?'),
                                       actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            context.pop(true);
-                                            context.push('/detail',extra: pixabayItems);
-                                          },
-                                          child: Text('확인'),
+                                        Container(
+                                          child: TextButton(
+                                            onPressed: () {
+                                              context.pop(true);
+                                              context.push('/detail',extra: pixabayItems);
+                                            },
+                                            child: Text('확인'),
+                                          ),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(20),
+                                              color: Colors.cyan
+                                          ),
                                         ),
-                                        TextButton(
-                                          onPressed: () {
-                                            context.pop();
-                                          },
-                                          child: Text('취소'),
+                                        Container(
+
+                                          child: TextButton(
+                                            onPressed: () {
+                                              context.pop();
+                                            },
+                                            child: Text('취소'),
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            color: Colors.cyan
+                                          ),
                                         ),
                                       ],
                                     );
