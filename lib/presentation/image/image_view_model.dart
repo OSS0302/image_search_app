@@ -18,19 +18,22 @@ class ImageViewModel extends ChangeNotifier {
 
   ImageState get state => _state;
 
-  Future<void> fetchImage(String query) async {
-    final result = (await _repository.getImageItem(query)).toList();
+  Future<bool> fetchImage(String query) async {
+
     _state = state.copyWith(
       isLoading: true,
 
     );
-      notifyListeners();
+    try {
+      final result = (await _repository.getImageItem(query));
       _state = state.copyWith(
-      isLoading: false,
-      imageItem: result,
-    );
+        isLoading: false,
+        imageItem: result,
+      );
       notifyListeners();
-
-
+      return true;
+    }catch(e){
+      return false;
+    }
   }
 }

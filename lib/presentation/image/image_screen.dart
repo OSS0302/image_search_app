@@ -14,7 +14,6 @@ class ImageScreen extends StatefulWidget {
 class _ImageScreenState extends State<ImageScreen> {
   final imageSearchController = TextEditingController();
 
-
   @override
   void dispose() {
     imageSearchController.dispose();
@@ -56,8 +55,15 @@ class _ImageScreenState extends State<ImageScreen> {
                     icon: Icon(Icons.ads_click),
                     color: Colors.black,
                     onPressed: () async {
-                      await imageViewModel
+                      final result = await imageViewModel
                           .fetchImage(imageSearchController.text);
+                      if (result == false) {
+                        const snackBar =
+                            SnackBar(content: Text('네트워크 오류 인터넷 확인 해주세요'));
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
                       setState(() {});
                     },
                   ),
@@ -69,18 +75,18 @@ class _ImageScreenState extends State<ImageScreen> {
               state.isLoading
                   ? Center(child: CircularProgressIndicator())
                   : Expanded(
-                child: GridView.builder(
-                  itemCount: state.imageItem.length,
-                  itemBuilder: (context, index) {
-                    final imageItems = state.imageItem[index];
-                    return ImageWidget(imageItem: imageItems);
-                  },
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      crossAxisSpacing: 32,
-                      mainAxisSpacing: 32),
-                ),
-              ),
+                      child: GridView.builder(
+                        itemCount: state.imageItem.length,
+                        itemBuilder: (context, index) {
+                          final imageItems = state.imageItem[index];
+                          return ImageWidget(imageItem: imageItems);
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            crossAxisSpacing: 32,
+                            mainAxisSpacing: 32),
+                      ),
+                    ),
             ],
           ),
         ),
