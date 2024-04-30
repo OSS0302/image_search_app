@@ -52,8 +52,9 @@ class _ImageScreenState extends State<ImageScreen> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.ads_click),
                     color: Colors.black,
-                    onPressed: () async{
-                     await imageViewModel.fetchImage(imageSearchController.text);
+                    onPressed: () async {
+                      await imageViewModel
+                          .fetchImage(imageSearchController.text);
                       setState(() {});
                     },
                   ),
@@ -62,23 +63,29 @@ class _ImageScreenState extends State<ImageScreen> {
               SizedBox(
                 height: 24,
               ),
-              imageViewModel.isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Expanded(
-                      child: GridView.builder(
-                        itemCount: imageViewModel.imageItem.length,
-                        itemBuilder: (context, index) {
-                          final imageItems = imageViewModel.imageItem[index];
-                          return ImageWidget(imageItem: imageItems);
-                        },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            crossAxisSpacing: 32,
-                            mainAxisSpacing: 32),
-                      ),
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: imageViewModel.isLoadingStream,
+                builder: (context, snapshot) {
+                  if(snapshot.data! == true) {
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                  return Expanded(
+                    child: GridView.builder(
+                      itemCount: imageViewModel.imageItem.length,
+                      itemBuilder: (context, index) {
+                        final imageItems = imageViewModel.imageItem[index];
+                        return ImageWidget(imageItem: imageItems);
+                      },
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          crossAxisSpacing: 32,
+                          mainAxisSpacing: 32),
                     ),
+                  );
+                },
+              ),
+
             ],
           ),
         ),
