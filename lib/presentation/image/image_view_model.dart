@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/model/image_item.dart';
 import '../../data/repository/image_repository.dart';
+import 'image_state.dart';
 
 class ImageViewModel extends ChangeNotifier {
   final ImageRepository _repository;
@@ -12,22 +13,24 @@ class ImageViewModel extends ChangeNotifier {
     required ImageRepository repository,
   }) : _repository = repository;
 
-  List<ImageItem> _imageItem = [];
 
-  List<ImageItem> get imageItem => List.unmodifiable(_imageItem);
+   ImageState _state =  ImageState(imageItem: List.unmodifiable([]), isLoading: false);
 
-  bool isLoading = false;
-
-  final _isLoadingController = StreamController<bool>();
-
-  Stream<bool> get isLoadingStream => _isLoadingController.stream;
+  ImageState get state => _state;
 
   Future<void> fetchImage(String query) async {
-    isLoading = true;
-    notifyListeners();
+    final result = (await _repository.getImageItem(query)).toList();
+    _state = state.copyWith(
+      isLoading: true,
 
-    _imageItem = await _repository.getImageItem(query);
-    isLoading = false;
-    notifyListeners();
+    );
+      notifyListeners();
+      _state = state.copyWith(
+      isLoading: false,
+      imageItem: result,
+    );
+      notifyListeners();
+
+
   }
 }
