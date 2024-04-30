@@ -19,11 +19,9 @@ class ImageViewModel extends ChangeNotifier {
 
 
   Future<void> fetchImage(String query) async {
-  isLoading = true;
-  notifyListeners();
+  _isLoadingController.add(true);
 
   _imageItem = await _repository.getImageItem(query);
-   isLoading = false;
-   notifyListeners();
+   _isLoadingController.add(false);
   }
 }
