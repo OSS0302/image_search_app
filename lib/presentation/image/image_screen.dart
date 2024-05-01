@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository_impl.dart';
 import 'package:image_search_app/presentation/image/image_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 import 'package:provider/provider.dart';
@@ -55,15 +54,9 @@ class _ImageScreenState extends State<ImageScreen> {
                     icon: Icon(Icons.ads_click),
                     color: Colors.black,
                     onPressed: () async {
-                      final result = await imageViewModel
+                      await imageViewModel
                           .fetchImage(imageSearchController.text);
-                      if (result == false) {
-                        const snackBar =
-                            SnackBar(content: Text('네트워크 오류 인터넷 확인 해주세요'));
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      }
+
                       setState(() {});
                     },
                   ),
