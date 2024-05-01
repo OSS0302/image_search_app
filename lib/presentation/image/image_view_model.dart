@@ -5,6 +5,7 @@ import 'package:image_search_app/core/result.dart';
 
 import '../../data/model/image_item.dart';
 import '../../data/repository/image_repository.dart';
+import 'image_event.dart';
 import 'image_state.dart';
 
 class ImageViewModel extends ChangeNotifier {
@@ -19,12 +20,18 @@ class ImageViewModel extends ChangeNotifier {
 
   ImageState get state => _state;
 
+  final _eventController = StreamController<ImageEvent>();
+
+  Stream<ImageEvent> get eventStream => _eventController.stream;
+
   Future<void> fetchImage(String query) async {
 
     _state = state.copyWith(
       isLoading: true,
 
     );
+    notifyListeners();
+
     final result = (await _repository.getImageItem(query));
     switch(result) {
 
@@ -33,6 +40,9 @@ class ImageViewModel extends ChangeNotifier {
           isLoading: false,
           imageItem: result.data.toList()
         );
+        notifyListeners();
+        _eventController.add(const ImageEvent.showSnackBar('성공'));
+        _eventController.add(const ImageEvent.showDialog('다이얼로그'));
       case Error<List<ImageItem>>():
         _state = state.copyWith(
           isLoading: false,
