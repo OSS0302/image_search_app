@@ -152,7 +152,7 @@ class _ImageScreenState extends State<ImageScreen> {
                                       ],
                                     );
                                   }).then((value) {
-                                    if(value == null  ){};
+                                    if(value == null && value ){};
                                   });
 
                             },
