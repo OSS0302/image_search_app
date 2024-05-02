@@ -13,7 +13,6 @@ class PixabayScreen extends StatefulWidget {
 class _PixabayScreenState extends State<PixabayScreen> {
   final textEditingController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     final pixabayViewModel = context.read<PixabayViewModel>();
@@ -51,14 +50,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       color: Colors.blue,
                     ),
                     onPressed: () async {
-                     final result =  await pixabayViewModel
+                      await pixabayViewModel
                           .fetchImage(textEditingController.text);
-                     if(result == false) {
-                       const snackBar = SnackBar(content: Text('네트워크 오류'));
-                       if(mounted){
-                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                       }
-                     }
 
                       setState(() {});
                     },
@@ -81,8 +74,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       child: GridView.builder(
                         itemCount: state.pixabayItem.length,
                         itemBuilder: (context, index) {
-                          final pixabayItem =
-                          state.pixabayItem[index];
+                          final pixabayItem = state.pixabayItem[index];
                           return PixabayWidget(pixabayItem: pixabayItem);
                         },
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
