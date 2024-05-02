@@ -18,15 +18,23 @@ class PixabayViewModel extends ChangeNotifier {
 
    PixabayState get state => _state;
 
-  Future<void> fetchImage(String query) async{
-    final result = (await _repository.getImageItems(query)).toList();
+  Future<bool> fetchImage(String query) async{
+
     _state = state.copyWith(
       isLoading: true,
     );
-    _state = state.copyWith(
-      isLoading: true,
-      pixabayItem: result
-    );
+    try{
+      final result = (await _repository.getImageItems(query)).toList();
+      _state = state.copyWith(
+          isLoading: false,
+          pixabayItem: result
+      );
+      return true;
+    }catch(e){
+      return false;
+    }
+
+
     notifyListeners();
 
   }
