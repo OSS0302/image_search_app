@@ -32,8 +32,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text('이미지 검색앱'),
-                    content: Text('이미지 가져오기 완료'),
+                    title: const Text('이미지 검색앱'),
+                    content: const Text('이미지 가져오기 완료'),
                     actions: [
                       Container(
                         decoration: BoxDecoration(
@@ -44,7 +44,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                           onPressed: () {
                             context.pop();
                           },
-                          child: Text('확인'),
+                          child: const Text('확인'),
                         ),
                       ),
                     ],
@@ -80,14 +80,14 @@ class _PixabayScreenState extends State<PixabayScreen> {
                 controller: textEditingController,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 2,
                       color: Colors.deepPurpleAccent,
                     ),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 2,
                       color: Colors.deepPurpleAccent,
                     ),
@@ -95,7 +95,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   ),
                   hintText: '이미지 검색 한후 버튼 눌러주세요',
                   suffixIcon: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.search_rounded,
                       color: Colors.blue,
                     ),
@@ -108,26 +108,65 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-              state.isLoading
-                  ? Center(
+              if (state.isLoading) const Center(
                       child: Column(
                         children: [
                           CircularProgressIndicator(),
                           Text('잠시만 기달려주세요 로딩중입니다.')
                         ],
                       ),
-                    )
-                  : Expanded(
+                    ) else Expanded(
                       child: GridView.builder(
                         itemCount: state.pixabayItem.length,
                         itemBuilder: (context, index) {
                           final pixabayItem = state.pixabayItem[index];
-                          return PixabayWidget(pixabayItem: pixabayItem);
+                          return GestureDetector(
+                              onTap: () async {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text('이미지 검색앱'),
+                                      content: const Text('이미지 가져오기 완료'),
+                                      actions: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            color: Colors.blue,
+                                          ),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              context.push('/detail', extra: pixabayItem);
+                                              context.pop();
+                                            },
+                                            child: const Text('확인'),
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            color: Colors.blue,
+                                          ),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              context.pop();
+                                            },
+                                            child: const Text('취소'),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ).then((value) {
+                                  if(value == null && value){}
+                                });
+                              },
+                              child: PixabayWidget(pixabayItem: pixabayItem));
                         },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
                             mainAxisSpacing: 32,
                             crossAxisSpacing: 32),
