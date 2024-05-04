@@ -16,10 +16,8 @@ class DetailScreen extends StatelessWidget {
       ),
       body: Hero(
         tag: pixabayItem.id,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-          ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
           child: Image.network(
             pixabayItem.imageUrl,
             fit: BoxFit.cover,

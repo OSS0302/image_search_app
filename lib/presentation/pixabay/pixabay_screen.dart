@@ -20,6 +20,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
 
   @override
   void initState() {
+    super.initState();
     Future.microtask(() {
       subscription =
           context.read<PixabayViewModel>().eventStream.listen((event) {
@@ -53,7 +54,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
         }
       });
     });
-    super.initState();
+
   }
 
   @override
@@ -161,7 +162,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                                     );
                                   },
                                 ).then((value) {
-                                  if(value == null && value){}
+                                  if(value != null && value){}
                                 });
                               },
                               child: PixabayWidget(pixabayItem: pixabayItem));
