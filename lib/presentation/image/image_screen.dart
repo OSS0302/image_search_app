@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository_impl.dart';
 import 'package:image_search_app/presentation/image/image_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 
@@ -45,7 +44,8 @@ class _ImageScreenState extends State<ImageScreen> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.ads_click_rounded),
                     onPressed: () async {
-                      await imageViewModel.fetchImage(textEditingController.text);
+                      await imageViewModel
+                          .fetchImage(textEditingController.text);
                       setState(() {});
                     },
                   ),
@@ -54,28 +54,29 @@ class _ImageScreenState extends State<ImageScreen> {
               SizedBox(
                 height: 24,
               ),
-              imageViewModel.isLoading
-                  ? Center(
-                      child: Column(
-                        children: [
-                          CircularProgressIndicator(),
-                          Text('데이터 로딩중입니다.')
-                        ],
-                      ),
-                    )
-                  : Expanded(
-                      child: GridView.builder(
-                        itemCount: imageViewModel.imageItem.length,
-                        itemBuilder: (context, index) {
-                          final imageItems = imageViewModel.imageItem[index];
-                          return ImageWidget(imageItems: imageItems);
-                        },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            mainAxisSpacing: 32,
-                            crossAxisSpacing: 32),
-                      ),
+              StreamBuilder(
+                initialData: false,
+                stream: imageViewModel.isLoadingStream,
+                builder: (context , snapshot) {
+                  if(snapshot.data! == true) {
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                  return Expanded(
+                    child: GridView.builder(
+                      itemCount: imageViewModel.imageItem.length,
+                      itemBuilder: (context, index) {
+                        final imageItems = imageViewModel.imageItem[index];
+                        return ImageWidget(imageItems: imageItems);
+                      },
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          mainAxisSpacing: 32,
+                          crossAxisSpacing: 32),
                     ),
+                  );
+                },
+              ),
+
             ],
           ),
         ),
