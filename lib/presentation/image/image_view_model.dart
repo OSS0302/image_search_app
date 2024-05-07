@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_repository.dart';
 import 'package:image_search_app/data/repository/image_repository_impl.dart';
+import 'package:image_search_app/presentation/image/image_state.dart';
 
 import '../../data/model/image_item.dart';
 
 class ImageViewModel extends ChangeNotifier {
-  final  ImageRepository _repository;
+  final ImageRepository _repository;
 
-   ImageViewModel({
+  ImageViewModel({
     required ImageRepository repository,
   }) : _repository = repository;
 
-  bool isLoading = false;
-  List<ImageItem> _imageItem = [];
+  ImageState _state =
+      ImageState(isLoading: false, imageItem: List.unmodifiable([]));
 
-  List<ImageItem> get imageItem => List.unmodifiable(_imageItem);
-
-
+  ImageState get state => _state;
 
   Future<void> fetchImage(String query) async {
-    isLoading = true;
+    final result = (await _repository.getResult(query)).toList();
+    _state = state.copyWith(
+      isLoading: true,
+    );
     notifyListeners();
 
-    _imageItem = await _repository.getResult(query);
-    isLoading = false;
+    _state = state.copyWith(
+      isLoading: false,
+      imageItem: result.toList()
+    );
     notifyListeners();
   }
 }
