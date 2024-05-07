@@ -93,6 +93,7 @@ class _ImageScreenState extends State<ImageScreen> {
                       color: Colors.blueAccent,
                     ),
                   ),
+                  hintText: '이미지 를 검색 하세요',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.ads_click_rounded),
                     onPressed: () async {
