@@ -37,9 +37,8 @@ class _ImageScreenState extends State<ImageScreen> {
                     actions: [
                       Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.tealAccent
-                        ),
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.tealAccent),
                         child: TextButton(
                           onPressed: () {
                             context.pop();
@@ -116,7 +115,49 @@ class _ImageScreenState extends State<ImageScreen> {
                         itemCount: state.imageItem.length,
                         itemBuilder: (context, index) {
                           final imageItems = state.imageItem[index];
-                          return ImageWidget(imageItems: imageItems);
+                          return InkWell(
+                            onTap: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text('이미지 검색앱'),
+                                      content: Text('자세히 보시겠습니까?'),
+                                      actions: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Colors.tealAccent),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              context.pop();
+                                              context.push('/detail',
+                                                  extra: imageItems);
+                                            },
+                                            child: Text('확인 '),
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Colors.tealAccent),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              context.pop();
+                                            },
+                                            child: Text('취소'),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }).then((value) {
+                                    if(value != null && value){}
+                                  });
+                            },
+                            child: ImageWidget(imageItems: imageItems),
+                          );
                         },
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
