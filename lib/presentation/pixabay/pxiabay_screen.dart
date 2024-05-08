@@ -1,9 +1,5 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/model/pixabay_item.dart';
-import 'package:image_search_app/data/repository/pixabay_repository.dart';
-import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
 import 'package:image_search_app/presentation/pixabay/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/pixabay_widget.dart';
 
@@ -60,29 +56,34 @@ class _PixabayScreenState extends State<PixabayScreen> {
             SizedBox(
               height: 24,
             ),
-            pixabayViewModel.isLoading
-                ? Center(
-                    child: Column(
-                      children: [
-                        CircularProgressIndicator(),
-                        Text('성공'),
-                      ],
-                    ),
-                  )
-                : Expanded(
-                    child: GridView.builder(
-                      itemCount: pixabayViewModel.pixabayItem.length,
-                      itemBuilder: (context, index) {
-                        final pixabayItems =
-                            pixabayViewModel.pixabayItem[index];
-                        return PixabayWidget(pixabayItems: pixabayItems);
-                      },
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 32,
-                          mainAxisSpacing: 32),
-                    ),
+            StreamBuilder(
+              initialData: false,
+              stream: pixabayViewModel.isLoadingStream,
+              builder: (context, snapshot) {
+                if(snapshot.data! == true){
+                  return Center(child: Column(
+                    children: [
+                      CircularProgressIndicator(),
+                      Text('로딩중 입니다. 잠시만 기달려주십시오 '),
+                    ],
+                  ),);
+                }
+                return Expanded(
+                  child: GridView.builder(
+                    itemCount: pixabayViewModel.pixabayItem.length,
+                    itemBuilder: (context, index) {
+                      final pixabayItems = pixabayViewModel.pixabayItem[index];
+                      return PixabayWidget(pixabayItems: pixabayItems);
+                    },
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 32,
+                        mainAxisSpacing: 32),
                   ),
+                );
+              },
+            ),
+
           ],
         ),
       )),
