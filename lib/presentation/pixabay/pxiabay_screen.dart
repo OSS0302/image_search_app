@@ -116,7 +116,41 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       itemCount: state.pixabayItem.length,
                       itemBuilder: (context, index) {
                         final pixabayItems = state.pixabayItem[index];
-                        return PixabayWidget(pixabayItems: pixabayItems);
+                        return GestureDetector(
+                          onTap: () async{
+                            showDialog(context: context, builder: (context){
+                              return AlertDialog(
+                                title: Text('이미지 검색앱'),
+                                content: Text('자세히 보시겠습니까?'),
+                                actions: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.blueAccent,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: TextButton(onPressed: () {
+                                      context.pop();
+                                      context.push('/detail', extra: pixabayItems);
+
+                                    }, child: Text('확인')),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.blueAccent,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: TextButton(onPressed: () {
+                                      context.pop();
+
+                                    }, child: Text('취소')),
+                                  )
+                                ],
+                              );
+                            }).then((value) {
+                              if(value != null && value){}
+                            });
+                          },
+                            child: PixabayWidget(pixabayItems: pixabayItems));
                       },
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
