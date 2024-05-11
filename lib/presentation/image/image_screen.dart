@@ -49,7 +49,7 @@ class _ImageScreenState extends State<ImageScreen> {
                     Icons.search_rounded,
                     color: Colors.yellowAccent,
                   ),
-                  onPressed: () async{
+                  onPressed: () async {
                     await imageViewModel.fetchImage(imageSearchController.text);
                     setState(() {});
                   },
@@ -59,29 +59,38 @@ class _ImageScreenState extends State<ImageScreen> {
             SizedBox(
               height: 24,
             ),
-            imageViewModel.isLoading
-                ? Center(
+            StreamBuilder<bool>(
+              initialData: false,
+              stream: imageViewModel.isLoadingStream,
+              builder: (context, snapshot) {
+                if (snapshot.data! == true) {
+                  return Center(
                     child: Column(
                       children: [
                         CircularProgressIndicator(),
-                        Text('로딩중입니다 잠시만 기달려주세요'),
+                        Text('로딩중입니다. 잠시만 기달려주새요'),
                       ],
                     ),
-                  )
-                : Expanded(
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        mainAxisSpacing: 32,
-                        crossAxisSpacing: 32,
-                      ),
-                      itemCount: imageViewModel.imageItem.length,
-                      itemBuilder: (context, index) {
-                        final imageItems = imageViewModel.imageItem[index];
-                        return ImageWidget(imageItems: imageItems);
-                      },
+                  );
+                }
+                return Expanded(
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 32,
+                      crossAxisSpacing: 32,
                     ),
+                    itemCount: imageViewModel.imageItem.length,
+                    itemBuilder: (context, index) {
+                      final imageItems = imageViewModel.imageItem[index];
+                      return ImageWidget(imageItems: imageItems);
+                    },
                   ),
+                );
+              },
+
+            ),
+
           ],
         ),
       )),
