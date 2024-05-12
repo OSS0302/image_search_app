@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository_impl.dart';
+import 'dart:async';
 
-import '../../data/model/image_item.dart';
-import '../../data/repository/image_repository.dart';
+import 'package:flutter/material.dart';
+import 'package:image_search_app/core/result.dart';
+import '../../domain/model/image_item.dart';
+import '../../domain/repository/image_repository.dart';
+import 'image_event.dart';
+import 'image_state.dart';
 
 class ImageViewModel extends ChangeNotifier {
   final ImageRepository _repository;
@@ -11,18 +14,40 @@ class ImageViewModel extends ChangeNotifier {
     required ImageRepository repository,
   }) : _repository = repository;
 
-  List<ImageItem> _imageItem = [];
-  List<ImageItem> get imageItem => List.unmodifiable(_imageItem);
+  ImageState _state =  ImageState(imageItem: List.unmodifiable([]), isLoading: false);
 
-  bool isLoading = false;
+  ImageState get state => _state;
+
+  final _eventController = StreamController<ImageEvent>();
+
+  Stream<ImageEvent> get eventStream => _eventController.stream;
+
 
 
   Future<void> fetchImage(String query) async{
-    isLoading = true;
+    _state = state.copyWith(
+      isLoading: true,
+    );
     notifyListeners();
 
-    _imageItem = await _repository.getImageItems(query);
-    isLoading = false;
-    notifyListeners();
+    final result = await _repository.getImageItems(query);
+    switch(result) {
+
+      case Success<List<ImageItem>>():
+        _state = state.copyWith(
+          isLoading: false,
+          imageItem: result.data,
+        );
+        notifyListeners();
+
+        _eventController.add(ImageEvent.showSnackBar('성공'));
+        _eventController.add(ImageEvent.showDialog('다이얼로그'));
+      case Error<List<ImageItem>>():
+        _state = state.copyWith(
+          isLoading: false,
+        );
+        notifyListeners();
+    }
+
   }
 }
