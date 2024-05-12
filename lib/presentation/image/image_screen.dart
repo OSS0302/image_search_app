@@ -122,7 +122,37 @@ class _ImageScreenState extends State<ImageScreen> {
                 itemCount: state.imageItem.length,
                 itemBuilder: (context, index) {
                   final imageItems = state.imageItem[index];
-                  return ImageWidget(imageItems: imageItems);
+                  return GestureDetector(
+                      onTap: () async{
+                        showDialog(context: context, builder: (context){
+                          return AlertDialog(
+                            title: Text('이미지 검색 앱 '),
+                            content: Text('이미지를 자세히 보시겠습니까?'),
+                            actions: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.yellow,
+                                ),
+                                child: TextButton(onPressed: () {
+                                  context.pop();
+                                  context.push('/detail',extra: imageItems);
+                                }, child: Text('확인')),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.yellow,
+                                ),
+                                child: TextButton(onPressed: () {
+                                  context.pop();
+                                }, child: Text('취소')),
+                              )
+                            ],
+                          );
+                        });
+                      },
+                      child: ImageWidget(imageItems: imageItems));
                 },
               ),
             ),
