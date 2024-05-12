@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/result.dart';
-import 'package:image_search_app/data/model/image_item.dart';
-import '../../data/repository/image_repository.dart';
+import '../../domain/model/image_item.dart';
+import '../../domain/repository/image_repository.dart';
 import 'image_event.dart';
 import 'image_state.dart';
 
