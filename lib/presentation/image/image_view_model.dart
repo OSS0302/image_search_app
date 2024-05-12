@@ -3,6 +3,7 @@ import 'package:image_search_app/data/repository/image_repository_impl.dart';
 
 import '../../data/model/image_item.dart';
 import '../../data/repository/image_repository.dart';
+import 'image_state.dart';
 
 class ImageViewModel extends ChangeNotifier {
   final ImageRepository _repository;
@@ -11,18 +12,20 @@ class ImageViewModel extends ChangeNotifier {
     required ImageRepository repository,
   }) : _repository = repository;
 
-  List<ImageItem> _imageItem = [];
-  List<ImageItem> get imageItem => List.unmodifiable(_imageItem);
+  ImageState _state =  ImageState(imageItem: List.unmodifiable([]), isLoading: false);
 
-  bool isLoading = false;
-
+  ImageState get state => _state;
 
   Future<void> fetchImage(String query) async{
-    isLoading = true;
+    _state = state.copyWith(
+      isLoading: true,
+    );
     notifyListeners();
-
-    _imageItem = await _repository.getImageItems(query);
-    isLoading = false;
+    final result = await _repository.getImageItems(query);
+    _state = state.copyWith(
+      isLoading: false,
+      imageItem: result,
+    );
     notifyListeners();
   }
 }

@@ -5,9 +5,14 @@ import 'package:provider/provider.dart';
 
 import 'di/di_setup.dart';
 
-final router = GoRouter(routes: [
-  GoRoute(path: '/',builder: (context, state) =>ChangeNotifierProvider(
-    create: (_) => getIt<ImageViewModel>(),
-    child: ImageScreen(),
-  ))
-]);
+final router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => getIt<ImageViewModel>(),
+        child: ImageScreen(),
+      ),
+    ),
+  ],
+);
