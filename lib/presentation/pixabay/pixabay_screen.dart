@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/model/pixabay_item.dart';
 import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
+import 'package:image_search_app/presentation/pixabay/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/pixabay_widget.dart';
 
 class PixabayScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class PixabayScreen extends StatefulWidget {
 
 class _PixabayScreenState extends State<PixabayScreen> {
   final textEditingController = TextEditingController();
+  final pixabayViewModel = PixabayViewModel();
 
   @override
   void dispose() {
@@ -53,7 +55,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       Icons.search_rounded,
                       color: Colors.lightGreenAccent,
                     ),
-                    onPressed: () {
+                    onPressed: () async{
+                      await pixabayViewModel.fetchImage(textEditingController.text);
                       setState(() {});
                     },
                   ),
@@ -62,23 +65,29 @@ class _PixabayScreenState extends State<PixabayScreen> {
               SizedBox(
                 height: 24,
               ),
-              FutureBuilder<List<PixabayItem>>(
-                future: PixabayRepositoryImpl().getPixabayItem(
-                    textEditingController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator(),);
-                  }
-                  final pixabayItem = snapshot.data!;
-                  return Expanded(child: GridView.builder(
-                    itemCount: pixabayItem.length, 
-                    itemBuilder: (context,index) {
-                      final pixabayItems = pixabayItem[index];
-                      return PixabayWidget(pixabayItems: pixabayItems);
-                    },
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,mainAxisSpacing: 32,crossAxisSpacing: 32),));
-                },
-              ),
+              pixabayViewModel.isLoading
+                  ? Center(
+                      child: Column(
+                        children: [
+                          CircularProgressIndicator(),
+                          Text('잠시만 기다려주세요')
+                        ],
+                      ),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: pixabayViewModel.pixabayItem.length,
+                        itemBuilder: (context, index) {
+                          final pixabayItems =
+                              pixabayViewModel.pixabayItem[index];
+                          return PixabayWidget(pixabayItems: pixabayItems);
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            mainAxisSpacing: 32,
+                            crossAxisSpacing: 32),
+                      ),
+                    ),
             ],
           ),
         ),
