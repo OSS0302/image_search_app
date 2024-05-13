@@ -62,32 +62,33 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 24,
-              ),
-              pixabayViewModel.isLoading
-                  ? Center(
-                      child: Column(
-                        children: [
-                          CircularProgressIndicator(),
-                          Text('잠시만 기다려주세요')
-                        ],
-                      ),
-                    )
-                  : Expanded(
-                      child: GridView.builder(
-                        itemCount: pixabayViewModel.pixabayItem.length,
-                        itemBuilder: (context, index) {
-                          final pixabayItems =
-                              pixabayViewModel.pixabayItem[index];
-                          return PixabayWidget(pixabayItems: pixabayItems);
-                        },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            mainAxisSpacing: 32,
-                            crossAxisSpacing: 32),
-                      ),
-                    ),
+               StreamBuilder<bool>(
+                 initialData: false,
+                   stream: pixabayViewModel.isLoadingStream, builder: (context ,snapshot){
+                 if(snapshot.data! == true){
+                   return Center(child: Column(
+                     children: [
+                       CircularProgressIndicator(),
+                       Text('잠시만 기다려 주세요')
+                     ],
+                   ));
+                 }
+                 return Expanded(
+                   child: GridView.builder(
+                     itemCount: pixabayViewModel.pixabayItem.length,
+                     itemBuilder: (context, index) {
+                       final pixabayItems =
+                       pixabayViewModel.pixabayItem[index];
+                       return PixabayWidget(pixabayItems: pixabayItems);
+                     },
+                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                         crossAxisCount: 4,
+                         mainAxisSpacing: 32,
+                         crossAxisSpacing: 32),
+                   ),
+                 );
+               }),
+
             ],
           ),
         ),
