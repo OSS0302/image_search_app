@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_search_app/presentation/pixabay/pixabay_event.dart';
 
 import 'package:image_search_app/presentation/pixabay/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/pixabay_widget.dart';
@@ -13,7 +17,40 @@ class PixabayScreen extends StatefulWidget {
 
 class _PixabayScreenState extends State<PixabayScreen> {
   final textEditingController = TextEditingController();
+  StreamSubscription<PixabayEvent>? subscription;
 
+  @override
+  void initState() {
+    Future.microtask(() {
+      subscription = context.read<PixabayViewModel>().eventStream.listen((event) {
+        switch(event) {
+
+          case ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.message));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          case ShowDialog():
+            showDialog(context: context, builder: (context){
+              return AlertDialog(
+                title: Text('imageSearchApp'),
+                content: Text('Image Data Complete'),
+                actions: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.lightGreenAccent
+                    ),
+                    child: TextButton(onPressed: () {
+                      context.pop();
+                    }, child: Text('확인')),
+                  )
+                ],
+              );
+            });
+        }
+      });
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
