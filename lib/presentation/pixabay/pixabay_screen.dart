@@ -58,13 +58,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                       color: Colors.lightGreenAccent,
                     ),
                     onPressed: () async{
-                     final result =  await pixabayViewModel.fetchImage(textEditingController.text);
-                     if(result == false) {
-                       const  snackBar = SnackBar(content: Text('네트워크 오류'));
-                       if(mounted) {
-                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                       }
-                     }
+                      await pixabayViewModel.fetchImage(textEditingController.text);
+
                       setState(() {});
                     },
                   ),
