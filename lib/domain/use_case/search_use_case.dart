@@ -1,25 +1,23 @@
-import 'package:image_search_app/domain/repository/image_repository.dart';
 
-import '../../core/result.dart';
-import '../model/image_item.dart';
+import '../../data/core/result.dart';
+import '../model/pixabay_item.dart';
+import '../repository/pixabay_repository.dart';
 
 class SearchUseCase {
-  final ImageRepository _repository;
+  final PixabayRepository _repository;
 
   const SearchUseCase({
-    required ImageRepository repository,
+    required PixabayRepository repository,
   }) : _repository = repository;
 
-  Future<Result<List<ImageItem>>> execute(String query) async{
-    final result = await _repository.getImageItems(query);
-    switch(result){
-
-      case Success<List<ImageItem>>():
-        Result.success(result.data.toList());
-      case Error<List<ImageItem>>():
+  Future<Result<List<PixabayItem>>> execute(String query) async {
+    final result = await _repository.getPixabayItem(query);
+    switch (result) {
+      case Success<List<PixabayItem>>():
+        Result.success(result.data.toString());
+      case Error<List<PixabayItem>>():
         Result.error(Exception(result.e.toString()));
     }
     return result;
   }
-
 }
