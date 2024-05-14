@@ -53,8 +53,9 @@ class _ImageScreenState extends State<ImageScreen> {
                     hintText: '이미지 검색앱',
                     suffixIcon: IconButton(
                       icon: Icon(Icons.search_rounded),
-                      onPressed: () async{
-                        await imageViewModel.fetchImage(imageSearchController.text);
+                      onPressed: () async {
+                        await imageViewModel
+                            .fetchImage(imageSearchController.text);
                         setState(() {});
                       },
                     )),
@@ -62,17 +63,22 @@ class _ImageScreenState extends State<ImageScreen> {
               SizedBox(
                 height: 24,
               ),
-              imageViewModel.isLoading
-                  ? Center(
+              StreamBuilder<bool>(
+                initialData: false,
+                stream: imageViewModel.isLoadingStream,
+                builder: (context, snapshot) {
+                  if (snapshot.data! == true) {
+                    return Center(
                       child: Column(
                         children: [
                           CircularProgressIndicator(),
-                          Text('잠시만 기다려주세요')
+                          Text('잠시만 기다려주세요'),
                         ],
                       ),
-                    )
-                  : Expanded(
-                      child: GridView.builder(
+                    );
+                  }
+                  return Expanded(
+                    child: GridView.builder(
                       itemCount: imageViewModel.imageItem.length,
                       itemBuilder: (context, index) {
                         final imageItems = imageViewModel.imageItem[index];
@@ -82,7 +88,10 @@ class _ImageScreenState extends State<ImageScreen> {
                           crossAxisCount: 4,
                           mainAxisSpacing: 32,
                           crossAxisSpacing: 32),
-                    )),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
