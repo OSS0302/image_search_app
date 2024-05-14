@@ -7,7 +7,6 @@ import 'package:image_search_app/presentation/image/image_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 import 'package:provider/provider.dart';
 
-
 class ImageScreen extends StatefulWidget {
   const ImageScreen({super.key});
 
@@ -23,34 +22,36 @@ class _ImageScreenState extends State<ImageScreen> {
   void initState() {
     Future.microtask(() {
       context.read<ImageViewModel>().eventStream.listen((event) {
-        switch(event) {
-
+        switch (event) {
           case ShowSnackBar():
             final snackBar = SnackBar(content: Text(event.message));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           case ShowDialog():
-            showDialog(context: context, builder: (context){
-              return AlertDialog(
-                title: Text('이미지 검색앱 '),
-                content: Text('이미지 가져오기 완료'),
-                actions: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.blueAccent,
-                    ),
-                      child: TextButton(onPressed: () {
-                        context.pop();
-                      }, child: Text('확인')))
-                ],
-              );
-            });
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('이미지 검색앱 '),
+                    content: Text('이미지 가져오기 완료'),
+                    actions: [
+                      Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.blueAccent,
+                          ),
+                          child: TextButton(
+                              onPressed: () {
+                                context.pop();
+                              },
+                              child: Text('확인')))
+                    ],
+                  );
+                });
         }
       });
     });
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -92,7 +93,7 @@ class _ImageScreenState extends State<ImageScreen> {
                     suffixIcon: IconButton(
                       icon: Icon(Icons.search_rounded),
                       onPressed: () async {
-                   await imageViewModel
+                        await imageViewModel
                             .fetchImage(imageSearchController.text);
 
                         setState(() {});
@@ -102,27 +103,68 @@ class _ImageScreenState extends State<ImageScreen> {
               SizedBox(
                 height: 24,
               ),
-              state.isLoading ? Center(child: Column(
-                children: [
-                  CircularProgressIndicator(),
-                  Text('잠시만 기다려 주세요'),
-                ],
-              ),)
-              : Expanded(
-                    child: GridView.builder(
-                      itemCount: state.imageItem.length,
-                      itemBuilder: (context, index) {
-                        final imageItems = state.imageItem[index];
-                        return ImageWidget(imageItems: imageItems);
-                      },
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          mainAxisSpacing: 32,
-                          crossAxisSpacing: 32),
+              state.isLoading
+                  ? Center(
+                      child: Column(
+                        children: [
+                          CircularProgressIndicator(),
+                          Text('잠시만 기다려 주세요'),
+                        ],
+                      ),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: state.imageItem.length,
+                        itemBuilder: (context, index) {
+                          final imageItems = state.imageItem[index];
+                          return GestureDetector(
+                              onTap: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text('이미지 검색앱 '),
+                                        content: Text('이미지를 자세히 보시겠습니까?'),
+                                        actions: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Colors.blueAccent,
+                                            ),
+                                            child: TextButton(
+                                              onPressed: () {
+                                                context.pop();
+                                                context.push('/detail' , extra:  imageItems);
+                                              },
+                                              child: Text('확인'),
+                                            ),
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Colors.blueAccent,
+                                            ),
+                                            child: TextButton(
+                                              onPressed: () {
+                                                context.pop();
+                                              },
+                                              child: Text('취소'),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: ImageWidget(imageItems: imageItems));
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            mainAxisSpacing: 32,
+                            crossAxisSpacing: 32),
+                      ),
                     ),
-
-
-              ),
             ],
           ),
         ),
