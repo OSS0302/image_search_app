@@ -50,8 +50,9 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   hintText: '이미지를 검색 하세요',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search_rounded),
-                    onPressed: () async{
-                      await pixabayViewModel.searchImage(pixabaySearchController.text);
+                    onPressed: () async {
+                      await pixabayViewModel
+                          .searchImage(pixabaySearchController.text);
                       setState(() {});
                     },
                   ),
@@ -60,17 +61,26 @@ class _PixabayScreenState extends State<PixabayScreen> {
               SizedBox(
                 height: 24,
               ),
-              pixabayViewModel.isLoading ? Center(child: Column(
-                children: [
-                  CircularProgressIndicator(),
-                  Text('잠시만 기다려 주세요'),
-                ],
-              ),)
-              : Expanded(
+              StreamBuilder(
+                initialData: false,
+                stream: pixabayViewModel.isLoadingStream,
+                builder: (context, snapshot) {
+                  if (snapshot.data! == true) {
+                    return Center(
+                      child: Column(
+                        children: [
+                          CircularProgressIndicator(),
+                          Text('잠시만 기다려 주세요'),
+                        ],
+                      ),
+                    );
+                  }
+                  return Expanded(
                     child: GridView.builder(
                       itemCount: pixabayViewModel.pixabayItem.length,
                       itemBuilder: (context, index) {
-                        final pixabayItems = pixabayViewModel.pixabayItem[index];
+                        final pixabayItems =
+                            pixabayViewModel.pixabayItem[index];
                         return PixabayWidget(pixabayItems: pixabayItems);
                       },
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -78,8 +88,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                           mainAxisSpacing: 32,
                           crossAxisSpacing: 32),
                     ),
-
-
+                  );
+                },
               ),
             ],
           ),
