@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_search_app/presentation/pixabay/pixabay_event.dart';
 import 'package:image_search_app/presentation/pixabay/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/pixabay_widget.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +16,42 @@ class PixabayScreen extends StatefulWidget {
 
 class _PixabayScreenState extends State<PixabayScreen> {
   final pixabaySearchController = TextEditingController();
+  StreamSubscription<PixabayEvent>? subscription;
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      subscription = context.read<PixabayViewModel>().eventStream.listen((event) {
+        switch(event){
+
+          case ShowSnackBar():
+           final snackBar = SnackBar(content: Text(event.message));
+           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          case ShowDialog():
+           showDialog(context: context, builder: (context){
+             return AlertDialog(
+               icon: Icon(Icons.image),
+               iconColor: Colors.amberAccent,
+               title: Text('이미지 검색 앱'),
+               content: Text('이미지 가져오기 완료'),
+               actions: [
+                 Container(
+                   decoration: BoxDecoration(
+                     borderRadius: BorderRadius.circular(20),
+                     color: Colors.amberAccent,
+                   ),
+                   child: TextButton(onPressed: () {
+                     context.pop();
+                   }, child: Text('확인')),
+                 )
+               ],
+             );
+           });
+        }
+      });
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
