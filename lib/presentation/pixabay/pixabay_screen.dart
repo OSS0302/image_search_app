@@ -51,8 +51,15 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search_rounded),
                     onPressed: () async {
-                      await pixabayViewModel
+                     final result =  await pixabayViewModel
                           .searchImage(pixabaySearchController.text);
+                     if(result == false){
+                       const snackBar = SnackBar(content: Text('네트워크 오류'));
+                       if(mounted){
+                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                       }
+
+                     }
                       setState(() {});
                     },
                   ),
@@ -71,7 +78,7 @@ class _PixabayScreenState extends State<PixabayScreen> {
                         return PixabayWidget(pixabayItems: pixabayItems);
                       },
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
+                          crossAxisCount: 2,
                           mainAxisSpacing: 32,
                           crossAxisSpacing: 32),
                     ),
