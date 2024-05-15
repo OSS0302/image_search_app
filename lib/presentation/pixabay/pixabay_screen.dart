@@ -60,22 +60,13 @@ class _PixabayScreenState extends State<PixabayScreen> {
               SizedBox(
                 height: 24,
               ),
-              FutureBuilder<List<PixabayItem>>(
-                future: PixabayRepositoryImpl()
-                    .getPixabayItems(pixabaySearchController.text),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: Column(
-                        children: [
-                          CircularProgressIndicator(),
-                          Text('잠시만 기다려 주세요'),
-                        ],
-                      ),
-                    );
-                  }
-                  final pixabayItem = snapshot.data!;
-                  return Expanded(
+              pixabayViewModel.isLoading ? Center(child: Column(
+                children: [
+                  CircularProgressIndicator(),
+                  Text('잠시만 기다려 주세요'),
+                ],
+              ),)
+              : Expanded(
                     child: GridView.builder(
                       itemCount: pixabayViewModel.pixabayItem.length,
                       itemBuilder: (context, index) {
@@ -87,8 +78,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                           mainAxisSpacing: 32,
                           crossAxisSpacing: 32),
                     ),
-                  );
-                },
+
+
               ),
             ],
           ),
