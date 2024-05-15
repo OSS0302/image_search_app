@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/model/pixabay_item.dart';
 import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
+import 'package:image_search_app/presentation/pixabay/pixabay_view_model.dart';
 import 'package:image_search_app/presentation/widget/pixabay_widget.dart';
 
 class PixabayScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class PixabayScreen extends StatefulWidget {
 
 class _PixabayScreenState extends State<PixabayScreen> {
   final pixabaySearchController = TextEditingController();
+  final pixabayViewModel = PixabayViewModel();
 
   @override
   void dispose() {
@@ -48,7 +50,8 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   hintText: '이미지를 검색 하세요',
                   suffixIcon: IconButton(
                     icon: Icon(Icons.search_rounded),
-                    onPressed: () {
+                    onPressed: () async{
+                      await pixabayViewModel.searchImage(pixabaySearchController.text);
                       setState(() {});
                     },
                   ),
@@ -74,9 +77,9 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   final pixabayItem = snapshot.data!;
                   return Expanded(
                     child: GridView.builder(
-                      itemCount: pixabayItem.length,
+                      itemCount: pixabayViewModel.pixabayItem.length,
                       itemBuilder: (context, index) {
-                        final pixabayItems = pixabayItem[index];
+                        final pixabayItems = pixabayViewModel.pixabayItem[index];
                         return PixabayWidget(pixabayItems: pixabayItems);
                       },
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
