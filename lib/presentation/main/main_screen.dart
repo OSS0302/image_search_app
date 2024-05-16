@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
+import 'package:provider/provider.dart';
 
-class ImageScreen extends StatefulWidget {
-  const ImageScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<ImageScreen> createState() => _ImageScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _ImageScreenState extends State<ImageScreen> {
+class _MainScreenState extends State<MainScreen> {
   final imageSearchController = TextEditingController();
-  final mainViewModel = MainViewModel();
+
 
   @override
   void dispose() {
@@ -21,6 +22,7 @@ class _ImageScreenState extends State<ImageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainViewModel = context.read<MainViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 검색앱'),
@@ -60,34 +62,29 @@ class _ImageScreenState extends State<ImageScreen> {
             const SizedBox(
               height: 24,
             ),
-            StreamBuilder<bool>(
-              initialData: false,
-              stream: mainViewModel.isLoadingStream,
-              builder: (context , snapshot){
-                if(snapshot.data! == true) {
-                  return Center(child: Column(
-                    children: [
-                      CircularProgressIndicator(),
-                      Text('잠시만 기다려주세요'),
-                    ],
-                  ),);
-                }
-                return Expanded(
-                  child: GridView.builder(
-                    itemCount: mainViewModel.imageItem.length,
-                    itemBuilder: (context, index) {
-                      final imageItems = mainViewModel.imageItem[index];
-                      return ImageWidget(imageItems: imageItems);
-                    },
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        mainAxisSpacing: 32,
-                        crossAxisSpacing: 32),
+            mainViewModel.isLoading
+                ? Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(),
+                        Text('잠시만 기다려주세요'),
+                      ],
+                    ),
+                  )
+                : Expanded(
+                    child: GridView.builder(
+                      itemCount: mainViewModel.imageItem.length,
+                      itemBuilder: (context, index) {
+                        final imageItems = mainViewModel.imageItem[index];
+                        return ImageWidget(imageItems: imageItems);
+                      },
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              mainAxisSpacing: 32,
+                              crossAxisSpacing: 32),
+                    ),
                   ),
-                );
-              },
-            ),
-
           ],
         ),
       )),
