@@ -10,15 +10,14 @@ class SearchUseCase {
     required ImageRepository repository,
   }) : _repository = repository;
 
-  Future<Result<List<ImageItem>>> execute(String query) async {
-    final  result = await _repository.getImageItems(query);
-
-    switch(result) {
+  Future<Result<List<ImageItem>>> execute(String query) async{
+    final result = await _repository.getImageItems(query);
+    switch(result){
 
       case Success<List<ImageItem>>():
         Result.success(result.data.toList());
       case Error<List<ImageItem>>():
-       Result.error(Exception(result.e.toString()));
+        Result.error(Exception(result.e.toString()));
     }
     return result;
   }

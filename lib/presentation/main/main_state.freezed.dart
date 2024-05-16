@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'image_state.dart';
+part of 'main_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,34 +14,33 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-ImageState _$ImageStateFromJson(Map<String, dynamic> json) {
-  return _ImageState.fromJson(json);
+MainState _$MainStateFromJson(Map<String, dynamic> json) {
+  return _MainState.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ImageState {
+mixin _$MainState {
   List<ImageItem> get imageItem => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ImageStateCopyWith<ImageState> get copyWith =>
+  $MainStateCopyWith<MainState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ImageStateCopyWith<$Res> {
-  factory $ImageStateCopyWith(
-          ImageState value, $Res Function(ImageState) then) =
-      _$ImageStateCopyWithImpl<$Res, ImageState>;
+abstract class $MainStateCopyWith<$Res> {
+  factory $MainStateCopyWith(MainState value, $Res Function(MainState) then) =
+      _$MainStateCopyWithImpl<$Res, MainState>;
   @useResult
   $Res call({List<ImageItem> imageItem, bool isLoading});
 }
 
 /// @nodoc
-class _$ImageStateCopyWithImpl<$Res, $Val extends ImageState>
-    implements $ImageStateCopyWith<$Res> {
-  _$ImageStateCopyWithImpl(this._value, this._then);
+class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
+    implements $MainStateCopyWith<$Res> {
+  _$MainStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -68,22 +67,22 @@ class _$ImageStateCopyWithImpl<$Res, $Val extends ImageState>
 }
 
 /// @nodoc
-abstract class _$$ImageStateImplCopyWith<$Res>
-    implements $ImageStateCopyWith<$Res> {
-  factory _$$ImageStateImplCopyWith(
-          _$ImageStateImpl value, $Res Function(_$ImageStateImpl) then) =
-      __$$ImageStateImplCopyWithImpl<$Res>;
+abstract class _$$MainStateImplCopyWith<$Res>
+    implements $MainStateCopyWith<$Res> {
+  factory _$$MainStateImplCopyWith(
+          _$MainStateImpl value, $Res Function(_$MainStateImpl) then) =
+      __$$MainStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<ImageItem> imageItem, bool isLoading});
 }
 
 /// @nodoc
-class __$$ImageStateImplCopyWithImpl<$Res>
-    extends _$ImageStateCopyWithImpl<$Res, _$ImageStateImpl>
-    implements _$$ImageStateImplCopyWith<$Res> {
-  __$$ImageStateImplCopyWithImpl(
-      _$ImageStateImpl _value, $Res Function(_$ImageStateImpl) _then)
+class __$$MainStateImplCopyWithImpl<$Res>
+    extends _$MainStateCopyWithImpl<$Res, _$MainStateImpl>
+    implements _$$MainStateImplCopyWith<$Res> {
+  __$$MainStateImplCopyWithImpl(
+      _$MainStateImpl _value, $Res Function(_$MainStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -92,7 +91,7 @@ class __$$ImageStateImplCopyWithImpl<$Res>
     Object? imageItem = null,
     Object? isLoading = null,
   }) {
-    return _then(_$ImageStateImpl(
+    return _then(_$MainStateImpl(
       imageItem: null == imageItem
           ? _value._imageItem
           : imageItem // ignore: cast_nullable_to_non_nullable
@@ -107,13 +106,13 @@ class __$$ImageStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ImageStateImpl with DiagnosticableTreeMixin implements _ImageState {
-  const _$ImageStateImpl(
+class _$MainStateImpl with DiagnosticableTreeMixin implements _MainState {
+  const _$MainStateImpl(
       {final List<ImageItem> imageItem = const [], this.isLoading = false})
       : _imageItem = imageItem;
 
-  factory _$ImageStateImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ImageStateImplFromJson(json);
+  factory _$MainStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MainStateImplFromJson(json);
 
   final List<ImageItem> _imageItem;
   @override
@@ -130,14 +129,14 @@ class _$ImageStateImpl with DiagnosticableTreeMixin implements _ImageState {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ImageState(imageItem: $imageItem, isLoading: $isLoading)';
+    return 'MainState(imageItem: $imageItem, isLoading: $isLoading)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'ImageState'))
+      ..add(DiagnosticsProperty('type', 'MainState'))
       ..add(DiagnosticsProperty('imageItem', imageItem))
       ..add(DiagnosticsProperty('isLoading', isLoading));
   }
@@ -146,7 +145,7 @@ class _$ImageStateImpl with DiagnosticableTreeMixin implements _ImageState {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ImageStateImpl &&
+            other is _$MainStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._imageItem, _imageItem) &&
             (identical(other.isLoading, isLoading) ||
@@ -161,24 +160,24 @@ class _$ImageStateImpl with DiagnosticableTreeMixin implements _ImageState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ImageStateImplCopyWith<_$ImageStateImpl> get copyWith =>
-      __$$ImageStateImplCopyWithImpl<_$ImageStateImpl>(this, _$identity);
+  _$$MainStateImplCopyWith<_$MainStateImpl> get copyWith =>
+      __$$MainStateImplCopyWithImpl<_$MainStateImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ImageStateImplToJson(
+    return _$$MainStateImplToJson(
       this,
     );
   }
 }
 
-abstract class _ImageState implements ImageState {
-  const factory _ImageState(
+abstract class _MainState implements MainState {
+  const factory _MainState(
       {final List<ImageItem> imageItem,
-      final bool isLoading}) = _$ImageStateImpl;
+      final bool isLoading}) = _$MainStateImpl;
 
-  factory _ImageState.fromJson(Map<String, dynamic> json) =
-      _$ImageStateImpl.fromJson;
+  factory _MainState.fromJson(Map<String, dynamic> json) =
+      _$MainStateImpl.fromJson;
 
   @override
   List<ImageItem> get imageItem;
@@ -186,6 +185,6 @@ abstract class _ImageState implements ImageState {
   bool get isLoading;
   @override
   @JsonKey(ignore: true)
-  _$$ImageStateImplCopyWith<_$ImageStateImpl> get copyWith =>
+  _$$MainStateImplCopyWith<_$MainStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
