@@ -15,19 +15,25 @@ class MainViewModel extends ChangeNotifier {
   MainState _state =  MainState(imageItem: List.unmodifiable([]), isLoading: false);
 
   MainState get state => _state;
-  Future<void> fetchImage(String query) async {
-    final result =  await _repository.getImageItems(query);
+  Future<bool> fetchImage(String query) async {
+
     _state = state.copyWith(
       isLoading: true,
     );
     notifyListeners();
+    try{
+      final result =  await _repository.getImageItems(query);
+      _state = state.copyWith(
+        isLoading: false,
+        imageItem: result,
+      );
+      notifyListeners();
+      return true;
+    }catch(e){
+      return false;
+    }
 
 
-    _state = state.copyWith(
-      isLoading: false,
-      imageItem: result,
-    );
-    notifyListeners();
   }
 
 

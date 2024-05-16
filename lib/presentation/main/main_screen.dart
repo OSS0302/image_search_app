@@ -54,7 +54,13 @@ class _MainScreenState extends State<MainScreen> {
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search_rounded),
                   onPressed: () async {
-                    await mainViewModel.fetchImage(imageSearchController.text);
+                    final result = await mainViewModel.fetchImage(imageSearchController.text);
+                    if(result == false) {
+                      const snackBar = SnackBar(content: Text('네트워크 오류'));
+                      if(mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    }
                     setState(() {});
                   },
                 ),
