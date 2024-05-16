@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/image_repository_impl.dart';
+import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 
 import '../../data/model/image_item.dart';
@@ -13,6 +14,7 @@ class ImageScreen extends StatefulWidget {
 
 class _ImageScreenState extends State<ImageScreen> {
   final imageSearchController = TextEditingController();
+  final mainViewModel = MainViewModel();
 
   @override
   void dispose() {
@@ -22,6 +24,7 @@ class _ImageScreenState extends State<ImageScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('이미지 검색앱'),
@@ -51,7 +54,8 @@ class _ImageScreenState extends State<ImageScreen> {
                 hintText: '이미지 검색앱',
                 suffixIcon: IconButton(
                   icon: Icon(Icons.search_rounded),
-                  onPressed: () {
+                  onPressed: () async{
+                    await mainViewModel.fetchImage(imageSearchController.text);
                     setState(() {});
                   },
                 ),
@@ -77,9 +81,9 @@ class _ImageScreenState extends State<ImageScreen> {
                   final imageItem = snapshot.data!;
                   return Expanded(
                       child: GridView.builder(
-                    itemCount: imageItem.length,
+                    itemCount: mainViewModel.imageItem.length,
                     itemBuilder: (context, index) {
-                      final imageItems = imageItem[index];
+                      final imageItems = mainViewModel.imageItem[index];
                       return ImageWidget(imageItems: imageItems);
                     },
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -92,6 +96,6 @@ class _ImageScreenState extends State<ImageScreen> {
         ),
       )),
     );
-    ;
+
   }
 }
