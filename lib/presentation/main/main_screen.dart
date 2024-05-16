@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:image_search_app/presentation/main/main_view_model.dart';
 import 'package:image_search_app/presentation/widget/image_widget.dart';
 
-
 class ImageScreen extends StatefulWidget {
   const ImageScreen({super.key});
 
@@ -61,28 +60,34 @@ class _ImageScreenState extends State<ImageScreen> {
             const SizedBox(
               height: 24,
             ),
-            mainViewModel.isLoading
-                ? const Center(
-                    child: Column(
-                      children: [
-                        CircularProgressIndicator(),
-                        Text('잠시만 기다려주세요'),
-                      ],
-                    ),
-                  )
-                : Expanded(
-                    child: GridView.builder(
-                      itemCount: mainViewModel.imageItem.length,
-                      itemBuilder: (context, index) {
-                        final imageItems = mainViewModel.imageItem[index];
-                        return ImageWidget(imageItems: imageItems);
-                      },
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          mainAxisSpacing: 32,
-                          crossAxisSpacing: 32),
-                    ),
+            StreamBuilder<bool>(
+              initialData: false,
+              stream: mainViewModel.isLoadingStream,
+              builder: (context , snapshot){
+                if(snapshot.data! == true) {
+                  return Center(child: Column(
+                    children: [
+                      CircularProgressIndicator(),
+                      Text('잠시만 기다려주세요'),
+                    ],
+                  ),);
+                }
+                return Expanded(
+                  child: GridView.builder(
+                    itemCount: mainViewModel.imageItem.length,
+                    itemBuilder: (context, index) {
+                      final imageItems = mainViewModel.imageItem[index];
+                      return ImageWidget(imageItems: imageItems);
+                    },
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        mainAxisSpacing: 32,
+                        crossAxisSpacing: 32),
                   ),
+                );
+              },
+            ),
+
           ],
         ),
       )),
