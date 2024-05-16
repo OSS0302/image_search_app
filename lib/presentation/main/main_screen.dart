@@ -44,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
                             onPressed: () {
                               context.pop();
                             },
-                            child: Text('확인')),
+                            child: Text('확인',style: TextStyle(color: Colors.black),)),
                       )
                     ],
                   );
