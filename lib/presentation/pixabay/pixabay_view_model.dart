@@ -1,0 +1,23 @@
+import 'package:flutter/material.dart';
+import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
+
+import '../../data/model/pixabay_item.dart';
+
+class PixabayViewModel extends ChangeNotifier {
+  final _repository = PixabayRepositoryImpl();
+
+
+  List<PixabayItem> _pixabayItem = [];
+  List<PixabayItem> get pixabyItem => List.unmodifiable(_pixabayItem);
+
+  bool isLoading = false;
+
+  Future<void> searchImage(String query) async{
+    isLoading = true;
+    notifyListeners();
+
+    _pixabayItem = await _repository.getPixabayItems(query);
+    isLoading = false;
+    notifyListeners();
+  }
+}
