@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app/data/repository/image_repository_impl.dart';
+import 'package:image_search_app/data/repository/pixabay_repository_impl.dart';
 import 'package:image_search_app/di/di_setup.dart';
-import 'package:image_search_app/presentation/main/main_screen.dart';
-import 'package:image_search_app/presentation/main/main_view_model.dart';
+import 'package:image_search_app/presentation/pixabay/pixabay_screen.dart';
+import 'package:image_search_app/presentation/pixabay/pixabay_view_model.dart';
 import 'package:image_search_app/routes.dart';
 import 'package:provider/provider.dart';
+
 
 void main() {
   diSetup();
