@@ -21,36 +21,39 @@ class _PixabayScreenState extends State<PixabayScreen> {
   @override
   void initState() {
     Future.microtask(() {
-      subscription = context.read<PixabayViewModel>().eventStream.listen((event) {
-        switch(event){
-
+      subscription =
+          context.read<PixabayViewModel>().eventStream.listen((event) {
+        switch (event) {
           case ShowSnackBar():
             final snackBar = SnackBar(content: Text(event.message));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           case ShowDialog():
-            showDialog(context: context, builder: (context){
-              return AlertDialog(
-                title: Text('pixabay 이미지 검색앱'),
-                content: Text('pixabay 이미지 가져오기 완료'),
-                actions: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.amber,
-                    ),
-                    child: TextButton(onPressed: () {
-                      context.pop();
-                    }, child: Text('확인')),
-                  )
-                ],
-              );
-            });
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('pixabay 이미지 검색앱'),
+                    content: const Text('pixabay 이미지 가져오기 완료'),
+                    actions: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.amber,
+                        ),
+                        child: TextButton(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            child: const Text('확인')),
+                      )
+                    ],
+                  );
+                });
         }
       });
     });
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -77,23 +80,23 @@ class _PixabayScreenState extends State<PixabayScreen> {
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 3,
                       color: Colors.amber,
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 3,
                       color: Colors.amber,
                     ),
                   ),
                   hintText: '이미지를 검색하세요',
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.search_rounded),
+                    icon: const Icon(Icons.search_rounded),
                     onPressed: () async {
-                       await pixabayViewModel
+                      await pixabayViewModel
                           .searchImage(textEditingController.text);
 
                       setState(() {});
@@ -101,28 +104,67 @@ class _PixabayScreenState extends State<PixabayScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-              state.isLoading ? Center(child: CircularProgressIndicator(),)
-              :Expanded(
-                    child: GridView.builder(
-                      itemCount: state.pixabayItem.length,
-                      itemBuilder: (context, index) {
-                        final pixabayItems = state.pixabayItem[index];
-                        return PixabayWidget(pixabayItems: pixabayItems);
-                      },
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          mainAxisSpacing: 32,
-                          crossAxisSpacing: 32),
+              state.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Expanded(
+                      child: GridView.builder(
+                        itemCount: state.pixabayItem.length,
+                        itemBuilder: (context, index) {
+                          final pixabayItems = state.pixabayItem[index];
+                          return GestureDetector(
+                            onTap: () async{
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text('pixabay 이미지 검색앱'),
+                                      content: const Text('pixabay 이미지 가져오기 완료'),
+                                      actions: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            color: Colors.amber,
+                                          ),
+                                          child: TextButton(
+                                              onPressed: () {
+                                                context.push('/detail',extra: pixabayItems);
+                                                context.pop();
+                                              },
+                                              child: const Text('확인')),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            color: Colors.amber,
+                                          ),
+                                          child: TextButton(
+                                              onPressed: () {
+
+                                                context.pop();
+                                              },
+                                              child: const Text('취소')),
+                                        )
+                                      ],
+                                    );
+                                  });
+
+                            },
+                              child: PixabayWidget(pixabayItems: pixabayItems));
+                        },
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            mainAxisSpacing: 32,
+                            crossAxisSpacing: 32),
+                      ),
                     ),
-
-
-              ),
             ],
           ),
         ),
