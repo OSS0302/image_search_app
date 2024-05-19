@@ -23,6 +23,7 @@ class _ImageScreenState extends State<ImageScreen> {
   @override
   Widget build(BuildContext context) {
     final imageViewModel = context.read<ImageViewModel>();
+    final state = imageViewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('이미지 검색앱'),
@@ -61,7 +62,7 @@ class _ImageScreenState extends State<ImageScreen> {
               SizedBox(
                 height: 24,
               ),
-              imageViewModel.isLoading ? Center(child: Column(
+              state.isLoading ? Center(child: Column(
                 children: [
                   CircularProgressIndicator(),
                   Text('잠시만 기다려 주세요'),
@@ -69,9 +70,9 @@ class _ImageScreenState extends State<ImageScreen> {
               ),)
              : Expanded(
                 child: GridView.builder(
-                  itemCount: imageViewModel.imageItem.length,
+                  itemCount: state.imageItem.length,
                   itemBuilder: (context, index) {
-                    final imageItems = imageViewModel.imageItem[index];
+                    final imageItems = state.imageItem[index];
                     return ImageWidget(imageItems: imageItems);
                   },
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
