@@ -54,10 +54,7 @@ class _ImageScreenState extends State<ImageScreen> {
                     ),
                     onPressed: () async {
                      final  result = await imageViewModel.fetchImage(searchController.text);
-                     if(result == false) {
-                       const snackBar = SnackBar(content: Text(('오류')));
-                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                     }
+
                       setState(() {});
                     },
                   ),
