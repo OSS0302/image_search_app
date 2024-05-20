@@ -109,49 +109,18 @@ class _ImageScreenState extends State<ImageScreen> {
               SizedBox(
                 height: 24,
               ),
-              if (state.isLoading) Center(child: Column(
+              state.isLoading ? Center(child: Column(
                 children: [
                   CircularProgressIndicator(),
                   Text('잠시만 기다려 주세요'),
                 ],
-              ),) else Expanded(
+              ),)
+                  : Expanded(
                 child: GridView.builder(
                   itemCount: state.imageItem.length,
                   itemBuilder: (context, index) {
                     final imageItems = state.imageItem[index];
-                    return GestureDetector(
-                      onTap: () async{
-                        await showDialog(context: context, builder: (context){
-                          return AlertDialog(
-                            title: Text('이미지 검색앱'),
-                            content: Text('이미지 검색앱'),
-                            actions: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white
-                                ),
-                                child: TextButton(onPressed: () {
-                                  context.push('/detail', extra: imageItems);
-                                  context.pop();
-                                }, child: Text('확인')),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white
-                                ),
-                                child: TextButton(onPressed: () {
-                                  context.pop();
-                                }, child: Text('취소')),
-                              )
-                            ],
-                          );
-                        }).then((value) {
-                          if(value != null && value) {}
-                        });
-                      },
-                        child: ImageWidget(imageItems: imageItems));
+                    return ImageWidget(imageItems: imageItems);
                   },
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
